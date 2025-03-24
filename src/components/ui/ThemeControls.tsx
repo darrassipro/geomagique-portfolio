@@ -31,8 +31,8 @@ export const ThemeControls = () => {
               localStorage.setItem('geomagique-theme', 'default');
             } else {
               root.classList.remove('theme-default');
-              root.classList.add('theme-dark');
-              localStorage.setItem('geomagique-theme', 'dark');
+              root.classList.add('theme-light');
+              localStorage.setItem('geomagique-theme', 'light');
             }
           }}
           className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border/40 bg-background/50 hover:bg-primary/5 hover:text-primary transition-colors"
