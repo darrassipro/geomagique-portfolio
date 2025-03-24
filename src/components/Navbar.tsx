@@ -1,10 +1,21 @@
 
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Code, Hexagon } from 'lucide-react';
+import { Menu, X, Hexagon, Code, ExternalLink, ChevronDown } from 'lucide-react';
+import { useIsMobile } from '@/hooks/use-mobile';
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger
+} from "@/components/ui/navigation-menu";
+import { cn } from "@/lib/utils";
 
 const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const isMobile = useIsMobile();
   
   useEffect(() => {
     const handleScroll = () => {
@@ -26,6 +37,48 @@ const Navbar: React.FC = () => {
     { name: 'Expérience', href: '#experience' },
     { name: 'Contact', href: '#contact' },
   ];
+
+  // Desktop navigation with sophisticated design
+  const DesktopNav = () => (
+    <div className="hidden md:flex items-center space-x-1">
+      <NavigationMenu>
+        <NavigationMenuList className="gap-1">
+          {navItems.map((item) => (
+            <NavigationMenuItem key={item.name}>
+              <NavigationMenuLink 
+                href={item.href}
+                className={cn(
+                  "group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors",
+                  "bg-transparent hover:bg-primary/5 hover:text-primary",
+                  "focus:bg-primary/5 focus:text-primary focus:outline-none",
+                  "data-[active]:bg-primary/5 data-[active]:text-primary",
+                  "relative overflow-hidden"
+                )}
+              >
+                <span className="relative z-10">
+                  {item.name}
+                  <span className="absolute -bottom-0.5 left-0 w-full h-0.5 bg-primary transform scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100"></span>
+                </span>
+                <div className="absolute inset-0 rounded-md bg-gradient-to-tr from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+          ))}
+        </NavigationMenuList>
+      </NavigationMenu>
+      
+      {/* Professional design enhancement */}
+      <div className="h-10 w-px bg-gradient-to-b from-transparent via-muted-foreground/20 to-transparent mx-3"></div>
+      
+      <a 
+        href="#contact"
+        className="relative overflow-hidden group rounded-md bg-primary/5 hover:bg-primary/10 text-primary transition-all duration-300 px-4 py-2 text-sm font-medium flex items-center gap-2"
+      >
+        <span className="relative z-10">Discutons</span>
+        <ExternalLink className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
+        <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform origin-left scale-x-0 transition-transform duration-300 group-hover:scale-x-100"></span>
+      </a>
+    </div>
+  );
   
   return (
     <header 
@@ -38,29 +91,19 @@ const Navbar: React.FC = () => {
           <a href="#" className="font-bold text-lg flex items-center group">
             <div className="w-10 h-10 flex items-center justify-center mr-3 bg-primary/10 rounded-lg transition-all duration-500 group-hover:bg-primary/20 overflow-hidden relative">
               <div className="absolute inset-0 bg-gradient-to-tr from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-30 bg-[radial-gradient(circle_at_center,_var(--primary)_0%,_transparent_70%)] transition-opacity duration-500"></div>
               <Hexagon className="h-5 w-5 text-primary relative z-10 transition-transform duration-500 group-hover:scale-110" />
             </div>
-            <span className="relative overflow-hidden group-hover:text-primary transition-colors duration-300">
-              YOUNES DARRASSI
-              <span className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-primary/0 via-primary/50 to-primary/0 transform scale-x-0 transition-transform duration-500 group-hover:scale-x-100"></span>
-            </span>
+            <div className="flex flex-col items-start">
+              <span className="relative overflow-hidden group-hover:text-primary transition-colors duration-300 font-semibold">
+                YOUNES DARRASSI
+                <span className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-primary/0 via-primary/50 to-primary/0 transform scale-x-0 transition-transform duration-500 group-hover:scale-x-100"></span>
+              </span>
+              <span className="text-xs text-muted-foreground tracking-wider">WEB DESIGNER</span>
+            </div>
           </a>
           
-          <nav className="hidden md:flex space-x-1">
-            {navItems.map((item, index) => (
-              <a 
-                key={item.name}
-                href={item.href}
-                className="relative px-4 py-2 font-medium text-muted-foreground hover:text-primary transition-colors duration-300 rounded-md hover:bg-primary/5 group"
-                style={{ transitionDelay: `${index * 50}ms` }}
-              >
-                <span className="relative z-10">
-                  {item.name}
-                  <span className="absolute -bottom-0.5 left-0 w-full h-0.5 bg-primary transform scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100"></span>
-                </span>
-              </a>
-            ))}
-          </nav>
+          {!isMobile && <DesktopNav />}
           
           <button 
             className="md:hidden focus:outline-none bg-transparent w-10 h-10 flex items-center justify-center rounded-lg hover:bg-primary/5 transition-colors"
@@ -98,6 +141,11 @@ const Navbar: React.FC = () => {
             </nav>
           </div>
         </div>
+      )}
+      
+      {/* Additional professional design elements - only visible on scroll and on larger screens */}
+      {isScrolled && !isMobile && (
+        <div className="hidden md:block h-0.5 w-full bg-gradient-to-r from-transparent via-primary/10 to-transparent"></div>
       )}
     </header>
   );
