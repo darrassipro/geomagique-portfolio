@@ -3,7 +3,9 @@ import { Card, CardContent } from '@/components/ui/card';
 import { 
   ExternalLink, Github, ArrowUpRight, Box, Layout, Server, Database, 
   Layers, Code, FileCode, FileJson, Globe, Shuffle, BarChart3, 
-  Brush, Cpu, Package, Shield, Table, Zap, Brackets, Leaf, Coffee
+  Cpu, Package, Shield, Table, Zap, Brackets, Leaf, 
+  Infinity, LayoutGrid, CircleOff, Gitlab, BookOpen,
+  PanelLeft, Hammer, Terminal, Folder, FolderTree, Sparkles
 } from 'lucide-react';
 
 interface Project {
@@ -19,32 +21,112 @@ interface Project {
   icon?: React.ElementType;
 }
 
-// Technology icon mapping
+// Technology icon mapping - more accurate icons for each technology
 const getTechIcon = (techName: string): React.ElementType => {
   const iconMap: Record<string, React.ElementType> = {
     // Frameworks & Libraries
-    "React": Layers,
-    "Vue": Layers,
-    "Angular": Layers,
+    "React": () => (
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3 h-3">
+        <circle cx="12" cy="12" r="2.5" />
+        <path d="M12 21.21c-3.72 0-7.25-1.47-9.75-3.75-2.32-2.12-3.24-4.31-2.74-6.24.5-1.93 2.23-3.35 4.88-4.27 1.97-.69 4.16-.93 6.09-.93s4.12.24 6.09.93c2.65.92 4.38 2.34 4.88 4.27.5 1.93-.42 4.12-2.74 6.24-2.5 2.28-6.03 3.75-9.75 3.75z" />
+        <path d="M12 2.79c3.72 0 7.25 1.47 9.75 3.75 2.32 2.12 3.24 4.31 2.74 6.24-.5 1.93-2.23 3.35-4.88 4.27-1.97.69-4.16.93-6.09.93s-4.12-.24-6.09-.93c-2.65-.92-4.38-2.34-4.88-4.27-.5-1.93.42-4.12 2.74-6.24C4.75 4.26 8.28 2.79 12 2.79z" />
+      </svg>
+    ),
+    "Vue": () => (
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3 h-3">
+        <path d="M12 2.69l5.66 9.93 5.66-9.93H12z" />
+        <path d="M12 2.69L6.34 12.62 0.68 2.69H12z" />
+      </svg>
+    ),
+    "Angular": () => (
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3 h-3">
+        <path d="M12 2L4 5.4V18.2L12 22L20 18.2V5.4L12 2Z" />
+        <path d="M12 22V14" />
+        <path d="M20 5.4L12 14L4 5.4" />
+      </svg>
+    ),
     "Symfony": FileCode,
     "Express": Server,
     "Spring Boot": Leaf,
     "Spring Security": Shield,
-    "Node.js": Server,
+    "Node.js": () => (
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3 h-3">
+        <path d="M12 21.8C6.8 21.8 3 19.5 3 12C3 4.5 6.8 2.2 12 2.2C17.2 2.2 21 4.5 21 12C21 19.5 17.2 21.8 12 21.8Z" />
+        <path d="M12 15.5V17.7" />
+        <path d="M10.3 15.5L8.8 17.7" />
+        <path d="M13.7 15.5L15.2 17.7" />
+        <path d="M6.3 13.2L8.2 13.7" />
+        <path d="M17.7 13.2L15.8 13.7" />
+        <path d="M8.8 8L10.3 10.2" />
+        <path d="M15.2 8L13.7 10.2" />
+        <path d="M12 6.3V8.5" />
+      </svg>
+    ),
     "Vite": Zap,
-    ".NET": Code,
+    ".NET": () => (
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3 h-3">
+        <path d="M18 12.5V10a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v1.4" />
+        <path d="M14 11.5a2 2 0 0 0 4 0" />
+        <path d="M6 8v8" />
+        <path d="M10 8v8" />
+        <path d="M6 12h4" />
+      </svg>
+    ),
     
     // Languages
-    "JavaScript": Code,
-    "TypeScript": Code,
-    "PHP": Code,
-    "C#": Brackets,
-    "Java": Coffee,
-    "Python": Code,
+    "JavaScript": () => (
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3 h-3">
+        <path d="M7 5.5v14c0 .8.5 1.5 1.3 1.5s1.3-.7 1.3-1.5v-7M12.5 5.5v14c0 .8.5 1.5 1.3 1.5s1.3-.7 1.3-1.5v-7M18 12h-6.5" />
+      </svg>
+    ),
+    "TypeScript": () => (
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3 h-3">
+        <path d="M16.5 9.5v-2H7.5v2M12 7.5v9M16.5 16.5v-2h-9v2" />
+      </svg>
+    ),
+    "PHP": () => (
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3 h-3">
+        <path d="M12 12m-10 0a10 9 0 1 0 20 0a10 9 0 1 0 -20 0" />
+        <path d="M5.5 15l.395 -1.974l.605 -3.026h1.32a1 1 0 0 1 .986 1.164l-.167 1a1 1 0 0 1 -.986 .836h-1.653" />
+        <path d="M15.5 15l.395 -1.974l.605 -3.026h1.32a1 1 0 0 1 .986 1.164l-.167 1a1 1 0 0 1 -.986 .836h-1.653" />
+        <path d="M12 7.5l-1 5.5m-1.5 0h5" />
+      </svg>
+    ),
+    "C#": () => (
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3 h-3">
+        <path d="M10 9a3 3 0 0 0 -3 -3h-.5a3.5 3.5 0 0 0 -3.5 3.5v5a3.5 3.5 0 0 0 3.5 3.5h.5a3 3 0 0 0 3 -3" />
+        <path d="M16 21v-12a4 4 0 1 1 8 0v12" />
+        <path d="M16 13h8" />
+      </svg>
+    ),
+    "Java": () => (
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3 h-3">
+        <path d="M10 3H7a4 4 0 0 0-4 4v10a4 4 0 0 0 4 4h10a4 4 0 0 0 4-4v-3" />
+        <path d="M17 3.35L12 8M17 3.35V8h4.65" />
+        <path d="M22 12v2.5a2.5 2.5 0 0 1-2.5 2.5 2.5 2.5 0 0 1 0-5z" />
+      </svg>
+    ),
+    "Python": () => (
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3 h-3">
+        <path d="M12 9H7.5a2.5 2.5 0 0 1 0-5h8a2.5 2.5 0 0 0 0-5h-8a2.5 2.5 0 0 0 0 5H12v10" />
+        <path d="M12 15v3.5a2.5 2.5 0 1 1-5 0v-8a2.5 2.5 0 1 0-5 0v8a2.5 2.5 0 0 0 5 0V15" />
+      </svg>
+    ),
     
     // Databases
-    "MongoDB": Database,
-    "MySQL": Database,
+    "MongoDB": () => (
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3 h-3">
+        <path d="M12 3v19" />
+        <path d="M18 8.5V3H6v5.5a5.5 5.5 0 0 0 11 0z" />
+      </svg>
+    ),
+    "MySQL": () => (
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3 h-3">
+        <path d="M13 2v10h7a3 3 0 0 0 0-6h-3M13 12v3a6 6 0 0 0 6 6h1a6 6 0 0 0 5-3" />
+        <path d="M9 22V2" />
+        <path d="M9 16H5a3 3 0 0 1 0-6h4" />
+      </svg>
+    ),
     "PostgreSQL": Database,
     "SQL Server": Database,
     "Doctrine": Database,
@@ -53,15 +135,36 @@ const getTechIcon = (techName: string): React.ElementType => {
     "Code First": Code,
     
     // Tools & Technologies
-    "TailwindCSS": Brush,
-    "CSS": Brush,
-    "SASS": Brush,
-    "Twig": FileJson,
-    "Symfony CLI": Server,
-    "phpMyAdmin": Layout,
-    "Vercel": Globe,
+    "TailwindCSS": () => (
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3 h-3">
+        <path d="M11.67 22c9.9 0 11.25-9 6.67-13.5C13.73 3.45 13.73 8.66 11.67 11 7.28 15.31 5.5 22 11.67 22Z" />
+        <path d="M11.67 11C9.61 8.66 9.61 3.45 5 3c0 0-3 1-1 8.5 3 12 15 8 15 7-5.98 1.2-9.3-1.89-7.33-7.5Z" />
+      </svg>
+    ),
+    "CSS": LayoutGrid,
+    "SASS": Sparkles,
+    "Twig": () => (
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3 h-3">
+        <path d="M12 22c5.5 0 10-4.5 10-10 0-4-3-7-7-8l-3-1h-2C7 9 7 12 7 12c0 3 3 4 8 5.5 1 .5 1.5 2.5.5 3.5-1.5 1.5-4 1.5-5 1z" />
+        <path d="M12 8c0-3-1-4-2.5-4C8 4 7 5.5 7 7c0 .5.5 3.5 2 3.5z" />
+      </svg>
+    ),
+    "Symfony CLI": Terminal,
+    "phpMyAdmin": PanelLeft,
+    "Vercel": () => (
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3 h-3">
+        <path d="M12 2L2 19.5h20z" />
+      </svg>
+    ),
     "ETL": Shuffle,
-    "Talend": Shuffle,
+    "Talend": () => (
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3 h-3">
+        <path d="M12 3v4" />
+        <path d="m18 7-3 2" />
+        <path d="m9 9-3-2" />
+        <path d="M7 14a5 5 0 0 0 10 0" />
+      </svg>
+    ),
     "Power BI": BarChart3,
     "Data Visualization": BarChart3,
   };
