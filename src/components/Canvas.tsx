@@ -959,7 +959,7 @@ const Canvas: React.FC<CanvasProps> = ({ className = '' }) => {
         case 'flower':
           const petalCount = 5 + Math.floor(particle.energyLevel * 3);
           const petalLength = renderSize / 2;
-          const innerRadius = renderSize / 6;
+          const flowerCenterRadius = renderSize / 6; // Fixed: renamed to flowerCenterRadius
           
           // Draw petals
           ctx.beginPath();
@@ -985,7 +985,7 @@ const Canvas: React.FC<CanvasProps> = ({ className = '' }) => {
           
           // Center circle
           ctx.beginPath();
-          ctx.arc(0, 0, innerRadius, 0, Math.PI * 2);
+          ctx.arc(0, 0, flowerCenterRadius, 0, Math.PI * 2); // Fixed: using flowerCenterRadius
           ctx.stroke();
           break;
       }
