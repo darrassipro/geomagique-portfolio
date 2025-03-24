@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { Paintbrush, Maximize, Minimize, Check } from 'lucide-react';
+import React from 'react';
+import { Paintbrush, Maximize, Minimize } from 'lucide-react';
 import { useTheme } from '@/hooks/use-theme';
 import { 
   DropdownMenu,
@@ -10,12 +10,41 @@ import {
 import { cn } from '@/lib/utils';
 
 export const ThemeControls = () => {
-  const { theme, setTheme, isFullscreen, toggleFullscreen } = useTheme();
-  
-  // Debug output to check if the component is receiving theme updates
-  useEffect(() => {
-    console.log("ThemeControls rendered with theme:", theme);
-  }, [theme]);
+  // Try-catch to debug any issues with the useTheme hook
+  let themeContextValue;
+  try {
+    themeContextValue = useTheme();
+    console.log("Theme context successfully loaded:", themeContextValue.theme);
+  } catch (error) {
+    console.error("Error accessing theme context:", error);
+    // Fallback implementation in case of context issues
+    return (
+      <div className="flex items-center space-x-2">
+        <button
+          onClick={() => {
+            console.log("Direct theme toggle");
+            // Direct DOM class toggle as a fallback
+            const root = document.documentElement;
+            if (root.classList.contains('theme-dark')) {
+              root.classList.remove('theme-dark');
+              root.classList.add('theme-default');
+              localStorage.setItem('geomagique-theme', 'default');
+            } else {
+              root.classList.remove('theme-default');
+              root.classList.add('theme-dark');
+              localStorage.setItem('geomagique-theme', 'dark');
+            }
+          }}
+          className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border/40 bg-background/50 hover:bg-primary/5 hover:text-primary transition-colors"
+        >
+          <Paintbrush className="h-4 w-4" />
+          <span className="sr-only">Toggle theme</span>
+        </button>
+      </div>
+    );
+  }
+
+  const { theme, setTheme, isFullscreen, toggleFullscreen } = themeContextValue;
 
   const themes = [
     { name: 'Default', value: 'default', icon: <Paintbrush className="h-4 w-4" /> },
@@ -38,11 +67,18 @@ export const ThemeControls = () => {
             <DropdownMenuItem
               key={t.value}
               onClick={() => {
-                console.log("Clicked theme:", t.value);
-                // Force a direct DOM update while also updating context
-                document.documentElement.classList.remove('theme-default', 'theme-dark', 'theme-light', 'theme-forest', 'theme-ocean');
-                document.documentElement.classList.add(`theme-${t.value}`);
+                console.log("Changing theme to:", t.value);
+                
+                // Direct DOM manipulation for immediate visual feedback
+                const root = document.documentElement;
+                root.classList.remove('theme-default', 'theme-dark', 'theme-light', 'theme-forest', 'theme-ocean');
+                root.classList.add(`theme-${t.value}`);
+                
+                // Update context state
                 setTheme(t.value as any);
+                
+                // Backup: store in localStorage directly
+                localStorage.setItem('geomagique-theme', t.value);
               }}
               className={cn(
                 "flex items-center gap-2 cursor-pointer",
@@ -51,7 +87,6 @@ export const ThemeControls = () => {
             >
               {t.icon}
               <span>{t.name}</span>
-              {theme === t.value && <Check className="h-4 w-4 ml-auto" />}
             </DropdownMenuItem>
           ))}
         </DropdownMenuContent>
