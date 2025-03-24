@@ -1,7 +1,7 @@
 
 import React from 'react';
 import Canvas from './Canvas';
-import { ArrowRight, MousePointer, Code, Layers, Layout } from 'lucide-react';
+import { ArrowRight, MousePointer, Code, Layers, Layout, Cpu, ZapIcon } from 'lucide-react';
 
 const Hero: React.FC = () => {
   return (
@@ -9,7 +9,7 @@ const Hero: React.FC = () => {
       id="hero" 
       className="relative min-h-screen flex items-center pb-20 pt-28 overflow-hidden"
     >
-      <Canvas className="opacity-60" />
+      <Canvas className="opacity-70" />
       
       <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-background/0 via-background/0 to-background z-[1]"></div>
       
@@ -22,14 +22,21 @@ const Hero: React.FC = () => {
             </div>
           </div>
           
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight leading-tight md:leading-tight lg:leading-tight mb-2 opacity-0 animate-fade-in bg-clip-text text-transparent bg-gradient-to-r from-foreground to-foreground/70" style={{ animationDelay: '0.4s', animationFillMode: 'forwards' }}>
-            YOUNES DARRASSI
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight leading-tight md:leading-tight lg:leading-tight mb-2 opacity-0 animate-fade-in" style={{ animationDelay: '0.4s', animationFillMode: 'forwards' }}>
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-foreground to-foreground/60">
+              YOUNES DARRASSI
+            </span>
           </h1>
           
-          <h2 className="text-2xl md:text-3xl text-muted-foreground mb-6 opacity-0 animate-fade-in flex items-center" style={{ animationDelay: '0.5s', animationFillMode: 'forwards' }}>
-            <span className="mr-3">Web Designer</span>
-            <div className="h-px flex-grow max-w-[120px] bg-gradient-to-r from-primary/50 to-transparent"></div>
-          </h2>
+          <div className="relative">
+            <h2 className="text-2xl md:text-3xl text-muted-foreground mb-6 opacity-0 animate-fade-in flex items-center" style={{ animationDelay: '0.5s', animationFillMode: 'forwards' }}>
+              <span className="mr-3 relative overflow-hidden group inline-block">
+                Web Designer
+                <span className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-primary/0 via-primary/80 to-primary/0 transform scale-x-0 transition-transform duration-500 group-hover:scale-x-100"></span>
+              </span>
+              <div className="h-px flex-grow max-w-[120px] bg-gradient-to-r from-primary/50 to-transparent"></div>
+            </h2>
+          </div>
           
           <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mb-8 opacity-0 animate-fade-in" style={{ animationDelay: '0.6s', animationFillMode: 'forwards' }}>
             Passionné par le design web et les nouvelles technologies, je recherche un poste qui me permettra de mettre en pratique mes compétences en design tout en continuant à apprendre.
@@ -40,46 +47,58 @@ const Hero: React.FC = () => {
               href="#projects" 
               className="group relative inline-flex items-center justify-center h-12 px-8 font-medium tracking-wide transition-all duration-300 bg-primary text-primary-foreground hover:bg-primary/90 rounded-full overflow-hidden"
             >
+              <span className="absolute inset-0 w-0 bg-gradient-to-r from-primary/80 to-primary/40 transition-all duration-500 ease-out group-hover:w-full"></span>
               <span className="relative z-10 flex items-center">
                 Voir Projets
                 <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
               </span>
-              <span className="absolute inset-0 bg-gradient-to-r from-primary to-primary/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
             </a>
             
             <a 
               href="#contact" 
               className="group relative inline-flex items-center justify-center h-12 px-8 font-medium tracking-wide transition-all duration-300 bg-secondary hover:bg-secondary/80 rounded-full backdrop-blur-sm"
             >
+              <span className="absolute inset-0 w-0 bg-white/5 transition-all duration-500 ease-out group-hover:w-full"></span>
               <span className="relative z-10">Me Contacter</span>
-              <span className="absolute inset-0 bg-gradient-to-r from-secondary to-secondary/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
             </a>
           </div>
           
-          <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-xl opacity-0 animate-fade-in" style={{ animationDelay: '1s', animationFillMode: 'forwards' }}>
-            <div className="flex flex-col items-center">
-              <div className="w-10 h-10 rounded-full flex items-center justify-center bg-primary/10 mb-2">
+          <div className="mt-12 grid grid-cols-3 md:grid-cols-6 gap-4 max-w-2xl opacity-0 animate-fade-in" style={{ animationDelay: '1s', animationFillMode: 'forwards' }}>
+            <div className="flex flex-col items-center group">
+              <div className="w-12 h-12 rounded-full flex items-center justify-center bg-primary/5 mb-2 transition-all duration-300 group-hover:bg-primary/10 group-hover:scale-110 backdrop-blur-sm">
                 <Code className="h-5 w-5 text-primary" />
               </div>
-              <span className="text-sm text-muted-foreground">Frontend Dev</span>
+              <span className="text-sm text-muted-foreground">Frontend</span>
             </div>
-            <div className="flex flex-col items-center">
-              <div className="w-10 h-10 rounded-full flex items-center justify-center bg-primary/10 mb-2">
+            <div className="flex flex-col items-center group">
+              <div className="w-12 h-12 rounded-full flex items-center justify-center bg-primary/5 mb-2 transition-all duration-300 group-hover:bg-primary/10 group-hover:scale-110 backdrop-blur-sm">
                 <Layout className="h-5 w-5 text-primary" />
               </div>
-              <span className="text-sm text-muted-foreground">UI/UX Design</span>
+              <span className="text-sm text-muted-foreground">UI/UX</span>
             </div>
-            <div className="flex flex-col items-center">
-              <div className="w-10 h-10 rounded-full flex items-center justify-center bg-primary/10 mb-2">
+            <div className="flex flex-col items-center group">
+              <div className="w-12 h-12 rounded-full flex items-center justify-center bg-primary/5 mb-2 transition-all duration-300 group-hover:bg-primary/10 group-hover:scale-110 backdrop-blur-sm">
                 <Layers className="h-5 w-5 text-primary" />
               </div>
               <span className="text-sm text-muted-foreground">Responsive</span>
             </div>
-            <div className="flex flex-col items-center">
-              <div className="w-10 h-10 rounded-full flex items-center justify-center bg-primary/10 mb-2">
+            <div className="flex flex-col items-center group">
+              <div className="w-12 h-12 rounded-full flex items-center justify-center bg-primary/5 mb-2 transition-all duration-300 group-hover:bg-primary/10 group-hover:scale-110 backdrop-blur-sm">
                 <MousePointer className="h-5 w-5 text-primary" />
               </div>
               <span className="text-sm text-muted-foreground">Interactive</span>
+            </div>
+            <div className="flex flex-col items-center group">
+              <div className="w-12 h-12 rounded-full flex items-center justify-center bg-primary/5 mb-2 transition-all duration-300 group-hover:bg-primary/10 group-hover:scale-110 backdrop-blur-sm">
+                <Cpu className="h-5 w-5 text-primary" />
+              </div>
+              <span className="text-sm text-muted-foreground">Modern</span>
+            </div>
+            <div className="flex flex-col items-center group">
+              <div className="w-12 h-12 rounded-full flex items-center justify-center bg-primary/5 mb-2 transition-all duration-300 group-hover:bg-primary/10 group-hover:scale-110 backdrop-blur-sm">
+                <ZapIcon className="h-5 w-5 text-primary" />
+              </div>
+              <span className="text-sm text-muted-foreground">Dynamique</span>
             </div>
           </div>
         </div>

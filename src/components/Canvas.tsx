@@ -25,7 +25,7 @@ const Canvas: React.FC<CanvasProps> = ({ className = '' }) => {
     
     window.addEventListener('resize', resizeCanvas);
     
-    // More complex shapes configuration
+    // More advanced shapes configuration
     const shapes: {
       x: number;
       y: number;
@@ -33,33 +33,39 @@ const Canvas: React.FC<CanvasProps> = ({ className = '' }) => {
       dx: number;
       dy: number;
       opacity: number;
-      type: 'circle' | 'square' | 'triangle' | 'hexagon' | 'star' | 'diamond';
+      type: 'circle' | 'square' | 'triangle' | 'hexagon' | 'star' | 'diamond' | 'wave' | 'grid';
       rotation: number;
       rotationSpeed: number;
       color: string;
       strokeWidth: number;
+      pulsePhase: number;
+      pulseSpeed: number;
+      detail: number;
     }[] = [];
     
-    const colors = ['#222', '#333', '#444', '#555', '#666'];
+    const colors = ['#111', '#222', '#333', '#444', '#555'];
     
     // Create shapes
     const createShapes = () => {
       shapes.length = 0;
-      const shapeCount = Math.max(10, Math.floor(width / 150));
+      const shapeCount = Math.max(15, Math.floor(width / 120));
       
       for (let i = 0; i < shapeCount; i++) {
         shapes.push({
           x: Math.random() * width,
           y: Math.random() * height,
-          size: Math.random() * 100 + 60,
-          dx: (Math.random() - 0.5) * 0.4,
-          dy: (Math.random() - 0.5) * 0.4,
-          opacity: Math.random() * 0.12 + 0.03,
-          type: ['circle', 'square', 'triangle', 'hexagon', 'star', 'diamond'][Math.floor(Math.random() * 6)] as any,
+          size: Math.random() * 120 + 40,
+          dx: (Math.random() - 0.5) * 0.3,
+          dy: (Math.random() - 0.5) * 0.3,
+          opacity: Math.random() * 0.15 + 0.03,
+          type: ['circle', 'square', 'triangle', 'hexagon', 'star', 'diamond', 'wave', 'grid'][Math.floor(Math.random() * 8)] as any,
           rotation: Math.random() * Math.PI * 2,
-          rotationSpeed: (Math.random() - 0.5) * 0.008,
+          rotationSpeed: (Math.random() - 0.5) * 0.006,
           color: colors[Math.floor(Math.random() * colors.length)],
-          strokeWidth: Math.random() * 2 + 0.5
+          strokeWidth: Math.random() * 2 + 0.5,
+          pulsePhase: Math.random() * Math.PI * 2,
+          pulseSpeed: Math.random() * 0.02 + 0.01,
+          detail: Math.floor(Math.random() * 3) + 2
         });
       }
     };
@@ -67,10 +73,14 @@ const Canvas: React.FC<CanvasProps> = ({ className = '' }) => {
     createShapes();
     window.addEventListener('resize', createShapes);
     
-    // Draw a shape
-    const drawShape = (shape: typeof shapes[0]) => {
+    // Draw a shape with more complexity
+    const drawShape = (shape: typeof shapes[0], timestamp: number) => {
       ctx.save();
-      ctx.globalAlpha = shape.opacity;
+      
+      // Apply pulsing effect to opacity
+      const pulsingOpacity = shape.opacity * (0.8 + 0.4 * Math.sin(timestamp * 0.001 * shape.pulseSpeed + shape.pulsePhase));
+      ctx.globalAlpha = pulsingOpacity;
+      
       ctx.strokeStyle = shape.color;
       ctx.lineWidth = shape.strokeWidth;
       ctx.translate(shape.x, shape.y);
@@ -81,11 +91,22 @@ const Canvas: React.FC<CanvasProps> = ({ className = '' }) => {
           ctx.beginPath();
           ctx.arc(0, 0, shape.size / 2, 0, Math.PI * 2);
           ctx.stroke();
+          
+          // Add an inner circle for complexity
+          ctx.beginPath();
+          ctx.arc(0, 0, shape.size / 3, 0, Math.PI * 2);
+          ctx.stroke();
           break;
           
         case 'square':
           ctx.beginPath();
           ctx.rect(-shape.size / 2, -shape.size / 2, shape.size, shape.size);
+          ctx.stroke();
+          
+          // Add an inner square
+          const innerSize = shape.size * 0.7;
+          ctx.beginPath();
+          ctx.rect(-innerSize / 2, -innerSize / 2, innerSize, innerSize);
           ctx.stroke();
           break;
           
@@ -97,6 +118,15 @@ const Canvas: React.FC<CanvasProps> = ({ className = '' }) => {
           ctx.lineTo(-shape.size / 2, h / 2);
           ctx.closePath();
           ctx.stroke();
+          
+          // Add an inner triangle
+          const innerH = (Math.sqrt(3) / 2) * (shape.size * 0.6);
+          ctx.beginPath();
+          ctx.moveTo(0, -innerH / 2);
+          ctx.lineTo((shape.size * 0.6) / 2, innerH / 2);
+          ctx.lineTo(-(shape.size * 0.6) / 2, innerH / 2);
+          ctx.closePath();
+          ctx.stroke();
           break;
           
         case 'hexagon':
@@ -105,6 +135,18 @@ const Canvas: React.FC<CanvasProps> = ({ className = '' }) => {
             const angle = (Math.PI / 3) * i;
             const x = shape.size / 2 * Math.cos(angle);
             const y = shape.size / 2 * Math.sin(angle);
+            if (i === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+          }
+          ctx.closePath();
+          ctx.stroke();
+          
+          // Inner hexagon
+          ctx.beginPath();
+          for (let i = 0; i < 6; i++) {
+            const angle = (Math.PI / 3) * i;
+            const x = shape.size / 3 * Math.cos(angle);
+            const y = shape.size / 3 * Math.sin(angle);
             if (i === 0) ctx.moveTo(x, y);
             else ctx.lineTo(x, y);
           }
@@ -138,14 +180,67 @@ const Canvas: React.FC<CanvasProps> = ({ className = '' }) => {
           ctx.lineTo(-shape.size / 2, 0);
           ctx.closePath();
           ctx.stroke();
+          
+          // Inner diamond
+          ctx.beginPath();
+          const innerDiamondSize = shape.size * 0.5;
+          ctx.moveTo(0, -innerDiamondSize / 2);
+          ctx.lineTo(innerDiamondSize / 2, 0);
+          ctx.lineTo(0, innerDiamondSize / 2);
+          ctx.lineTo(-innerDiamondSize / 2, 0);
+          ctx.closePath();
+          ctx.stroke();
+          break;
+
+        case 'wave':
+          // Drawing a sinusoidal wave pattern
+          ctx.beginPath();
+          const amplitude = shape.size / 4;
+          const frequency = shape.detail / 20;
+          
+          for (let x = -shape.size / 2; x <= shape.size / 2; x += 2) {
+            const y = amplitude * Math.sin(x * frequency + timestamp * 0.001);
+            if (x === -shape.size / 2) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+          }
+          ctx.stroke();
+          
+          // Second wave with different phase
+          ctx.beginPath();
+          for (let x = -shape.size / 2; x <= shape.size / 2; x += 2) {
+            const y = amplitude * Math.sin(x * frequency + Math.PI + timestamp * 0.001);
+            if (x === -shape.size / 2) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+          }
+          ctx.stroke();
+          break;
+          
+        case 'grid':
+          // Drawing a grid pattern
+          const gridSize = shape.size / (2 + shape.detail);
+          ctx.beginPath();
+          
+          // Vertical lines
+          for (let x = -shape.size / 2; x <= shape.size / 2; x += gridSize) {
+            ctx.moveTo(x, -shape.size / 2);
+            ctx.lineTo(x, shape.size / 2);
+          }
+          
+          // Horizontal lines
+          for (let y = -shape.size / 2; y <= shape.size / 2; y += gridSize) {
+            ctx.moveTo(-shape.size / 2, y);
+            ctx.lineTo(shape.size / 2, y);
+          }
+          
+          ctx.stroke();
           break;
       }
       
       ctx.restore();
     };
     
-    // Animation loop
-    const animate = () => {
+    // Animation loop with timestamp
+    const animate = (timestamp: number) => {
       // Clear canvas with slight fade effect
       ctx.clearRect(0, 0, width, height);
       
@@ -162,14 +257,14 @@ const Canvas: React.FC<CanvasProps> = ({ className = '' }) => {
         if (shape.y < -shape.size) shape.y = height + shape.size;
         if (shape.y > height + shape.size) shape.y = -shape.size;
         
-        // Draw shape
-        drawShape(shape);
+        // Draw shape with timestamp for animations
+        drawShape(shape, timestamp);
       });
       
       requestAnimationFrame(animate);
     };
     
-    animate();
+    requestAnimationFrame(animate);
     
     return () => {
       window.removeEventListener('resize', resizeCanvas);
