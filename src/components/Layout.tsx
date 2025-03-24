@@ -1,7 +1,8 @@
-
 import React, { useEffect } from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
+import { ThemeProvider } from '@/hooks/use-theme';
+import '@/styles/themes.css';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -32,12 +33,14 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   }, []);
   
   return (
-    <div className="min-h-screen flex flex-col">
-      <div className="grain-overlay"></div>
-      <Navbar />
-      <main className="flex-grow">{children}</main>
-      <Footer />
-    </div>
+    <ThemeProvider>
+      <div className="min-h-screen flex flex-col">
+        <div className="grain-overlay"></div>
+        <Navbar />
+        <main className="flex-grow">{children}</main>
+        <Footer />
+      </div>
+    </ThemeProvider>
   );
 };
 
