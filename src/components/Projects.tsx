@@ -5,6 +5,7 @@ import {
   Layers, Code, FileCode, FileJson, Globe, Shuffle, BarChart3, 
   Brush, Cpu, Package, Shield, Table, Zap, Brackets, Leaf, Coffee
 } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 interface Project {
   title: string;
@@ -126,6 +127,64 @@ const getColorClass = (color: string): string => {
   }
 };
 
+// Border styles for each project
+const getBorderStyle = (index: number) => {
+  const styles = [
+    // Project 1: Database inspired - data flow pattern
+    `before:absolute before:inset-0 before:border before:border-primary/30 before:rounded-xl
+     before:bg-gradient-to-tr before:from-primary/5 before:via-transparent before:to-primary/5
+     after:absolute after:inset-0 after:z-[-1] after:m-[-2px] after:rounded-xl
+     after:bg-[linear-gradient(90deg,transparent,var(--primary),transparent)] after:opacity-0 
+     group-hover:after:opacity-20 after:blur-sm after:transition-opacity after:duration-1000
+     before:[mask-image:repeating-linear-gradient(45deg,#000_0px,transparent_1px,transparent_2px,#000_3px)]`,
+    
+    // Project 2: Layout/UI focused - elegant, flowing border
+    `before:absolute before:inset-0 before:border before:border-primary/30 before:rounded-xl
+     before:bg-gradient-to-tr before:from-transparent before:via-primary/5 before:to-transparent
+     after:absolute after:inset-0 after:z-[-1] after:m-[-2px] after:rounded-xl
+     after:bg-[linear-gradient(45deg,transparent,var(--primary),transparent,var(--primary),transparent)] after:opacity-0 
+     group-hover:after:opacity-20 after:blur-sm after:transition-opacity after:duration-1000
+     before:[mask-image:repeating-radial-gradient(circle_at_30%,#000,transparent_1px,transparent_2px,#000_3px)]`,
+    
+    // Project 3: Server/infrastructure related - technical grid border
+    `before:absolute before:inset-0 before:border before:border-primary/30 before:rounded-xl
+     before:bg-gradient-to-br before:from-transparent before:via-primary/2 before:to-transparent
+     after:absolute after:inset-0 after:z-[-1] after:m-[-2px] after:rounded-xl
+     after:bg-[linear-gradient(0deg,transparent,var(--primary),transparent)] after:opacity-0 
+     group-hover:after:opacity-20 after:blur-sm after:transition-opacity after:duration-1000
+     before:[mask-image:linear-gradient(to_right,#000_10px,transparent_10px),linear-gradient(to_bottom,#000_10px,transparent_10px)]
+     before:[mask-size:20px_20px] before:[mask-composite:intersect]`,
+    
+    // Project 4: Code/UI related - modern, code-inspired border
+    `before:absolute before:inset-0 before:border before:border-primary/30 before:rounded-xl
+     before:bg-gradient-to-tl before:from-primary/5 before:via-transparent before:to-primary/5
+     after:absolute after:inset-0 after:z-[-1] after:m-[-2px] after:rounded-xl
+     after:bg-[linear-gradient(135deg,transparent,var(--primary),transparent)] after:opacity-0 
+     group-hover:after:opacity-20 after:blur-sm after:transition-opacity after:duration-1000
+     before:[mask-image:repeating-linear-gradient(to_right,#000_0px,#000_2px,transparent_2px,transparent_4px)]`,
+    
+    // Project 5: Data visualization - chart/graph inspired border
+    `before:absolute before:inset-0 before:border before:border-primary/30 before:rounded-xl
+     before:bg-gradient-to-b before:from-primary/5 before:via-transparent before:to-primary/5
+     after:absolute after:inset-0 after:z-[-1] after:m-[-2px] after:rounded-xl
+     after:bg-[linear-gradient(180deg,transparent,var(--primary),transparent)] after:opacity-0 
+     group-hover:after:opacity-20 after:blur-sm after:transition-opacity after:duration-1000
+     before:[mask-image:linear-gradient(45deg,#000_25%,transparent_25%),linear-gradient(135deg,#000_25%,transparent_25%)]
+     before:[mask-size:8px_8px]`,
+    
+    // Project 6: Customer-facing app - professional service border
+    `before:absolute before:inset-0 before:border before:border-primary/30 before:rounded-xl
+     before:bg-gradient-to-r before:from-transparent before:via-primary/5 before:to-transparent
+     after:absolute after:inset-0 after:z-[-1] after:m-[-2px] after:rounded-xl
+     after:bg-[linear-gradient(-45deg,transparent,var(--primary),transparent)] after:opacity-0 
+     group-hover:after:opacity-20 after:blur-sm after:transition-opacity after:duration-1000
+     before:[mask-image:repeating-conic-gradient(#000_0deg,transparent_30deg,#000_60deg)]
+     before:[mask-size:12px_12px]`,
+  ];
+  
+  return styles[index % styles.length];
+};
+
 const projects: Project[] = [
   {
     title: "Application Web de Gestion des Stages",
@@ -202,6 +261,88 @@ const projects: Project[] = [
   },
 ];
 
+// Function to generate corner pseudo-elements for each project
+const getCornerClass = (index: number) => {
+  // Each project gets a different corner style
+  const styles = [
+    // Database project - corner data nodes
+    `
+      data-corner="true"
+      after:content-[''] after:absolute after:w-2 after:h-2 after:rounded-full 
+      after:border-2 after:border-primary after:top-3 after:left-3
+      before:content-[''] before:absolute before:w-2 before:h-2 before:rounded-full 
+      before:border-2 before:border-primary before:bottom-3 before:right-3
+      [&>div]:after:content-[''] [&>div]:after:absolute [&>div]:after:w-2 [&>div]:after:h-2 [&>div]:after:rounded-full 
+      [&>div]:after:border-2 [&>div]:after:border-primary [&>div]:after:top-3 [&>div]:after:right-3
+      [&>div]:before:content-[''] [&>div]:before:absolute [&>div]:before:w-2 [&>div]:before:h-2 [&>div]:before:rounded-full 
+      [&>div]:before:border-2 [&>div]:before:border-primary [&>div]:before:bottom-3 [&>div]:before:left-3
+    `,
+    
+    // Layout project - elegant corner flourishes
+    `
+      data-corner="true"
+      after:content-[''] after:absolute after:w-4 after:h-4 after:border-t-2 after:border-l-2
+      after:border-primary/60 after:top-3 after:left-3 after:rounded-tl-lg
+      before:content-[''] before:absolute before:w-4 before:h-4 before:border-b-2 before:border-r-2
+      before:border-primary/60 before:bottom-3 before:right-3 before:rounded-br-lg
+      [&>div]:after:content-[''] [&>div]:after:absolute [&>div]:after:w-4 [&>div]:after:h-4 [&>div]:after:border-t-2 [&>div]:after:border-r-2
+      [&>div]:after:border-primary/60 [&>div]:after:top-3 [&>div]:after:right-3 [&>div]:after:rounded-tr-lg
+      [&>div]:before:content-[''] [&>div]:before:absolute [&>div]:before:w-4 [&>div]:before:h-4 [&>div]:before:border-b-2 [&>div]:before:border-l-2
+      [&>div]:before:border-primary/60 [&>div]:before:bottom-3 [&>div]:before:left-3 [&>div]:before:rounded-bl-lg
+    `,
+    
+    // Server project - technical connector corners
+    `
+      data-corner="true"
+      after:content-[''] after:absolute after:w-5 after:h-5 after:border-t-2 after:border-l-2
+      after:border-dashed after:border-primary/60 after:top-2 after:left-2
+      before:content-[''] before:absolute before:w-5 before:h-5 before:border-b-2 before:border-r-2
+      before:border-dashed before:border-primary/60 before:bottom-2 before:right-2
+      [&>div]:after:content-[''] [&>div]:after:absolute [&>div]:after:w-5 [&>div]:after:h-5 [&>div]:after:border-t-2 [&>div]:after:border-r-2
+      [&>div]:after:border-dashed [&>div]:after:border-primary/60 [&>div]:after:top-2 [&>div]:after:right-2
+      [&>div]:before:content-[''] [&>div]:before:absolute [&>div]:before:w-5 [&>div]:before:h-5 [&>div]:before:border-b-2 [&>div]:before:border-l-2
+      [&>div]:before:border-dashed [&>div]:before:border-primary/60 [&>div]:before:bottom-2 [&>div]:before:left-2
+    `,
+    
+    // Code project - brackets in corners like code syntax
+    `
+      data-corner="true"
+      after:content-['{'] after:absolute after:text-lg after:font-mono after:text-primary/60 after:top-2 after:left-3
+      before:content-['}'] before:absolute before:text-lg before:font-mono before:text-primary/60 before:bottom-2 before:right-3
+      [&>div]:after:content-['{'] [&>div]:after:absolute [&>div]:after:text-lg [&>div]:after:font-mono [&>div]:after:text-primary/60 [&>div]:after:top-2 [&>div]:after:right-3
+      [&>div]:before:content-['}'] [&>div]:before:absolute [&>div]:before:text-lg [&>div]:before:font-mono [&>div]:before:text-primary/60 [&>div]:before:bottom-2 [&>div]:before:left-3
+    `,
+    
+    // Data visualization project - chart-like corners
+    `
+      data-corner="true"
+      after:content-[''] after:absolute after:w-3 after:h-3 after:border-t-2 after:border-l-2 
+      after:border-primary/60 after:top-3 after:left-3 
+      after:bg-[linear-gradient(45deg,var(--primary)/10,transparent)]
+      before:content-[''] before:absolute before:w-3 before:h-3 before:border-b-2 before:border-r-2 
+      before:border-primary/60 before:bottom-3 before:right-3
+      before:bg-[linear-gradient(225deg,var(--primary)/10,transparent)]
+      [&>div]:after:content-[''] [&>div]:after:absolute [&>div]:after:w-3 [&>div]:after:h-3 [&>div]:after:border-t-2 [&>div]:after:border-r-2 
+      [&>div]:after:border-primary/60 [&>div]:after:top-3 [&>div]:after:right-3
+      [&>div]:after:bg-[linear-gradient(135deg,var(--primary)/10,transparent)]
+      [&>div]:before:content-[''] [&>div]:before:absolute [&>div]:before:w-3 [&>div]:before:h-3 [&>div]:before:border-b-2 [&>div]:before:border-l-2 
+      [&>div]:before:border-primary/60 [&>div]:before:bottom-3 [&>div]:before:left-3
+      [&>div]:before:bg-[linear-gradient(315deg,var(--primary)/10,transparent)]
+    `,
+    
+    // Barbershop project - scissor-like corner accents
+    `
+      data-corner="true"
+      after:content-['/'] after:absolute after:text-lg after:font-bold after:text-primary/60 after:top-2 after:left-3 after:rotate-45
+      before:content-['/'] before:absolute before:text-lg before:font-bold before:text-primary/60 before:bottom-2 before:right-3 before:rotate-45
+      [&>div]:after:content-['/'] [&>div]:after:absolute [&>div]:after:text-lg [&>div]:after:font-bold [&>div]:after:text-primary/60 [&>div]:after:top-2 [&>div]:after:right-3 [&>div]:after:rotate-45
+      [&>div]:before:content-['/'] [&>div]:before:absolute [&>div]:before:text-lg [&>div]:before:font-bold [&>div]:before:text-primary/60 [&>div]:before:bottom-2 [&>div]:before:left-3 [&>div]:before:rotate-45
+    `,
+  ];
+  
+  return styles[index % styles.length];
+};
+
 const Projects: React.FC = () => {
   return (
     <section id="projects" className="py-24 relative overflow-hidden">
@@ -225,15 +366,24 @@ const Projects: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
           {projects.map((project, index) => {
             const Icon = project.icon || Box;
+            const borderClass = getBorderStyle(index);
+            const cornerClass = getCornerClass(index);
             
             return (
               <Card 
                 key={index} 
-                className="animate-reveal project-card group backdrop-blur-sm bg-background/50 border border-border/40 hover:border-primary/20 transition-all duration-500 hover:shadow-[0_0_25px_rgba(0,0,0,0.06)] overflow-hidden"
+                className={cn(
+                  "animate-reveal project-card group backdrop-blur-sm bg-background/50 border border-border/40",
+                  "transition-all duration-500 hover:shadow-[0_0_25px_rgba(0,0,0,0.06)] overflow-hidden",
+                  "relative before:transition-all before:duration-700 after:transition-all after:duration-700",
+                  "hover:border-transparent isolate", 
+                  borderClass,
+                  cornerClass
+                )}
                 style={{ animationDelay: `${index * 100}ms` }}
               >
                 <div className="absolute top-0 left-0 h-1 w-0 bg-gradient-to-r from-primary/80 to-primary/40 group-hover:w-full transition-all duration-700"></div>
-                <CardContent className="p-6">
+                <CardContent className="p-6 relative z-10">
                   <div className="flex items-start mb-4">
                     <div className="w-12 h-12 rounded-lg flex items-center justify-center bg-primary/5 mr-4 group-hover:bg-primary/10 transition-all duration-300">
                       <Icon className="h-6 w-6 text-primary" />
@@ -264,14 +414,14 @@ const Projects: React.FC = () => {
                   
                   <div className="flex space-x-4 mt-auto">
                     {project.github && (
-                      <a href={project.github} target="_blank" rel="noopener noreferrer" className="flex items-center text-sm text-muted-foreground hover:text-primary transition-colors group">
-                        <Github size={16} className="mr-1.5 transition-transform duration-300 group-hover:scale-110" />
+                      <a href={project.github} target="_blank" rel="noopener noreferrer" className="flex items-center text-sm text-muted-foreground hover:text-primary transition-colors group/link">
+                        <Github size={16} className="mr-1.5 transition-transform duration-300 group-hover/link:scale-110" />
                         Code Source
                       </a>
                     )}
                     {project.live && (
-                      <a href={project.live} target="_blank" rel="noopener noreferrer" className="flex items-center text-sm text-muted-foreground hover:text-primary transition-colors group">
-                        <ExternalLink size={16} className="mr-1.5 transition-transform duration-300 group-hover:scale-110" />
+                      <a href={project.live} target="_blank" rel="noopener noreferrer" className="flex items-center text-sm text-muted-foreground hover:text-primary transition-colors group/link">
+                        <ExternalLink size={16} className="mr-1.5 transition-transform duration-300 group-hover/link:scale-110" />
                         Voir le Projet
                       </a>
                     )}
