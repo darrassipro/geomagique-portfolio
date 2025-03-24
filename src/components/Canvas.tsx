@@ -1,5 +1,5 @@
-
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { useTheme } from '@/hooks/use-theme';
 
 interface CanvasProps {
   className?: string;
@@ -7,8 +7,144 @@ interface CanvasProps {
 
 const Canvas: React.FC<CanvasProps> = ({ className = '' }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const { theme } = useTheme();
+  const [currentColorScheme, setCurrentColorScheme] = useState<string[]>([]);
+  
+  // Setup theme colors
+  useEffect(() => {
+    // Get the primary color from CSS variables
+    const primaryColor = getComputedStyle(document.documentElement)
+      .getPropertyValue('--primary').trim() || '#6366f1';
+    
+    // Get background color to determine light/dark mode
+    const backgroundColor = getComputedStyle(document.documentElement)
+      .getPropertyValue('--background').trim() || '#ffffff';
+    
+    // Calculate luminance to determine if we're in dark or light mode
+    const getHexColor = (cssVar: string) => {
+      // Handle rgba format
+      if (cssVar.startsWith('rgba')) {
+        const values = cssVar.match(/\d+(\.\d+)?/g);
+        if (values && values.length >= 3) {
+          return `#${[0, 1, 2].map(i => {
+            const val = Math.round(Number(values[i]));
+            return val.toString(16).padStart(2, '0');
+          }).join('')}`;
+        }
+      }
+      
+      // Handle hex format with or without #
+      if (cssVar.startsWith('#')) return cssVar;
+      return `#${cssVar}`;
+    };
+    
+    const isDark = () => {
+      const hex = getHexColor(backgroundColor).substring(1);
+      const r = parseInt(hex.substring(0, 2), 16) / 255;
+      const g = parseInt(hex.substring(2, 4), 16) / 255;
+      const b = parseInt(hex.substring(4, 6), 16) / 255;
+      const luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+      return luminance < 0.5;
+    };
+    
+    // Create theme-specific color schemes
+    const createColorScheme = () => {
+      const hexPrimary = getHexColor(primaryColor);
+      let colors: string[] = [];
+      
+      // Generate color schemes based on theme
+      switch (theme) {
+        case 'light':
+          colors = [
+            hexPrimary,
+            shadeColor(hexPrimary, 25),
+            shadeColor(hexPrimary, 50),
+            '#555',
+            '#333'
+          ];
+          break;
+        case 'dark':
+          colors = [
+            hexPrimary,
+            shadeColor(hexPrimary, -15),
+            shadeColor(hexPrimary, -30),
+            '#AAA',
+            '#CCC'
+          ];
+          break;
+        case 'forest':
+          colors = [
+            '#2D4F3A', // Forest green
+            '#507255', // Medium green
+            '#78936F', // Sage green
+            '#9CAF88', // Light sage
+            '#CED7C3'  // Very light sage
+          ];
+          break;
+        case 'ocean':
+          colors = [
+            '#1A3A54', // Deep ocean blue
+            '#2A5D7C', // Sea blue
+            '#3C7FA6', // Medium blue
+            '#65A0C8', // Light ocean blue
+            '#C2DEEF'  // Sky blue
+          ];
+          break;
+        default:
+          // Default to primary color based
+          if (isDark()) {
+            colors = [
+              hexPrimary,
+              shadeColor(hexPrimary, -15),
+              shadeColor(hexPrimary, -30),
+              '#AAA',
+              '#CCC'
+            ];
+          } else {
+            colors = [
+              hexPrimary,
+              shadeColor(hexPrimary, 25),
+              shadeColor(hexPrimary, 50),
+              '#555',
+              '#333'
+            ];
+          }
+      }
+      
+      setCurrentColorScheme(colors);
+    };
+    
+    createColorScheme();
+    
+    // Helper to shade a hex color
+    function shadeColor(color: string, percent: number) {
+      let R = parseInt(color.substring(1, 3), 16);
+      let G = parseInt(color.substring(3, 5), 16);
+      let B = parseInt(color.substring(5, 7), 16);
+      
+      R = Math.floor(R * (100 + percent) / 100);
+      G = Math.floor(G * (100 + percent) / 100);
+      B = Math.floor(B * (100 + percent) / 100);
+      
+      R = R < 255 ? R : 255;
+      G = G < 255 ? G : 255;
+      B = B < 255 ? B : 255;
+      
+      R = R > 0 ? R : 0;
+      G = G > 0 ? G : 0;
+      B = B > 0 ? B : 0;
+      
+      const RR = R.toString(16).padStart(2, '0');
+      const GG = G.toString(16).padStart(2, '0');
+      const BB = B.toString(16).padStart(2, '0');
+      
+      return `#${RR}${GG}${BB}`;
+    }
+  }, [theme]);
   
   useEffect(() => {
+    if (currentColorScheme.length === 0) return;
+    
     const canvas = canvasRef.current;
     if (!canvas) return;
     
@@ -18,9 +154,22 @@ const Canvas: React.FC<CanvasProps> = ({ className = '' }) => {
     let width = canvas.width = window.innerWidth;
     let height = canvas.height = window.innerHeight;
     
+    // High DPI display support
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = width * dpr;
+    canvas.height = height * dpr;
+    canvas.style.width = `${width}px`;
+    canvas.style.height = `${height}px`;
+    ctx.scale(dpr, dpr);
+    
     const resizeCanvas = () => {
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+      ctx.scale(dpr, dpr);
     };
     
     window.addEventListener('resize', resizeCanvas);
@@ -43,12 +192,16 @@ const Canvas: React.FC<CanvasProps> = ({ className = '' }) => {
       detail: number;
     }[] = [];
     
-    const colors = ['#111', '#222', '#333', '#444', '#555'];
-    
     // Create shapes
     const createShapes = () => {
       shapes.length = 0;
-      const shapeCount = Math.max(15, Math.floor(width / 120));
+      // Adjust shape count based on screen size
+      const scaleFactor = Math.min(width, height) / 1000; // Reference size
+      const baseCount = 12;
+      const shapeCount = Math.max(baseCount, Math.floor(baseCount * scaleFactor));
+      
+      // Make sure we have colors available
+      if (currentColorScheme.length === 0) return;
       
       for (let i = 0; i < shapeCount; i++) {
         shapes.push({
@@ -57,11 +210,12 @@ const Canvas: React.FC<CanvasProps> = ({ className = '' }) => {
           size: Math.random() * 120 + 40,
           dx: (Math.random() - 0.5) * 0.3,
           dy: (Math.random() - 0.5) * 0.3,
-          opacity: Math.random() * 0.15 + 0.03,
+          // Adjust opacity based on theme
+          opacity: Math.random() * 0.15 + 0.05,
           type: ['circle', 'square', 'triangle', 'hexagon', 'star', 'diamond', 'wave', 'grid'][Math.floor(Math.random() * 8)] as any,
           rotation: Math.random() * Math.PI * 2,
           rotationSpeed: (Math.random() - 0.5) * 0.006,
-          color: colors[Math.floor(Math.random() * colors.length)],
+          color: currentColorScheme[Math.floor(Math.random() * currentColorScheme.length)],
           strokeWidth: Math.random() * 2 + 0.5,
           pulsePhase: Math.random() * Math.PI * 2,
           pulseSpeed: Math.random() * 0.02 + 0.01,
@@ -77,7 +231,7 @@ const Canvas: React.FC<CanvasProps> = ({ className = '' }) => {
     const drawShape = (shape: typeof shapes[0], timestamp: number) => {
       ctx.save();
       
-      // Apply pulsing effect to opacity
+      // Apply pulsing effect to opacity - adjust for theme contrast
       const pulsingOpacity = shape.opacity * (0.8 + 0.4 * Math.sin(timestamp * 0.001 * shape.pulseSpeed + shape.pulsePhase));
       ctx.globalAlpha = pulsingOpacity;
       
@@ -251,11 +405,12 @@ const Canvas: React.FC<CanvasProps> = ({ className = '' }) => {
         shape.y += shape.dy;
         shape.rotation += shape.rotationSpeed;
         
-        // Boundary check
-        if (shape.x < -shape.size) shape.x = width + shape.size;
-        if (shape.x > width + shape.size) shape.x = -shape.size;
-        if (shape.y < -shape.size) shape.y = height + shape.size;
-        if (shape.y > height + shape.size) shape.y = -shape.size;
+        // Boundary check with buffer
+        const buffer = shape.size * 1.5;
+        if (shape.x < -buffer) shape.x = width + buffer;
+        if (shape.x > width + buffer) shape.x = -buffer;
+        if (shape.y < -buffer) shape.y = height + buffer;
+        if (shape.y > height + buffer) shape.y = -buffer;
         
         // Draw shape with timestamp for animations
         drawShape(shape, timestamp);
@@ -264,18 +419,22 @@ const Canvas: React.FC<CanvasProps> = ({ className = '' }) => {
       requestAnimationFrame(animate);
     };
     
-    requestAnimationFrame(animate);
+    // Start the animation
+    const animationId = requestAnimationFrame(animate);
     
+    // Cleanup
     return () => {
       window.removeEventListener('resize', resizeCanvas);
       window.removeEventListener('resize', createShapes);
+      cancelAnimationFrame(animationId);
     };
-  }, []);
+  }, [currentColorScheme]);
   
   return (
     <canvas
       ref={canvasRef}
-      className={`absolute inset-0 z-0 ${className}`}
+      className={`absolute inset-0 z-0 transition-opacity duration-1000 ${className}`}
+      style={{ opacity: currentColorScheme.length ? 1 : 0 }}
     />
   );
 };
