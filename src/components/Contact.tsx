@@ -38,7 +38,7 @@ const Contact: React.FC = () => {
     {
       icon: Mail,
       title: 'Email',
-      details: 'contact@younes.darrassi@usmba.ac.ma',
+      details: 'younes.darrassi@usmba.ac.ma',
       link: 'mailto:contact@younes.darrassi@usmba.ac.ma',
     },
     {
