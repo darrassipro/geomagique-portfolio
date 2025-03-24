@@ -13,8 +13,8 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
-  // Use useState with direct value and function to ensure updates work
-  const [theme, setThemeState] = useState<ThemeOption>('default');
+  // Change default value from 'default' to 'light'
+  const [theme, setThemeState] = useState<ThemeOption>('light');
   const [isFullscreen, setIsFullscreen] = useState(false);
 
   // Wrapper function to force class updates when theme changes
@@ -37,13 +37,17 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
     // Try-catch to handle any localStorage errors
     try {
       const savedTheme = localStorage.getItem('geomagique-theme') as ThemeOption;
-      console.log("Loading initial theme from localStorage:", savedTheme);
       
       if (savedTheme && ['default', 'dark', 'light', 'forest', 'ocean'].includes(savedTheme)) {
         setTheme(savedTheme);
+      } else {
+        // If no valid theme is found in localStorage, set light theme as default
+        setTheme('light');
       }
     } catch (e) {
       console.error("Error accessing localStorage:", e);
+      // If there's an error, still ensure light theme is set
+      setTheme('light');
     }
   }, []);
 
