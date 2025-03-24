@@ -1,5 +1,5 @@
 import React from 'react';
-import { Paintbrush, Maximize, Minimize } from 'lucide-react';
+import { Paintbrush, Maximize, Minimize, Check, ChevronRight } from 'lucide-react';
 import { useTheme } from '@/hooks/use-theme';
 import { 
   DropdownMenu,
@@ -14,7 +14,6 @@ export const ThemeControls = () => {
   let themeContextValue;
   try {
     themeContextValue = useTheme();
-    console.log("Theme context successfully loaded:", themeContextValue.theme);
   } catch (error) {
     console.error("Error accessing theme context:", error);
     // Fallback implementation in case of context issues
@@ -31,8 +30,8 @@ export const ThemeControls = () => {
               localStorage.setItem('geomagique-theme', 'default');
             } else {
               root.classList.remove('theme-default');
-              root.classList.add('theme-light');
-              localStorage.setItem('geomagique-theme', 'light');
+              root.classList.add('theme-dark');
+              localStorage.setItem('geomagique-theme', 'dark');
             }
           }}
           className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border/40 bg-background/50 hover:bg-primary/5 hover:text-primary transition-colors"
@@ -67,8 +66,6 @@ export const ThemeControls = () => {
             <DropdownMenuItem
               key={t.value}
               onClick={() => {
-                console.log("Changing theme to:", t.value);
-                
                 // Direct DOM manipulation for immediate visual feedback
                 const root = document.documentElement;
                 root.classList.remove('theme-default', 'theme-dark', 'theme-light', 'theme-forest', 'theme-ocean');
@@ -87,6 +84,9 @@ export const ThemeControls = () => {
             >
               {t.icon}
               <span>{t.name}</span>
+              {theme === t.value && (
+                <ChevronRight className="h-4 w-4 ml-auto text-primary" />
+              )}
             </DropdownMenuItem>
           ))}
         </DropdownMenuContent>
