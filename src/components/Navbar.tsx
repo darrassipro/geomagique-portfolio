@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Menu, X, Hexagon, Code, ExternalLink, ChevronDown } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -10,6 +9,7 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger
 } from "@/components/ui/navigation-menu";
+import { ThemeControls } from '@/components/ui/ThemeControls';
 import { cn } from "@/lib/utils";
 
 const Navbar: React.FC = () => {
@@ -77,6 +77,11 @@ const Navbar: React.FC = () => {
         <ExternalLink className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
         <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform origin-left scale-x-0 transition-transform duration-300 group-hover:scale-x-100"></span>
       </a>
+
+      {/* Add Theme Controls and Fullscreen Button */}
+      <div className="ml-3">
+        <ThemeControls />
+      </div>
     </div>
   );
   
@@ -105,17 +110,23 @@ const Navbar: React.FC = () => {
           
           {!isMobile && <DesktopNav />}
           
-          <button 
-            className="md:hidden focus:outline-none bg-transparent w-10 h-10 flex items-center justify-center rounded-lg hover:bg-primary/5 transition-colors"
-            onClick={toggleMobileMenu}
-            aria-label="Toggle menu"
-          >
-            {mobileMenuOpen ? (
-              <X className="h-6 w-6 text-primary" />
-            ) : (
-              <Menu className="h-6 w-6" />
-            )}
-          </button>
+          {/* Show Theme Controls on mobile */}
+          {isMobile && (
+            <div className="flex items-center">
+              <ThemeControls />
+              <button 
+                className="ml-2 focus:outline-none bg-transparent w-10 h-10 flex items-center justify-center rounded-lg hover:bg-primary/5 transition-colors"
+                onClick={toggleMobileMenu}
+                aria-label="Toggle menu"
+              >
+                {mobileMenuOpen ? (
+                  <X className="h-6 w-6 text-primary" />
+                ) : (
+                  <Menu className="h-6 w-6" />
+                )}
+              </button>
+            </div>
+          )}
         </div>
       </div>
       
