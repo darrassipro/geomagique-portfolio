@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { 
   ExternalLink, Github, ArrowUpRight, Box, Layout, Server, Database, 
@@ -127,338 +127,271 @@ const getColorClass = (color: string): string => {
   }
 };
 
-// Responsive SVG Component that adjusts to screen size
-const ResponsiveSVG = ({ children, position, className }) => {
-  return (
-    <div className={cn(
-      "absolute z-0 text-primary/40",
-      // Base positioning 
-      position === "topLeft" && "-top-2 -left-2 sm:-top-3 sm:-left-3 lg:-top-5 lg:-left-5",
-      position === "topRight" && "-top-2 -right-2 sm:-top-3 sm:-right-3 lg:-top-5 lg:-right-5",
-      position === "bottomLeft" && "-bottom-2 -left-2 sm:-bottom-3 sm:-left-3 lg:-bottom-5 lg:-left-5",
-      position === "bottomRight" && "-bottom-2 -right-2 sm:-bottom-3 sm:-right-3 lg:-bottom-5 lg:-right-5",
-      // Responsive sizing
-      "w-10 h-10 sm:w-12 sm:h-12 lg:w-16 lg:h-16",
-      className
-    )}>
-      {children}
-    </div>
-  );
-};
-
-// Meaningful decorative SVG patterns for project borders (with responsive settings)
+// Meaningful decorative SVG patterns for project borders
 const getBorderDecoration = (index: number) => {
   const patterns = [
     // Stage Management Project (index 0) - Database and University themed
     {
       topLeft: (
-        <ResponsiveSVG position="topLeft">
-          <svg viewBox="0 0 16 16" className="w-full h-full">
-            <rect x="6" y="2" width="8" height="5" rx="1" stroke="currentColor" fill="none" strokeWidth="1" />
-            <rect x="6" y="9" width="8" height="5" rx="1" stroke="currentColor" fill="none" strokeWidth="1" />
-            <line x1="10" y1="7" x2="10" y2="9" stroke="currentColor" strokeWidth="1" />
-            <circle cx="10" cy="11.5" r="0.5" fill="currentColor" />
-            <text x="7.5" y="5" fontSize="2" fontFamily="monospace" fill="currentColor" className="hidden sm:block">ID</text>
-            <text x="7.5" y="12" fontSize="2" fontFamily="monospace" fill="currentColor" className="hidden sm:block">FK</text>
-          </svg>
-        </ResponsiveSVG>
+        <svg className="absolute -top-5 -left-5 w-16 h-16 text-primary/40 transform rotate-6">
+          <rect x="6" y="2" width="8" height="5" rx="1" stroke="currentColor" fill="none" strokeWidth="1" />
+          <rect x="6" y="9" width="8" height="5" rx="1" stroke="currentColor" fill="none" strokeWidth="1" />
+          <line x1="10" y1="7" x2="10" y2="9" stroke="currentColor" strokeWidth="1" />
+          <circle cx="10" cy="11.5" r="0.5" fill="currentColor" />
+          <text x="7.5" y="5" fontSize="2" fontFamily="monospace" fill="currentColor">ID</text>
+          <text x="7.5" y="12" fontSize="2" fontFamily="monospace" fill="currentColor">FK</text>
+        </svg>
       ),
       topRight: (
-        <ResponsiveSVG position="topRight">
-          <svg viewBox="0 0 16 16" className="w-full h-full">
-            <path d="M8,2 L12,2 L12,4 L14,4 L14,5 L12,5 L12,7 L8,7 L8,5 L6,5 L6,4 L8,4 Z" stroke="currentColor" fill="none" strokeWidth="0.5" />
-            <circle cx="10" cy="10" r="2" stroke="currentColor" fill="none" strokeWidth="0.5" />
-            <path d="M8,11 L12,11 L12,13 L8,13 Z" stroke="currentColor" fill="none" strokeWidth="0.5" />
-            <path d="M9,13 L9,14 L11,14 L11,13" stroke="currentColor" fill="none" strokeWidth="0.5" />
-            <text x="8.5" y="12.5" fontSize="1.5" fontFamily="monospace" fill="currentColor" className="hidden sm:block">UPF</text>
-          </svg>
-        </ResponsiveSVG>
+        <svg className="absolute -top-5 -right-5 w-16 h-16 text-primary/40">
+          <path d="M8,2 L12,2 L12,4 L14,4 L14,5 L12,5 L12,7 L8,7 L8,5 L6,5 L6,4 L8,4 Z" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <circle cx="10" cy="10" r="2" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <path d="M8,11 L12,11 L12,13 L8,13 Z" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <path d="M9,13 L9,14 L11,14 L11,13" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <text x="8.5" y="12.5" fontSize="1.5" fontFamily="monospace" fill="currentColor">UPF</text>
+        </svg>
       ),
       bottomLeft: (
-        <ResponsiveSVG position="bottomLeft">
-          <svg viewBox="0 0 16 16" className="w-full h-full">
-            <path d="M5,5 L7,7 L9,5 L11,7 L13,5" stroke="currentColor" fill="none" strokeWidth="0.5" strokeDasharray="1 0.5" />
-            <circle cx="5" cy="5" r="1" fill="currentColor" />
-            <circle cx="9" cy="5" r="1" fill="currentColor" />
-            <circle cx="13" cy="5" r="1" fill="currentColor" />
-            <circle cx="7" cy="7" r="1" fill="currentColor" />
-            <circle cx="11" cy="7" r="1" fill="currentColor" />
-            <text x="4" y="12" fontSize="2" fontFamily="monospace" fill="currentColor" className="hidden sm:block">Doctrine</text>
-          </svg>
-        </ResponsiveSVG>
+        <svg className="absolute -bottom-5 -left-5 w-16 h-16 text-primary/40">
+          <path d="M5,5 L7,7 L9,5 L11,7 L13,5" stroke="currentColor" fill="none" strokeWidth="0.5" strokeDasharray="1 0.5" />
+          <circle cx="5" cy="5" r="1" fill="currentColor" />
+          <circle cx="9" cy="5" r="1" fill="currentColor" />
+          <circle cx="13" cy="5" r="1" fill="currentColor" />
+          <circle cx="7" cy="7" r="1" fill="currentColor" />
+          <circle cx="11" cy="7" r="1" fill="currentColor" />
+          <text x="4" y="12" fontSize="2" fontFamily="monospace" fill="currentColor">Doctrine</text>
+        </svg>
       ),
       bottomRight: (
-        <ResponsiveSVG position="bottomRight">
-          <svg viewBox="0 0 16 16" className="w-full h-full">
-            <path d="M2,8 C5,3 9,3 12,8" stroke="currentColor" fill="none" strokeWidth="0.5" />
-            <path d="M2,8 C5,13 9,13 12,8" stroke="currentColor" fill="none" strokeWidth="0.5" />
-            <line x1="7" y1="2" x2="7" y2="14" stroke="currentColor" strokeWidth="0.5" strokeDasharray="1 0.5" />
-            <circle cx="7" cy="8" r="1.5" fill="currentColor" fillOpacity="0.2" stroke="currentColor" strokeWidth="0.5" />
-            <text x="6.5" y="8.5" fontSize="1.8" fontFamily="monospace" fill="currentColor" className="hidden sm:block">S</text>
-          </svg>
-        </ResponsiveSVG>
+        <svg className="absolute -bottom-5 -right-5 w-16 h-16 text-primary/40">
+          <path d="M2,8 C5,3 9,3 12,8" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <path d="M2,8 C5,13 9,13 12,8" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <line x1="7" y1="2" x2="7" y2="14" stroke="currentColor" strokeWidth="0.5" strokeDasharray="1 0.5" />
+          <circle cx="7" cy="8" r="1.5" fill="currentColor" fillOpacity="0.2" stroke="currentColor" strokeWidth="0.5" />
+          <text x="5" y="8.5" fontSize="1.8" fontFamily="monospace" fill="currentColor">S</text>
+        </svg>
       ),
     },
     
     // Spa Application (index 1) - Spa & Spring Boot themed
     {
       topLeft: (
-        <ResponsiveSVG position="topLeft">
-          <svg viewBox="0 0 16 16" className="w-full h-full">
-            <path d="M6,8 C12,4 12,12 6,8 Z" stroke="currentColor" fill="none" strokeWidth="0.5" />
-            <path d="M10,8 C16,4 16,12 10,8 Z" stroke="currentColor" fill="none" strokeWidth="0.5" />
-            <path d="M6,8 C6,11 10,11 10,8" stroke="currentColor" fill="none" strokeWidth="0.5" strokeDasharray="0.5 0.5" />
-            <circle cx="8" cy="8" r="0.5" fill="currentColor" />
-            <text x="5" y="14" fontSize="2" fontFamily="serif" fill="currentColor" className="hidden sm:block">Wellness</text>
-          </svg>
-        </ResponsiveSVG>
+        <svg className="absolute -top-5 -left-5 w-16 h-16 text-primary/40">
+          <path d="M6,8 C12,4 12,12 6,8 Z" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <path d="M10,8 C16,4 16,12 10,8 Z" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <path d="M6,8 C6,11 10,11 10,8" stroke="currentColor" fill="none" strokeWidth="0.5" strokeDasharray="0.5 0.5" />
+          <circle cx="8" cy="8" r="0.5" fill="currentColor" />
+          <text x="5" y="14" fontSize="2" fontFamily="serif" fill="currentColor">Wellness</text>
+        </svg>
       ),
       topRight: (
-        <ResponsiveSVG position="topRight">
-          <svg viewBox="0 0 16 16" className="w-full h-full">
-            <path d="M8,2 C3,5 13,9 8,12" stroke="currentColor" fill="none" strokeWidth="0.5" />
-            <path d="M5,7 C6,4 10,4 11,7" stroke="currentColor" fill="none" strokeWidth="0.5" />
-            <path d="M5,7 C6,10 10,10 11,7" stroke="currentColor" fill="none" strokeWidth="0.5" />
-            <circle cx="8" cy="7" r="2" fill="none" stroke="currentColor" strokeWidth="0.5" />
-            <text x="7" y="7.5" fontSize="1.5" fontFamily="monospace" fill="currentColor" className="hidden sm:block">JPA</text>
-          </svg>
-        </ResponsiveSVG>
+        <svg className="absolute -top-5 -right-5 w-16 h-16 text-primary/40">
+          <path d="M8,2 C3,5 13,9 8,12" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <path d="M5,7 C6,4 10,4 11,7" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <path d="M5,7 C6,10 10,10 11,7" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <circle cx="8" cy="7" r="2" fill="none" stroke="currentColor" strokeWidth="0.5" />
+          <text x="7" y="7.5" fontSize="1.5" fontFamily="monospace" fill="currentColor">JPA</text>
+        </svg>
       ),
       bottomLeft: (
-        <ResponsiveSVG position="bottomLeft">
-          <svg viewBox="0 0 16 16" className="w-full h-full">
-            <path d="M10,3 C6,3 6,7 8,8 C10,9 10,13 6,13" stroke="currentColor" fill="none" strokeWidth="0.5" />
-            <circle cx="10" cy="3" r="0.5" fill="currentColor" />
-            <circle cx="6" cy="13" r="0.5" fill="currentColor" />
-            <path d="M4,11 L12,5" stroke="currentColor" strokeWidth="0.3" strokeDasharray="0.5 0.5" />
-            <text x="3" y="7" fontSize="2" fontFamily="serif" fill="currentColor" className="hidden sm:block">Spring</text>
-          </svg>
-        </ResponsiveSVG>
+        <svg className="absolute -bottom-5 -left-5 w-16 h-16 text-primary/40">
+          <path d="M10,3 C6,3 6,7 8,8 C10,9 10,13 6,13" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <circle cx="10" cy="3" r="0.5" fill="currentColor" />
+          <circle cx="6" cy="13" r="0.5" fill="currentColor" />
+          <path d="M4,11 L12,5" stroke="currentColor" strokeWidth="0.3" strokeDasharray="0.5 0.5" />
+          <text x="3" y="7" fontSize="2" fontFamily="serif" fill="currentColor">Spring</text>
+        </svg>
       ),
       bottomRight: (
-        <ResponsiveSVG position="bottomRight">
-          <svg viewBox="0 0 16 16" className="w-full h-full">
-            <rect x="5" y="5" width="8" height="6" rx="1" stroke="currentColor" fill="none" strokeWidth="0.5" />
-            <line x1="5" y1="7" x2="13" y2="7" stroke="currentColor" strokeWidth="0.5" />
-            <circle cx="7" cy="6" r="0.5" fill="currentColor" />
-            <path d="M6,9 L12,9" stroke="currentColor" strokeWidth="0.5" />
-            <path d="M6,10 L10,10" stroke="currentColor" strokeWidth="0.5" />
-            <text x="5" y="13" fontSize="1.8" fontFamily="monospace" fill="currentColor" className="hidden sm:block">MySQL</text>
-          </svg>
-        </ResponsiveSVG>
+        <svg className="absolute -bottom-5 -right-5 w-16 h-16 text-primary/40">
+          <rect x="5" y="5" width="8" height="6" rx="1" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <line x1="5" y1="7" x2="13" y2="7" stroke="currentColor" strokeWidth="0.5" />
+          <circle cx="7" cy="6" r="0.5" fill="currentColor" />
+          <path d="M6,9 L12,9" stroke="currentColor" strokeWidth="0.5" />
+          <path d="M6,10 L10,10" stroke="currentColor" strokeWidth="0.5" />
+          <text x="5" y="13" fontSize="1.8" fontFamily="monospace" fill="currentColor">MySQL</text>
+        </svg>
       ),
     },
     
     // Pylône Électrique project (index 2) - Electrical towers & .NET themed
     {
       topLeft: (
-        <ResponsiveSVG position="topLeft">
-          <svg viewBox="0 0 16 16" className="w-full h-full">
-            <path d="M8,2 L4,14" stroke="currentColor" fill="none" strokeWidth="0.5" />
-            <path d="M8,2 L12,14" stroke="currentColor" fill="none" strokeWidth="0.5" />
-            <path d="M5,8 L11,8" stroke="currentColor" fill="none" strokeWidth="0.5" />
-            <path d="M6,5 L10,5" stroke="currentColor" fill="none" strokeWidth="0.5" />
-            <path d="M6,11 L10,11" stroke="currentColor" fill="none" strokeWidth="0.5" />
-            <circle cx="8" cy="2" r="1" fill="currentColor" fillOpacity="0.3" />
-            <text x="3" y="16" fontSize="2" fontFamily="monospace" fill="currentColor" className="hidden sm:block">Pylône</text>
-          </svg>
-        </ResponsiveSVG>
+        <svg className="absolute -top-5 -left-5 w-16 h-16 text-primary/40">
+          <path d="M8,2 L4,14" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <path d="M8,2 L12,14" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <path d="M5,8 L11,8" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <path d="M6,5 L10,5" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <path d="M6,11 L10,11" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <circle cx="8" cy="2" r="1" fill="currentColor" fillOpacity="0.3" />
+          <text x="3" y="16" fontSize="2" fontFamily="monospace" fill="currentColor">Pylône</text>
+        </svg>
       ),
       topRight: (
-        <ResponsiveSVG position="topRight">
-          <svg viewBox="0 0 16 16" className="w-full h-full">
-            <path d="M3,8 L13,8" stroke="currentColor" strokeWidth="0.5" />
-            <path d="M3,6 L13,6" stroke="currentColor" strokeWidth="0.5" />
-            <path d="M3,10 L13,10" stroke="currentColor" strokeWidth="0.5" />
-            <circle cx="5" cy="6" r="0.8" fill="currentColor" fillOpacity="0.3" />
-            <circle cx="5" cy="8" r="0.8" fill="currentColor" fillOpacity="0.3" />
-            <circle cx="5" cy="10" r="0.8" fill="currentColor" fillOpacity="0.3" />
-            <circle cx="8" cy="6" r="0.8" fill="currentColor" fillOpacity="0.3" />
-            <circle cx="8" cy="8" r="0.8" fill="currentColor" fillOpacity="0.3" />
-            <circle cx="8" cy="10" r="0.8" fill="currentColor" fillOpacity="0.3" />
-            <text x="4" y="14" fontSize="2" fontFamily="monospace" fill="currentColor" className="hidden sm:block">C#.NET</text>
-          </svg>
-        </ResponsiveSVG>
+        <svg className="absolute -top-5 -right-5 w-16 h-16 text-primary/40">
+          <path d="M3,8 L13,8" stroke="currentColor" strokeWidth="0.5" />
+          <path d="M3,6 L13,6" stroke="currentColor" strokeWidth="0.5" />
+          <path d="M3,10 L13,10" stroke="currentColor" strokeWidth="0.5" />
+          <circle cx="5" cy="6" r="0.8" fill="currentColor" fillOpacity="0.3" />
+          <circle cx="5" cy="8" r="0.8" fill="currentColor" fillOpacity="0.3" />
+          <circle cx="5" cy="10" r="0.8" fill="currentColor" fillOpacity="0.3" />
+          <circle cx="8" cy="6" r="0.8" fill="currentColor" fillOpacity="0.3" />
+          <circle cx="8" cy="8" r="0.8" fill="currentColor" fillOpacity="0.3" />
+          <circle cx="8" cy="10" r="0.8" fill="currentColor" fillOpacity="0.3" />
+          <text x="4" y="14" fontSize="2" fontFamily="monospace" fill="currentColor">C#.NET</text>
+        </svg>
       ),
       bottomLeft: (
-        <ResponsiveSVG position="bottomLeft">
-          <svg viewBox="0 0 16 16" className="w-full h-full">
-            <path d="M4,4 L12,4 L12,12 L4,12 Z" stroke="currentColor" fill="none" strokeWidth="0.5" />
-            <path d="M6,6 L10,6 L10,10 L6,10 Z" stroke="currentColor" fill="none" strokeWidth="0.5" />
-            <path d="M4,4 L6,6" stroke="currentColor" strokeWidth="0.5" />
-            <path d="M12,4 L10,6" stroke="currentColor" strokeWidth="0.5" />
-            <path d="M4,12 L6,10" stroke="currentColor" strokeWidth="0.5" />
-            <path d="M12,12 L10,10" stroke="currentColor" strokeWidth="0.5" />
-            <text x="3" y="15" fontSize="1.6" fontFamily="monospace" fill="currentColor" className="hidden sm:block">Entity</text>
-          </svg>
-        </ResponsiveSVG>
+        <svg className="absolute -bottom-5 -left-5 w-16 h-16 text-primary/40">
+          <path d="M4,4 L12,4 L12,12 L4,12 Z" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <path d="M6,6 L10,6 L10,10 L6,10 Z" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <path d="M4,4 L6,6" stroke="currentColor" strokeWidth="0.5" />
+          <path d="M12,4 L10,6" stroke="currentColor" strokeWidth="0.5" />
+          <path d="M4,12 L6,10" stroke="currentColor" strokeWidth="0.5" />
+          <path d="M12,12 L10,10" stroke="currentColor" strokeWidth="0.5" />
+          <text x="3" y="15" fontSize="1.6" fontFamily="monospace" fill="currentColor">Entity</text>
+        </svg>
       ),
       bottomRight: (
-        <ResponsiveSVG position="bottomRight">
-          <svg viewBox="0 0 16 16" className="w-full h-full">
-            <path d="M3,8 L8,3 L13,8 L8,13 Z" stroke="currentColor" fill="none" strokeWidth="0.5" />
-            <path d="M5,8 L8,5 L11,8 L8,11 Z" stroke="currentColor" fill="none" strokeWidth="0.5" />
-            <path d="M3,8 L5,8" stroke="currentColor" strokeWidth="0.5" />
-            <path d="M8,3 L8,5" stroke="currentColor" strokeWidth="0.5" />
-            <path d="M13,8 L11,8" stroke="currentColor" strokeWidth="0.5" />
-            <path d="M8,13 L8,11" stroke="currentColor" strokeWidth="0.5" />
-            <text x="6" y="8.5" fontSize="1.5" fontFamily="monospace" fill="currentColor" className="hidden sm:block">EF</text>
-          </svg>
-        </ResponsiveSVG>
+        <svg className="absolute -bottom-5 -right-5 w-16 h-16 text-primary/40">
+          <path d="M3,8 L8,3 L13,8 L8,13 Z" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <path d="M5,8 L8,5 L11,8 L8,11 Z" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <path d="M3,8 L5,8" stroke="currentColor" strokeWidth="0.5" />
+          <path d="M8,3 L8,5" stroke="currentColor" strokeWidth="0.5" />
+          <path d="M13,8 L11,8" stroke="currentColor" strokeWidth="0.5" />
+          <path d="M8,13 L8,11" stroke="currentColor" strokeWidth="0.5" />
+          <text x="6" y="8.5" fontSize="1.5" fontFamily="monospace" fill="currentColor">EF</text>
+        </svg>
       ),
     },
     
     // TeethSeg Frontend project (index 3) - Teeth & React/UI themed
     {
       topLeft: (
-        <ResponsiveSVG position="topLeft">
-          <svg viewBox="0 0 16 16" className="w-full h-full">
-            <circle cx="8" cy="8" r="3" stroke="currentColor" fill="none" strokeWidth="0.5" />
-            <circle cx="8" cy="8" r="6" stroke="currentColor" fill="none" strokeWidth="0.5" strokeDasharray="0.5 0.5" />
-            <circle cx="8" cy="8" r="1" fill="currentColor" fillOpacity="0.3" />
-            <path d="M5,8 C5,9.7 6.3,11 8,11 C9.7,11 11,9.7 11,8" stroke="currentColor" strokeWidth="0.3" strokeDasharray="0.5 0.3" />
-            <text x="5.5" y="15" fontSize="2" fontFamily="monospace" fill="currentColor" className="hidden sm:block">React</text>
-          </svg>
-        </ResponsiveSVG>
+        <svg className="absolute -top-5 -left-5 w-16 h-16 text-primary/40">
+          <circle cx="8" cy="8" r="3" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <circle cx="8" cy="8" r="6" stroke="currentColor" fill="none" strokeWidth="0.5" strokeDasharray="0.5 0.5" />
+          <circle cx="8" cy="8" r="1" fill="currentColor" fillOpacity="0.3" />
+          <path d="M5,8 C5,9.7 6.3,11 8,11 C9.7,11 11,9.7 11,8" stroke="currentColor" strokeWidth="0.3" strokeDasharray="0.5 0.3" />
+          <text x="5.5" y="15" fontSize="2" fontFamily="monospace" fill="currentColor">React</text>
+        </svg>
       ),
       topRight: (
-        <ResponsiveSVG position="topRight">
-          <svg viewBox="0 0 16 16" className="w-full h-full">
-            <path d="M4,7 L8,3 L12,7" stroke="currentColor" fill="none" strokeWidth="0.5" />
-            <path d="M4,8 L8,12 L12,8" stroke="currentColor" fill="none" strokeWidth="0.5" />
-            <path d="M8,3 L8,12" stroke="currentColor" strokeWidth="0.5" strokeDasharray="1 0.5" />
-            <text x="4" y="15" fontSize="1.8" fontFamily="monospace" fill="currentColor" className="hidden sm:block">TeethSeg</text>
-          </svg>
-        </ResponsiveSVG>
+        <svg className="absolute -top-5 -right-5 w-16 h-16 text-primary/40">
+          <path d="M4,7 L8,3 L12,7" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <path d="M4,8 L8,12 L12,8" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <path d="M8,3 L8,12" stroke="currentColor" strokeWidth="0.5" strokeDasharray="1 0.5" />
+          <text x="4" y="15" fontSize="1.8" fontFamily="monospace" fill="currentColor">TeethSeg</text>
+        </svg>
       ),
       bottomLeft: (
-        <ResponsiveSVG position="bottomLeft">
-          <svg viewBox="0 0 16 16" className="w-full h-full">
-            <path d="M7,4 C4,4 4,8 4,8 C4,12 7,12 7,12" stroke="currentColor" fill="none" strokeWidth="0.5" />
-            <path d="M9,4 C12,4 12,8 12,8 C12,12 9,12 9,12" stroke="currentColor" fill="none" strokeWidth="0.5" />
-            <path d="M7,8 L9,8" stroke="currentColor" strokeWidth="0.5" />
-            <circle cx="7" cy="8" r="0.5" fill="currentColor" />
-            <circle cx="9" cy="8" r="0.5" fill="currentColor" />
-            <text x="4" y="15" fontSize="1.8" fontFamily="monospace" fill="currentColor" className="hidden sm:block">TailwindCSS</text>
-          </svg>
-        </ResponsiveSVG>
+        <svg className="absolute -bottom-5 -left-5 w-16 h-16 text-primary/40">
+          <path d="M7,4 C4,4 4,8 4,8 C4,12 7,12 7,12" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <path d="M9,4 C12,4 12,8 12,8 C12,12 9,12 9,12" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <path d="M7,8 L9,8" stroke="currentColor" strokeWidth="0.5" />
+          <circle cx="7" cy="8" r="0.5" fill="currentColor" />
+          <circle cx="9" cy="8" r="0.5" fill="currentColor" />
+          <text x="4" y="15" fontSize="1.8" fontFamily="monospace" fill="currentColor">TailwindCSS</text>
+        </svg>
       ),
       bottomRight: (
-        <ResponsiveSVG position="bottomRight">
-          <svg viewBox="0 0 16 16" className="w-full h-full">
-            <path d="M5,4 C3,7 3,9 5,12" stroke="currentColor" fill="none" strokeWidth="0.5" />
-            <path d="M7,4 C9,7 9,9 7,12" stroke="currentColor" fill="none" strokeWidth="0.5" />
-            <path d="M9,4 C11,7 11,9 9,12" stroke="currentColor" fill="none" strokeWidth="0.5" />
-            <line x1="4" y1="6" x2="10" y2="6" stroke="currentColor" strokeWidth="0.3" />
-            <line x1="4" y1="8" x2="10" y2="8" stroke="currentColor" strokeWidth="0.3" />
-            <line x1="4" y1="10" x2="10" y2="10" stroke="currentColor" strokeWidth="0.3" />
-            <text x="6" y="15" fontSize="1.8" fontFamily="monospace" fill="currentColor" className="hidden sm:block">Vite</text>
-          </svg>
-        </ResponsiveSVG>
+        <svg className="absolute -bottom-5 -right-5 w-16 h-16 text-primary/40">
+          <path d="M5,4 C3,7 3,9 5,12" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <path d="M7,4 C9,7 9,9 7,12" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <path d="M9,4 C11,7 11,9 9,12" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <line x1="4" y1="6" x2="10" y2="6" stroke="currentColor" strokeWidth="0.3" />
+          <line x1="4" y1="8" x2="10" y2="8" stroke="currentColor" strokeWidth="0.3" />
+          <line x1="4" y1="10" x2="10" y2="10" stroke="currentColor" strokeWidth="0.3" />
+          <text x="6" y="15" fontSize="1.8" fontFamily="monospace" fill="currentColor">Vite</text>
+        </svg>
       ),
     },
     
     // BI Application project (index 4) - Data visualization themed
     {
       topLeft: (
-        <ResponsiveSVG position="topLeft">
-          <svg viewBox="0 0 16 16" className="w-full h-full">
-            <path d="M5,12 L5,5 L8,8 L11,4" stroke="currentColor" fill="none" strokeWidth="0.5" />
-            <circle cx="5" cy="5" r="0.8" fill="currentColor" />
-            <circle cx="8" cy="8" r="0.8" fill="currentColor" />
-            <circle cx="11" cy="4" r="0.8" fill="currentColor" />
-            <rect x="4" y="12" width="8" height="0.5" stroke="currentColor" fill="currentColor" />
-            <text x="3" y="15" fontSize="2" fontFamily="monospace" fill="currentColor" className="hidden sm:block">Talend</text>
-          </svg>
-        </ResponsiveSVG>
+        <svg className="absolute -top-5 -left-5 w-16 h-16 text-primary/40">
+          <path d="M5,12 L5,5 L8,8 L11,4" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <circle cx="5" cy="5" r="0.8" fill="currentColor" />
+          <circle cx="8" cy="8" r="0.8" fill="currentColor" />
+          <circle cx="11" cy="4" r="0.8" fill="currentColor" />
+          <rect x="4" y="12" width="8" height="0.5" stroke="currentColor" fill="currentColor" />
+          <text x="3" y="15" fontSize="2" fontFamily="monospace" fill="currentColor">Talend</text>
+        </svg>
       ),
       topRight: (
-        <ResponsiveSVG position="topRight">
-          <svg viewBox="0 0 16 16" className="w-full h-full">
-            <rect x="4" y="4" width="8" height="8" stroke="currentColor" fill="none" strokeWidth="0.5" />
-            <path d="M4,8 L12,8" stroke="currentColor" strokeWidth="0.5" />
-            <path d="M8,4 L8,12" stroke="currentColor" strokeWidth="0.5" />
-            <circle cx="6" cy="6" r="1" fill="currentColor" fillOpacity="0.3" />
-            <circle cx="10" cy="6" r="1.5" fill="currentColor" fillOpacity="0.3" />
-            <circle cx="6" cy="10" r="0.8" fill="currentColor" fillOpacity="0.3" />
-            <circle cx="10" cy="10" r="1.2" fill="currentColor" fillOpacity="0.3" />
-            <text x="3" y="15" fontSize="2" fontFamily="monospace" fill="currentColor" className="hidden sm:block">Power BI</text>
-          </svg>
-        </ResponsiveSVG>
+        <svg className="absolute -top-5 -right-5 w-16 h-16 text-primary/40">
+          <rect x="4" y="4" width="8" height="8" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <path d="M4,8 L12,8" stroke="currentColor" strokeWidth="0.5" />
+          <path d="M8,4 L8,12" stroke="currentColor" strokeWidth="0.5" />
+          <circle cx="6" cy="6" r="1" fill="currentColor" fillOpacity="0.3" />
+          <circle cx="10" cy="6" r="1.5" fill="currentColor" fillOpacity="0.3" />
+          <circle cx="6" cy="10" r="0.8" fill="currentColor" fillOpacity="0.3" />
+          <circle cx="10" cy="10" r="1.2" fill="currentColor" fillOpacity="0.3" />
+          <text x="3" y="15" fontSize="2" fontFamily="monospace" fill="currentColor">Power BI</text>
+        </svg>
       ),
       bottomLeft: (
-        <ResponsiveSVG position="bottomLeft">
-          <svg viewBox="0 0 16 16" className="w-full h-full">
-            <path d="M3,8 L5,6 L7,9 L9,5 L11,7 L13,4" stroke="currentColor" fill="none" strokeWidth="0.5" />
-            <circle cx="5" cy="6" r="0.5" fill="currentColor" />
-            <circle cx="7" cy="9" r="0.5" fill="currentColor" />
-            <circle cx="9" cy="5" r="0.5" fill="currentColor" />
-            <circle cx="11" cy="7" r="0.5" fill="currentColor" />
-            <circle cx="13" cy="4" r="0.5" fill="currentColor" />
-            <text x="5" y="13" fontSize="1.8" fontFamily="monospace" fill="currentColor" className="hidden sm:block">ETL</text>
-          </svg>
-        </ResponsiveSVG>
+        <svg className="absolute -bottom-5 -left-5 w-16 h-16 text-primary/40">
+          <path d="M3,8 L5,6 L7,9 L9,5 L11,7 L13,4" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <circle cx="5" cy="6" r="0.5" fill="currentColor" />
+          <circle cx="7" cy="9" r="0.5" fill="currentColor" />
+          <circle cx="9" cy="5" r="0.5" fill="currentColor" />
+          <circle cx="11" cy="7" r="0.5" fill="currentColor" />
+          <circle cx="13" cy="4" r="0.5" fill="currentColor" />
+          <text x="5" y="13" fontSize="1.8" fontFamily="monospace" fill="currentColor">ETL</text>
+        </svg>
       ),
       bottomRight: (
-        <ResponsiveSVG position="bottomRight">
-          <svg viewBox="0 0 16 16" className="w-full h-full">
-            <path d="M4,12 C4,6 12,12 12,6" stroke="currentColor" fill="none" strokeWidth="0.5" />
-            <circle cx="4" cy="12" r="0.8" fill="currentColor" fillOpacity="0.3" />
-            <circle cx="12" cy="6" r="0.8" fill="currentColor" fillOpacity="0.3" />
-            <path d="M4,9 C4,6 12,9 12,6" stroke="currentColor" fill="none" strokeWidth="0.5" strokeDasharray="0.5 0.5" />
-            <text x="2" y="15" fontSize="1.8" fontFamily="monospace" fill="currentColor" className="hidden sm:block">Analytics</text>
-          </svg>
-        </ResponsiveSVG>
+        <svg className="absolute -bottom-5 -right-5 w-16 h-16 text-primary/40">
+          <path d="M4,12 C4,6 12,12 12,6" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <circle cx="4" cy="12" r="0.8" fill="currentColor" fillOpacity="0.3" />
+          <circle cx="12" cy="6" r="0.8" fill="currentColor" fillOpacity="0.3" />
+          <path d="M4,9 C4,6 12,9 12,6" stroke="currentColor" fill="none" strokeWidth="0.5" strokeDasharray="0.5 0.5" />
+          <text x="2" y="15" fontSize="1.8" fontFamily="monospace" fill="currentColor">Analytics</text>
+        </svg>
       ),
     },
     
     // Barbershop project (index 5) - Barbershop themed
     {
       topLeft: (
-        <ResponsiveSVG position="topLeft">
-          <svg viewBox="0 0 16 16" className="w-full h-full">
-            <path d="M4,12 C4,6 8,4 12,6" stroke="currentColor" fill="none" strokeWidth="0.5" />
-            <path d="M4,10 C4,5 8,3 12,5" stroke="currentColor" fill="none" strokeWidth="0.5" />
-            <path d="M4,8 C4,4 8,2 12,4" stroke="currentColor" fill="none" strokeWidth="0.5" />
-            <circle cx="8" cy="8" r="2" stroke="currentColor" fill="none" strokeWidth="0.5" />
-            <text x="3" y="15" fontSize="1.8" fontFamily="monospace" fill="currentColor" className="hidden sm:block">MongoDB</text>
-          </svg>
-        </ResponsiveSVG>
+        <svg className="absolute -top-5 -left-5 w-16 h-16 text-primary/40">
+          <path d="M4,12 C4,6 8,4 12,6" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <path d="M4,10 C4,5 8,3 12,5" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <path d="M4,8 C4,4 8,2 12,4" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <circle cx="8" cy="8" r="2" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <text x="3" y="15" fontSize="1.8" fontFamily="monospace" fill="currentColor">MongoDB</text>
+        </svg>
       ),
       topRight: (
-        <ResponsiveSVG position="topRight">
-          <svg viewBox="0 0 16 16" className="w-full h-full">
-            <path d="M5,8 L11,8 M5,12 L11,12" stroke="currentColor" strokeWidth="0.5" />
-            <path d="M5,8 L5,12 M11,8 L11,12" stroke="currentColor" strokeWidth="0.5" />
-            <path d="M5,8 C5,5 11,5 11,8" stroke="currentColor" fill="none" strokeWidth="0.5" />
-            <path d="M6,6 L10,6" stroke="currentColor" strokeWidth="0.3" />
-            <path d="M7,4 L9,4" stroke="currentColor" strokeWidth="0.3" />
-            <text x="4" y="15" fontSize="1.8" fontFamily="monospace" fill="currentColor" className="hidden sm:block">Barber</text>
-          </svg>
-        </ResponsiveSVG>
+        <svg className="absolute -top-5 -right-5 w-16 h-16 text-primary/40">
+          <path d="M5,8 L11,8 M5,12 L11,12" stroke="currentColor" strokeWidth="0.5" />
+          <path d="M5,8 L5,12 M11,8 L11,12" stroke="currentColor" strokeWidth="0.5" />
+          <path d="M5,8 C5,5 11,5 11,8" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <path d="M6,6 L10,6" stroke="currentColor" strokeWidth="0.3" />
+          <path d="M7,4 L9,4" stroke="currentColor" strokeWidth="0.3" />
+          <text x="4" y="15" fontSize="1.8" fontFamily="monospace" fill="currentColor">Barber</text>
+        </svg>
       ),
       bottomLeft: (
-        <ResponsiveSVG position="bottomLeft">
-          <svg viewBox="0 0 16 16" className="w-full h-full">
-            <path d="M5,4 L5,12 L12,12" stroke="currentColor" fill="none" strokeWidth="0.5" />
-            <path d="M7,6 L7,10 L10,10" stroke="currentColor" fill="none" strokeWidth="0.5" />
-            <path d="M9,8 L9,9 L10,9" stroke="currentColor" fill="none" strokeWidth="0.5" />
-            <text x="5" y="15" fontSize="1.8" fontFamily="monospace" fill="currentColor" className="hidden sm:block">React</text>
-          </svg>
-        </ResponsiveSVG>
+        <svg className="absolute -bottom-5 -left-5 w-16 h-16 text-primary/40">
+          <path d="M5,4 L5,12 L12,12" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <path d="M7,6 L7,10 L10,10" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <path d="M9,8 L9,9 L10,9" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <text x="5" y="15" fontSize="1.8" fontFamily="monospace" fill="currentColor">React</text>
+        </svg>
       ),
       bottomRight: (
-        <ResponsiveSVG position="bottomRight">
-          <svg viewBox="0 0 16 16" className="w-full h-full">
-            <path d="M4,9 L7,6 L10,9 L7,12 Z" stroke="currentColor" fill="none" strokeWidth="0.5" />
-            <circle cx="7" cy="9" r="2" stroke="currentColor" fill="none" strokeWidth="0.5" strokeDasharray="0.5 0.5" />
-            <path d="M7,4 L7,6" stroke="currentColor" strokeWidth="0.3" />
-            <path d="M12,9 L10,9" stroke="currentColor" strokeWidth="0.3" />
-            <path d="M7,14 L7,12" stroke="currentColor" strokeWidth="0.3" />
-            <path d="M2,9 L4,9" stroke="currentColor" strokeWidth="0.3" />
-            <text x="4" y="16" fontSize="1.8" fontFamily="monospace" fill="currentColor" className="hidden sm:block">Node.js</text>
-          </svg>
-        </ResponsiveSVG>
+        <svg className="absolute -bottom-5 -right-5 w-16 h-16 text-primary/40">
+          <path d="M4,9 L7,6 L10,9 L7,12 Z" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <circle cx="7" cy="9" r="2" stroke="currentColor" fill="none" strokeWidth="0.5" strokeDasharray="0.5 0.5" />
+          <path d="M7,4 L7,6" stroke="currentColor" strokeWidth="0.3" />
+          <path d="M12,9 L10,9" stroke="currentColor" strokeWidth="0.3" />
+          <path d="M7,14 L7,12" stroke="currentColor" strokeWidth="0.3" />
+          <path d="M2,9 L4,9" stroke="currentColor" strokeWidth="0.3" />
+          <text x="4" y="16" fontSize="1.8" fontFamily="monospace" fill="currentColor">Node.js</text>
+        </svg>
       ),
     },
   ];
@@ -543,110 +476,82 @@ const projects: Project[] = [
 ];
 
 const Projects: React.FC = () => {
-  // Track window width for dynamic adjustments
-  const [windowWidth, setWindowWidth] = useState<number>(
-    typeof window !== 'undefined' ? window.innerWidth : 0
-  );
-  
-  useEffect(() => {
-    // Only run on client side
-    if (typeof window === 'undefined') return;
-    
-    const handleResize = () => {
-      setWindowWidth(window.innerWidth);
-    };
-    
-    // Set initial width
-    setWindowWidth(window.innerWidth);
-    
-    // Add event listener
-    window.addEventListener('resize', handleResize);
-    
-    // Clean up
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-  
-  // Determine if we should show decorations or not (hide on very small screens)
-  const showDecorations = windowWidth > 450;
-
   return (
     <section id="projects" className="py-24 relative overflow-hidden">
       <div className="absolute top-0 left-0 w-full h-24 bg-gradient-to-b from-background to-transparent z-[1]"></div>
       
       <div className="container px-4 md:px-6 relative z-10">
-        <div className="animate-reveal text-center max-w-2xl mx-auto mb-10 md:mb-16">
+        <div className="animate-reveal text-center max-w-2xl mx-auto mb-16">
           <div className="inline-block">
             <span className="px-3 py-1 text-xs font-medium tracking-wider bg-primary/10 rounded-full mb-4 inline-block">
               PROJETS
             </span>
           </div>
-          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight mb-3 md:mb-4">
+          <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">
             Projets Académiques
           </h2>
-          <p className="text-muted-foreground text-sm md:text-lg">
+          <p className="text-muted-foreground text-lg">
             Une sélection de projets sur lesquels j'ai travaillé pendant mon parcours académique.
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
           {projects.map((project, index) => {
             const Icon = project.icon || Box;
-            const decorations = showDecorations ? getBorderDecoration(index) : null;
+            const decorations = getBorderDecoration(index);
             
             return (
               <div key={index} className="relative animate-reveal" style={{ animationDelay: `${index * 100}ms` }}>
-                {/* Decorative border elements - conditionally rendered */}
-                {showDecorations && decorations.topLeft}
-                {showDecorations && decorations.topRight}
-                {showDecorations && decorations.bottomLeft}
-                {showDecorations && decorations.bottomRight}
+                {/* Decorative border elements */}
+                {decorations.topLeft}
+                {decorations.topRight}
+                {decorations.bottomLeft}
+                {decorations.bottomRight}
                 
                 <Card 
                   className="project-card group backdrop-blur-sm bg-background/50 border border-border/40 hover:border-primary/20 transition-all duration-500 hover:shadow-[0_0_25px_rgba(0,0,0,0.06)] overflow-hidden"
                 >
                   <div className="absolute top-0 left-0 h-1 w-0 bg-gradient-to-r from-primary/80 to-primary/40 group-hover:w-full transition-all duration-700"></div>
-                  <CardContent className="p-4 sm:p-5 md:p-6">
-                    <div className="flex items-start mb-3 md:mb-4">
-                      <div className="w-10 h-10 md:w-12 md:h-12 rounded-lg flex items-center justify-center bg-primary/5 mr-3 md:mr-4 group-hover:bg-primary/10 transition-all duration-300">
-                        <Icon className="h-5 w-5 md:h-6 md:w-6 text-primary" />
+                  <CardContent className="p-6">
+                    <div className="flex items-start mb-4">
+                      <div className="w-12 h-12 rounded-lg flex items-center justify-center bg-primary/5 mr-4 group-hover:bg-primary/10 transition-all duration-300">
+                        <Icon className="h-6 w-6 text-primary" />
                       </div>
-                      <h3 className="text-base md:text-lg lg:text-xl font-bold flex-1">
+                      <h3 className="text-xl font-bold flex-1">
                         {project.title}
                       </h3>
-                      <span className="h-6 w-6 sm:h-7 sm:w-7 md:h-8 md:w-8 rounded-full flex items-center justify-center bg-primary/5 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
-                        <ArrowUpRight className="h-3 w-3 sm:h-3.5 sm:w-3.5 md:h-4 md:w-4 text-primary" />
+                      <span className="h-8 w-8 rounded-full flex items-center justify-center bg-primary/5 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
+                        <ArrowUpRight className="h-4 w-4 text-primary" />
                       </span>
                     </div>
-                    <p className="text-muted-foreground text-xs sm:text-sm md:text-base mb-3 md:mb-4">{project.description}</p>
+                    <p className="text-muted-foreground mb-4">{project.description}</p>
                     
-                    <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-4 md:mb-6">
+                    <div className="flex flex-wrap gap-2 mb-6">
                       {project.technologies.map((tech, i) => {
                         const TechIcon = tech.icon;
                         return (
                           <span 
                             key={i} 
-                            className={`px-2 py-0.5 sm:px-2.5 sm:py-1 text-xs backdrop-blur-sm rounded-full transition-all duration-300 hover:scale-105 flex items-center gap-1 sm:gap-1.5 border ${getColorClass(tech.color)}`}
+                            className={`px-3 py-1 text-xs font-medium backdrop-blur-sm rounded-full transition-all duration-300 hover:scale-105 flex items-center gap-1.5 border ${getColorClass(tech.color)}`}
                           >
-                            <TechIcon className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
-                            <span className="text-[10px] sm:text-xs">{tech.name}</span>
+                            <TechIcon className="h-3 w-3" />
+                            {tech.name}
                           </span>
                         );
                       })}
                     </div>
                     
-                    <div className="flex space-x-3 sm:space-x-4 mt-auto">
+                    <div className="flex space-x-4 mt-auto">
                       {project.github && (
-                        <a href={project.github} target="_blank" rel="noopener noreferrer" className="flex items-center text-xs sm:text-sm text-muted-foreground hover:text-primary transition-colors group/link">
-                          <Github size={14} className="mr-1 sm:mr-1.5 transition-transform duration-300 group-hover/link:scale-110" />
-                          <span className="hidden xs:inline">Code Source</span>
-                          <span className="xs:hidden">Code</span>
+                        <a href={project.github} target="_blank" rel="noopener noreferrer" className="flex items-center text-sm text-muted-foreground hover:text-primary transition-colors group/link">
+                          <Github size={16} className="mr-1.5 transition-transform duration-300 group-hover/link:scale-110" />
+                          Code Source
                         </a>
                       )}
                       {project.live && (
-                        <a href={project.live} target="_blank" rel="noopener noreferrer" className="flex items-center text-xs sm:text-sm text-muted-foreground hover:text-primary transition-colors group/link">
-                          <ExternalLink size={14} className="mr-1 sm:mr-1.5 transition-transform duration-300 group-hover/link:scale-110" />
-                          <span className="hidden xs:inline">Voir le Projet</span>
-                          <span className="xs:hidden">Demo</span>
+                        <a href={project.live} target="_blank" rel="noopener noreferrer" className="flex items-center text-sm text-muted-foreground hover:text-primary transition-colors group/link">
+                          <ExternalLink size={16} className="mr-1.5 transition-transform duration-300 group-hover/link:scale-110" />
+                          Voir le Projet
                         </a>
                       )}
                     </div>
