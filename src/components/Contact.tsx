@@ -38,14 +38,14 @@ const Contact: React.FC = () => {
     {
       icon: Mail,
       title: 'Email',
-      details: 'contact@younesdarrassi.com',
-      link: 'mailto:contact@younesdarrassi.com',
+      details: 'contact@younes.darrassi@usmba.ac.ma',
+      link: 'mailto:contact@younes.darrassi@usmba.ac.ma',
     },
     {
       icon: Phone,
       title: 'Téléphone',
-      details: '+212 612 345 678',
-      link: 'tel:+212612345678',
+      details: '+212 629 419 616',
+      link: 'tel:+212629419616',
     },
     {
       icon: MapPin,
