@@ -1,5 +1,5 @@
 import React from 'react';
-import { Paintbrush, Maximize, Minimize, Check, ChevronRight } from 'lucide-react';
+import { Paintbrush, Maximize, Minimize } from 'lucide-react';
 import { useTheme } from '@/hooks/use-theme';
 import { 
   DropdownMenu,
@@ -79,14 +79,11 @@ export const ThemeControls = () => {
               }}
               className={cn(
                 "flex items-center gap-2 cursor-pointer",
-                theme === t.value && "bg-primary/10 text-primary"
+                theme === t.value && "bg-primary/10 text-primary font-medium"
               )}
             >
               {t.icon}
               <span>{t.name}</span>
-              {theme === t.value && (
-                <ChevronRight className="h-4 w-4 ml-auto text-primary" />
-              )}
             </DropdownMenuItem>
           ))}
         </DropdownMenuContent>
