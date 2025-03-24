@@ -25,7 +25,7 @@ const Canvas: React.FC<CanvasProps> = ({ className = '' }) => {
     
     window.addEventListener('resize', resizeCanvas);
     
-    // Shapes configuration
+    // More complex shapes configuration
     const shapes: {
       x: number;
       y: number;
@@ -33,27 +33,33 @@ const Canvas: React.FC<CanvasProps> = ({ className = '' }) => {
       dx: number;
       dy: number;
       opacity: number;
-      type: 'circle' | 'square' | 'triangle';
+      type: 'circle' | 'square' | 'triangle' | 'hexagon' | 'star' | 'diamond';
       rotation: number;
       rotationSpeed: number;
+      color: string;
+      strokeWidth: number;
     }[] = [];
+    
+    const colors = ['#222', '#333', '#444', '#555', '#666'];
     
     // Create shapes
     const createShapes = () => {
       shapes.length = 0;
-      const shapeCount = Math.max(5, Math.floor(width / 250));
+      const shapeCount = Math.max(10, Math.floor(width / 150));
       
       for (let i = 0; i < shapeCount; i++) {
         shapes.push({
           x: Math.random() * width,
           y: Math.random() * height,
-          size: Math.random() * 80 + 40,
-          dx: (Math.random() - 0.5) * 0.5,
-          dy: (Math.random() - 0.5) * 0.5,
-          opacity: Math.random() * 0.08 + 0.02,
-          type: ['circle', 'square', 'triangle'][Math.floor(Math.random() * 3)] as 'circle' | 'square' | 'triangle',
+          size: Math.random() * 100 + 60,
+          dx: (Math.random() - 0.5) * 0.4,
+          dy: (Math.random() - 0.5) * 0.4,
+          opacity: Math.random() * 0.12 + 0.03,
+          type: ['circle', 'square', 'triangle', 'hexagon', 'star', 'diamond'][Math.floor(Math.random() * 6)] as any,
           rotation: Math.random() * Math.PI * 2,
-          rotationSpeed: (Math.random() - 0.5) * 0.01
+          rotationSpeed: (Math.random() - 0.5) * 0.008,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          strokeWidth: Math.random() * 2 + 0.5
         });
       }
     };
@@ -65,8 +71,8 @@ const Canvas: React.FC<CanvasProps> = ({ className = '' }) => {
     const drawShape = (shape: typeof shapes[0]) => {
       ctx.save();
       ctx.globalAlpha = shape.opacity;
-      ctx.strokeStyle = '#000';
-      ctx.lineWidth = 1;
+      ctx.strokeStyle = shape.color;
+      ctx.lineWidth = shape.strokeWidth;
       ctx.translate(shape.x, shape.y);
       ctx.rotate(shape.rotation);
       
@@ -76,17 +82,60 @@ const Canvas: React.FC<CanvasProps> = ({ className = '' }) => {
           ctx.arc(0, 0, shape.size / 2, 0, Math.PI * 2);
           ctx.stroke();
           break;
+          
         case 'square':
           ctx.beginPath();
           ctx.rect(-shape.size / 2, -shape.size / 2, shape.size, shape.size);
           ctx.stroke();
           break;
+          
         case 'triangle':
           const h = (Math.sqrt(3) / 2) * shape.size;
           ctx.beginPath();
           ctx.moveTo(0, -h / 2);
           ctx.lineTo(shape.size / 2, h / 2);
           ctx.lineTo(-shape.size / 2, h / 2);
+          ctx.closePath();
+          ctx.stroke();
+          break;
+          
+        case 'hexagon':
+          ctx.beginPath();
+          for (let i = 0; i < 6; i++) {
+            const angle = (Math.PI / 3) * i;
+            const x = shape.size / 2 * Math.cos(angle);
+            const y = shape.size / 2 * Math.sin(angle);
+            if (i === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+          }
+          ctx.closePath();
+          ctx.stroke();
+          break;
+          
+        case 'star':
+          ctx.beginPath();
+          const spikes = 5;
+          const outerRadius = shape.size / 2;
+          const innerRadius = shape.size / 4;
+          
+          for (let i = 0; i < spikes * 2; i++) {
+            const radius = i % 2 === 0 ? outerRadius : innerRadius;
+            const angle = (Math.PI / spikes) * i;
+            const x = radius * Math.cos(angle);
+            const y = radius * Math.sin(angle);
+            if (i === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+          }
+          ctx.closePath();
+          ctx.stroke();
+          break;
+          
+        case 'diamond':
+          ctx.beginPath();
+          ctx.moveTo(0, -shape.size / 2);
+          ctx.lineTo(shape.size / 2, 0);
+          ctx.lineTo(0, shape.size / 2);
+          ctx.lineTo(-shape.size / 2, 0);
           ctx.closePath();
           ctx.stroke();
           break;

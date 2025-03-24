@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Code, Hexagon } from 'lucide-react';
 
 const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -35,8 +35,14 @@ const Navbar: React.FC = () => {
     >
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex items-center justify-between h-16 md:h-20">
-          <a href="#" className="font-bold text-lg">
-            YOUNES DARRASSI
+          <a href="#" className="font-bold text-lg flex items-center group">
+            <div className="w-8 h-8 flex items-center justify-center mr-3 bg-primary/10 rounded-full transition-all duration-300 group-hover:bg-primary/20">
+              <Hexagon className="h-4 w-4 text-primary" />
+            </div>
+            <span className="relative overflow-hidden">
+              YOUNES DARRASSI
+              <span className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-primary/0 via-primary/50 to-primary/0 transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100"></span>
+            </span>
           </a>
           
           <nav className="hidden md:flex space-x-8">

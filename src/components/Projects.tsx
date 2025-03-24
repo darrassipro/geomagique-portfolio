@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
-import { ExternalLink, Github } from 'lucide-react';
+import { ExternalLink, Github, ArrowUpRight } from 'lucide-react';
 
 interface Project {
   title: string;
@@ -42,8 +42,10 @@ const projects: Project[] = [
 
 const Projects: React.FC = () => {
   return (
-    <section id="projects" className="py-24">
-      <div className="container px-4 md:px-6">
+    <section id="projects" className="py-24 relative overflow-hidden">
+      <div className="absolute top-0 left-0 w-full h-24 bg-gradient-to-b from-background to-transparent z-[1]"></div>
+      
+      <div className="container px-4 md:px-6 relative z-10">
         <div className="animate-reveal text-center max-w-2xl mx-auto mb-16">
           <div className="inline-block">
             <span className="px-3 py-1 text-xs font-medium tracking-wider bg-primary/10 rounded-full mb-4 inline-block">
@@ -62,15 +64,21 @@ const Projects: React.FC = () => {
           {projects.map((project, index) => (
             <Card 
               key={index} 
-              className="animate-reveal project-card overflow-hidden border border-border/40 hover:border-border transition-all duration-300"
+              className="animate-reveal project-card group backdrop-blur-sm bg-background/50 border border-border/40 hover:border-primary/20 transition-all duration-300 hover:shadow-[0_0_15px_rgba(0,0,0,0.05)] overflow-hidden"
             >
+              <div className="absolute top-0 left-0 h-1 w-0 bg-gradient-to-r from-primary/80 to-primary/40 group-hover:w-full transition-all duration-700"></div>
               <CardContent className="p-6">
-                <h3 className="text-xl font-bold mb-2">{project.title}</h3>
+                <h3 className="text-xl font-bold mb-2 flex items-center justify-between">
+                  {project.title}
+                  <span className="h-8 w-8 rounded-full flex items-center justify-center bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <ArrowUpRight className="h-4 w-4 text-primary" />
+                  </span>
+                </h3>
                 <p className="text-muted-foreground mb-4">{project.description}</p>
                 
                 <div className="flex flex-wrap gap-2 mb-6">
                   {project.technologies.map((tech, i) => (
-                    <span key={i} className="px-3 py-1 text-xs font-medium bg-secondary rounded-full">
+                    <span key={i} className="px-3 py-1 text-xs font-medium bg-secondary/50 backdrop-blur-sm rounded-full transition-colors duration-300 hover:bg-secondary">
                       {tech}
                     </span>
                   ))}
@@ -95,6 +103,8 @@ const Projects: React.FC = () => {
           ))}
         </div>
       </div>
+      
+      <div className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-background to-transparent z-[1]"></div>
     </section>
   );
 };
