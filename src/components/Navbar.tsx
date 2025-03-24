@@ -17,23 +17,6 @@ const Navbar: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const isMobile = useIsMobile();
   
-  // Add debugging function to test theme changes directly from console
-  useEffect(() => {
-    // Expose a global function to test themes directly from the console
-    (window as any).testTheme = (themeName: string) => {
-      console.log("Testing theme:", themeName);
-      document.documentElement.classList.remove('theme-default', 'theme-dark', 'theme-light', 'theme-forest', 'theme-ocean');
-      document.documentElement.classList.add(`theme-${themeName}`);
-      localStorage.setItem('geomagique-theme', themeName);
-      return `Theme applied: ${themeName}`;
-    };
-    
-    // Clean up function when component unmounts
-    return () => {
-      delete (window as any).testTheme;
-    };
-  }, []);
-  
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
@@ -54,20 +37,6 @@ const Navbar: React.FC = () => {
     { name: 'Expérience', href: '#experience' },
     { name: 'Contact', href: '#contact' },
   ];
-
-  // Create a wrapper component for ThemeControls to help with debugging
-  const ThemeControlsWrapper = () => {
-    useEffect(() => {
-      console.log("ThemeControlsWrapper mounted");
-      return () => console.log("ThemeControlsWrapper unmounted");
-    }, []);
-    
-    return (
-      <div className="relative">
-        <ThemeControls />
-      </div>
-    );
-  };
 
   // Desktop navigation with sophisticated design
   const DesktopNav = () => (
@@ -111,7 +80,7 @@ const Navbar: React.FC = () => {
 
       {/* Add Theme Controls and Fullscreen Button */}
       <div className="ml-3">
-        <ThemeControlsWrapper />
+        <ThemeControls />
       </div>
     </div>
   );
@@ -144,7 +113,7 @@ const Navbar: React.FC = () => {
           {/* Show Theme Controls on mobile */}
           {isMobile && (
             <div className="flex items-center">
-              <ThemeControlsWrapper />
+              <ThemeControls />
               <button 
                 className="ml-2 focus:outline-none bg-transparent w-10 h-10 flex items-center justify-center rounded-lg hover:bg-primary/5 transition-colors"
                 onClick={toggleMobileMenu}
