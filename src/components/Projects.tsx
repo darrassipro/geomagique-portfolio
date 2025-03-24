@@ -3,10 +3,9 @@ import { Card, CardContent } from '@/components/ui/card';
 import { 
   ExternalLink, Github, ArrowUpRight, Box, Layout, 
   Server, Database, Layers, Code, FileCode, 
-  ChevronRight, Star, Clock, GitFork, Eye
+  ChevronRight, Star, GitFork, Eye
 } from 'lucide-react';
-import { motion } from 'framer-motion';
-import { cn } from '@/lib/utils';
+import { cn } from "@/lib/utils";
 
 interface Project {
   title: string;
@@ -249,12 +248,14 @@ const Projects: React.FC = () => {
             const isHovered = hoveredCard === index;
             
             return (
-              <motion.div
+              <div
                 key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="animate-reveal" 
+                style={{ 
+                  animationDelay: `${index * 100}ms`,
+                  opacity: 0,
+                  transform: 'translateY(20px)'
+                }}
               >
                 <Card 
                   className={cn(
@@ -366,7 +367,7 @@ const Projects: React.FC = () => {
                     )}></div>
                   </CardContent>
                 </Card>
-              </motion.div>
+              </div>
             );
           })}
         </div>
