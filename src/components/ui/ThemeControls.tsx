@@ -26,8 +26,8 @@ export const ThemeControls = () => {
             const root = document.documentElement;
             if (root.classList.contains('theme-dark')) {
               root.classList.remove('theme-dark');
-              root.classList.add('theme-default');
-              localStorage.setItem('geomagique-theme', 'default');
+              root.classList.add('theme-light');
+              localStorage.setItem('geomagique-theme', 'light');
             } else {
               root.classList.remove('theme-default');
               root.classList.add('theme-dark');
