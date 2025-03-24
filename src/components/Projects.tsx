@@ -1,7 +1,6 @@
-
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
-import { ExternalLink, Github, ArrowUpRight, Box, Layout, Server, Database, Layers } from 'lucide-react';
+import { ExternalLink, Github, ArrowUpRight, Box, Layout, Server, Database, Layers, Code, FileCode } from 'lucide-react';
 
 interface Project {
   title: string;
@@ -15,34 +14,45 @@ interface Project {
 const projects: Project[] = [
   {
     title: "Application Web de Gestion des Stages",
-    description: "Conception d'une interface utilisateur attrayante et fonctionnelle.",
+    description: "Gestion de Stagiaires - Projet Symfony pour l'Université privée de Fès, permettant de programmer les soutenances.",
     technologies: ["Twig", "Doctrine", "Symfony CLI", "phpMyAdmin"],
+    github: "https://github.com/darrassi1/GestionDesStGES",
     icon: Database
   },
   {
     title: "Application Web pour Salons de Spa",
-    description: "Développement d'un design axé sur l'expérience utilisateur.",
+    description: "Développement d'une application Maven avec Thymeleaf et Spring JPA pour la gestion des salons, services, clients et rendez-vous.",
     technologies: ["Spring Boot", "Spring Security", "JPA Repository", "MySQL"],
+    github: "https://github.com/darrassi1/Gestion_SPA",
     icon: Layout
   },
   {
-    title: "Système d'Analyse de Matchs de Football",
-    description: "Conception de l'interface pour la visualisation des statistiques de match.",
-    technologies: ["Flask", "Python"],
-    icon: Box
+    title: "Gestion de Pylône Électrique",
+    description: "Conception et développement d'une application C# pour la gestion de pylônes électriques avec Entity Framework 6 et approche Code First.",
+    technologies: ["C#", "Entity Framework 6", "Code First", ".NET"],
+    github: "https://github.com/darrassi1/GestionDePyloneElectrique",
+    icon: Server
   },
   {
-    title: "Application Single Page pour Plateforme d'E-Learning",
-    description: "Création d'un design moderne et responsive.",
-    technologies: ["Angular", "Node.js", "Express", "MySQL"],
-    github: "#",
+    title: "TeethSeg Frontend",
+    description: "Interface utilisateur moderne pour un système de segmentation dentaire, développée avec React, Vite et TailwindCSS.",
+    technologies: ["React", "Vite", "TailwindCSS", "Vercel"],
+    github: "https://github.com/darrassi1/SegTeeth",
+    icon: Code
+  },
+  {
+    title: "Application BI avec Talend et Power BI",
+    description: "Développement d'une solution BI pour l'analyse de données, avec des visualisations permettant de prendre des décisions éclairées.",
+    technologies: ["Talend", "Power BI", "ETL", "Data Visualization"],
+    github: "https://github.com/darrassi1/Projet-BI-Talend-PowerBI",
     icon: Layers
   },
   {
-    title: "Application BI avec Power BI",
-    description: "Design d'interfaces pour une analyse de données efficace.",
-    technologies: ["Talend", "Power BI"],
-    icon: Server
+    title: "Barbershop Application",
+    description: "Application complète de salon de coiffure avec frontend React et backend Node.js/Express.",
+    technologies: ["React", "Node.js", "Express", "MongoDB"],
+    github: "https://github.com/darrassi1/Barbershop",
+    icon: FileCode
   },
 ];
 
