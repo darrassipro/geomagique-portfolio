@@ -1,98 +1,89 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 
 const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  
-  const handleScroll = () => {
-    setIsScrolled(window.scrollY > 10);
-  };
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10);
     };
+    
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
   
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-    // Prevent body scroll when menu is open
-    if (!isMenuOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'auto';
-    }
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!mobileMenuOpen);
   };
   
-  const navLinks = [
-    { name: 'Home', href: '#hero' },
-    { name: 'Projects', href: '#projects' },
-    { name: 'About', href: '#about' },
+  const navItems = [
+    { name: 'Accueil', href: '#hero' },
+    { name: 'Projets', href: '#projects' },
+    { name: 'À Propos', href: '#about' },
+    { name: 'Expérience', href: '#experience' },
     { name: 'Contact', href: '#contact' },
   ];
   
   return (
-    <header className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'py-3 glass' : 'py-5 bg-transparent'}`}>
-      <nav className="container flex justify-between items-center px-4 md:px-6">
-        <a 
-          href="#" 
-          className="font-medium text-lg md:text-xl tracking-tight transition-colors hover:text-primary/80"
-        >
-          Portfolio<span className="text-primary">.</span>
-        </a>
-        
-        {/* Desktop Navigation */}
-        <ul className="hidden md:flex space-x-8">
-          {navLinks.map((link) => (
-            <li key={link.name}>
+    <header 
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        isScrolled ? 'bg-background/80 backdrop-blur-lg shadow-sm' : 'bg-transparent'
+      }`}
+    >
+      <div className="container mx-auto px-4 md:px-6">
+        <div className="flex items-center justify-between h-16 md:h-20">
+          <a href="#" className="font-bold text-lg">
+            YOUNES DARRASSI
+          </a>
+          
+          <nav className="hidden md:flex space-x-8">
+            {navItems.map((item) => (
               <a 
-                href={link.href}
-                className="text-sm tracking-wide link-underline py-2"
+                key={item.name}
+                href={item.href}
+                className="font-medium text-muted-foreground hover:text-primary transition-colors link-underline"
               >
-                {link.name}
+                {item.name}
               </a>
-            </li>
-          ))}
-        </ul>
-        
-        {/* Mobile Menu Toggle */}
-        <button 
-          aria-label="Toggle Menu"
-          className="md:hidden p-2 rounded-full hover:bg-primary/5 transition-colors"
-          onClick={toggleMenu}
-        >
-          {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
-        </button>
-      </nav>
-      
-      {/* Mobile Menu */}
-      <div 
-        className={`fixed inset-0 bg-background z-40 transition-transform duration-500 ease-in-out md:hidden ${
-          isMenuOpen ? 'translate-x-0' : 'translate-x-full'
-        }`}
-      >
-        <div className="container flex flex-col h-full justify-center items-center">
-          <ul className="flex flex-col space-y-8 text-center">
-            {navLinks.map((link) => (
-              <li key={link.name} className="animate-fade-in">
-                <a 
-                  href={link.href}
-                  className="text-xl font-medium tracking-wide"
-                  onClick={() => {
-                    toggleMenu();
-                    document.querySelector(link.href)?.scrollIntoView({ behavior: 'smooth' });
-                  }}
-                >
-                  {link.name}
-                </a>
-              </li>
             ))}
-          </ul>
+          </nav>
+          
+          <button 
+            className="md:hidden focus:outline-none"
+            onClick={toggleMobileMenu}
+            aria-label="Toggle menu"
+          >
+            {mobileMenuOpen ? (
+              <X className="h-6 w-6" />
+            ) : (
+              <Menu className="h-6 w-6" />
+            )}
+          </button>
         </div>
       </div>
+      
+      {/* Mobile Menu */}
+      {mobileMenuOpen && (
+        <div className="md:hidden bg-background/95 backdrop-blur-lg border-b border-border/10">
+          <div className="container mx-auto px-4 py-4">
+            <nav className="flex flex-col space-y-4">
+              {navItems.map((item) => (
+                <a 
+                  key={item.name}
+                  href={item.href}
+                  className="font-medium py-2 text-muted-foreground hover:text-primary transition-colors"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {item.name}
+                </a>
+              ))}
+            </nav>
+          </div>
+        </div>
+      )}
     </header>
   );
 };

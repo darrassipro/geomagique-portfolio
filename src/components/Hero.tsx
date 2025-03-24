@@ -19,13 +19,16 @@ const Hero: React.FC = () => {
             </span>
           </div>
           
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-tight md:leading-tight lg:leading-tight mb-6 opacity-0 animate-fade-in" style={{ animationDelay: '0.4s', animationFillMode: 'forwards' }}>
-            Creating digital experiences with purpose and precision
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-tight md:leading-tight lg:leading-tight mb-2 opacity-0 animate-fade-in" style={{ animationDelay: '0.4s', animationFillMode: 'forwards' }}>
+            YOUNES DARRASSI
           </h1>
           
+          <h2 className="text-2xl md:text-3xl text-muted-foreground mb-6 opacity-0 animate-fade-in" style={{ animationDelay: '0.5s', animationFillMode: 'forwards' }}>
+            Web Designer
+          </h2>
+          
           <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mb-8 opacity-0 animate-fade-in" style={{ animationDelay: '0.6s', animationFillMode: 'forwards' }}>
-            I design and build meaningful digital solutions that blend aesthetics with functionality, 
-            focusing on intuitive interfaces and seamless user experiences.
+            Passionné par le design web et les nouvelles technologies, je recherche un poste qui me permettra de mettre en pratique mes compétences en design tout en continuant à apprendre.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 opacity-0 animate-fade-in" style={{ animationDelay: '0.8s', animationFillMode: 'forwards' }}>
@@ -33,7 +36,7 @@ const Hero: React.FC = () => {
               href="#projects" 
               className="inline-flex items-center justify-center h-12 px-8 font-medium tracking-wide transition-colors bg-primary text-primary-foreground hover:bg-primary/90 rounded-full"
             >
-              View Projects
+              Voir Projets
               <ArrowRight className="ml-2 h-4 w-4" />
             </a>
             
@@ -41,7 +44,7 @@ const Hero: React.FC = () => {
               href="#contact" 
               className="inline-flex items-center justify-center h-12 px-8 font-medium tracking-wide transition-colors bg-secondary hover:bg-secondary/80 rounded-full"
             >
-              Contact Me
+              Me Contacter
             </a>
           </div>
         </div>

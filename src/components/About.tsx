@@ -2,10 +2,10 @@
 import React from 'react';
 
 const skills = [
-  { category: 'Design', items: ['UX/UI Design', 'Wireframing', 'Prototyping', 'User Research'] },
-  { category: 'Frontend', items: ['React', 'Vue.js', 'TypeScript', 'CSS/SCSS'] },
-  { category: 'Backend', items: ['Node.js', 'Python', 'GraphQL', 'RESTful APIs'] },
-  { category: 'Tools', items: ['Figma', 'Adobe XD', 'Git', 'VS Code'] },
+  { category: 'Langages', items: ['HTML5', 'CSS', 'JavaScript', 'TypeScript'] },
+  { category: 'Frameworks', items: ['Angular', 'React', 'Next.js'] },
+  { category: 'Design', items: ['UX/UI Design', 'Interface Utilisateur', 'Responsive Design'] },
+  { category: 'Outils', items: ['Adobe XD', 'Figma', 'Talend', 'Power BI'] },
 ];
 
 const About: React.FC = () => {
@@ -16,36 +16,43 @@ const About: React.FC = () => {
           <div className="animate-reveal">
             <div className="inline-block">
               <span className="px-3 py-1 text-xs font-medium tracking-wider bg-primary/10 rounded-full mb-4 inline-block">
-                ABOUT ME
+                À PROPOS DE MOI
               </span>
             </div>
             <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-6">
-              I blend art and technology to create meaningful digital experiences
+              Je crée des expériences numériques intuitives et attrayantes
             </h2>
             
             <p className="text-muted-foreground text-lg mb-4">
-              With a background in both design and development, I approach each project with a holistic perspective, ensuring that aesthetics and functionality work together harmoniously.
+              Passionné par le design web et les nouvelles technologies, je recherche un poste qui me permettra de mettre en pratique mes compétences en design tout en continuant à apprendre.
             </p>
             
             <p className="text-muted-foreground text-lg mb-8">
-              I believe that the best digital products arise from a deep understanding of user needs, combined with thoughtful design and precise implementation. Every pixel and interaction matters.
+              Mon approche combine esthétique et fonctionnalité pour créer des interfaces utilisateur qui répondent aux besoins des utilisateurs tout en étant visuellement attrayantes.
             </p>
             
             <div className="space-y-6">
-              <h3 className="text-xl font-semibold">Education</h3>
+              <h3 className="text-xl font-semibold">Éducation</h3>
               <div className="space-y-4">
                 <div className="flex items-start">
                   <div className="h-2 w-2 rounded-full bg-primary mt-2 mr-3"></div>
                   <div>
-                    <p className="font-medium">Master of Interaction Design</p>
-                    <p className="text-muted-foreground">Design Institute, 2018-2020</p>
+                    <p className="font-medium">Ingénieur d'État en Génie Informatique</p>
+                    <p className="text-muted-foreground">Université Privée de Fès, 2022-2024</p>
                   </div>
                 </div>
                 <div className="flex items-start">
                   <div className="h-2 w-2 rounded-full bg-primary mt-2 mr-3"></div>
                   <div>
-                    <p className="font-medium">BSc in Computer Science</p>
-                    <p className="text-muted-foreground">Tech University, 2014-2018</p>
+                    <p className="font-medium">Technicien en Fabrication Mécanique</p>
+                    <p className="text-muted-foreground">ISTA, Route Immouzer, Fès, 2020-2022</p>
+                  </div>
+                </div>
+                <div className="flex items-start">
+                  <div className="h-2 w-2 rounded-full bg-primary mt-2 mr-3"></div>
+                  <div>
+                    <p className="font-medium">Sciences Mathématiques et Informatiques</p>
+                    <p className="text-muted-foreground">Faculté Dhar El Mahraz, 2016-2020</p>
                   </div>
                 </div>
               </div>
@@ -54,7 +61,7 @@ const About: React.FC = () => {
           
           <div className="animate-reveal">
             <div className="space-y-8">
-              <h3 className="text-xl font-semibold mb-6">Skills & Expertise</h3>
+              <h3 className="text-xl font-semibold mb-6">Compétences & Expertise</h3>
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
                 {skills.map((skillGroup) => (
@@ -73,23 +80,23 @@ const About: React.FC = () => {
               </div>
               
               <div className="mt-8 p-6 rounded-2xl bg-secondary">
-                <h4 className="font-medium text-lg mb-4">My Approach</h4>
+                <h4 className="font-medium text-lg mb-4">Certifications</h4>
                 <ul className="space-y-3">
                   <li className="flex items-start">
                     <div className="h-1.5 w-1.5 rounded-full bg-primary mt-2 mr-3"></div>
-                    <span><strong>Research-driven:</strong> Understanding the problem space thoroughly before designing solutions.</span>
+                    <span>HTML5, CSS, Tailwind, JavaScript</span>
                   </li>
                   <li className="flex items-start">
                     <div className="h-1.5 w-1.5 rounded-full bg-primary mt-2 mr-3"></div>
-                    <span><strong>User-centered:</strong> Placing the user's needs at the core of every design decision.</span>
+                    <span>JavaScript (Intermediate) - Certifié HackerRank</span>
                   </li>
                   <li className="flex items-start">
                     <div className="h-1.5 w-1.5 rounded-full bg-primary mt-2 mr-3"></div>
-                    <span><strong>Detail-oriented:</strong> Focusing on the small details that create exceptional experiences.</span>
+                    <span>SQL (Advanced) - Certifié HackerRank</span>
                   </li>
                   <li className="flex items-start">
                     <div className="h-1.5 w-1.5 rounded-full bg-primary mt-2 mr-3"></div>
-                    <span><strong>Iterative process:</strong> Continuously refining based on feedback and new insights.</span>
+                    <span>Java (Basic) - Certifié HackerRank</span>
                   </li>
                 </ul>
               </div>
