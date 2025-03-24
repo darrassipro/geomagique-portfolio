@@ -56,7 +56,7 @@ const Canvas: React.FC<CanvasProps> = ({ className = '' }) => {
   const fpsRef = useRef<number[]>([]);
   const particleGenerationTimerRef = useRef<number>(0);
   const currentDateRef = useRef<string>("2025-03-24");
-  const currentTimeRef = useRef<string>("22:23:30");
+  const currentTimeRef = useRef<string>("23:09:00");
   const currentUserRef = useRef<string>("darrassipro");
   
   // Setup theme colors
@@ -284,7 +284,7 @@ const Canvas: React.FC<CanvasProps> = ({ className = '' }) => {
     
     // Set current date, time, and user
     currentDateRef.current = "2025-03-24";
-    currentTimeRef.current = "22:23:30";
+    currentTimeRef.current = "23:09:00";
     currentUserRef.current = "darrassipro";
     
     // Setup mouse tracking
@@ -427,12 +427,12 @@ const Canvas: React.FC<CanvasProps> = ({ className = '' }) => {
           particle.customProps.baseSpacing = Math.random() * 5 + 5;
           break;
         case 'neural':
-          particle.customProps.nodeCount = Math.floor(Math.random() * 5) + 3;
+          particle.customProps.neuralNodeCount = Math.floor(Math.random() * 5) + 3;
           particle.customProps.connectionDensity = Math.random() * 0.5 + 0.3;
           break;
         case 'circuit':
-          particle.customProps.complexity = Math.random() * 0.7 + 0.3;
-          particle.customProps.nodeCount = Math.floor(Math.random() * 6) + 4;
+          particle.customProps.circuitComplexity = Math.random() * 0.7 + 0.3;
+          particle.customProps.componentCount = Math.floor(Math.random() * 6) + 4;
           break;
         case 'fractal':
           particle.customProps.iterations = Math.floor(Math.random() * 3) + 2;
@@ -451,7 +451,7 @@ const Canvas: React.FC<CanvasProps> = ({ className = '' }) => {
           particle.customProps.uncertainty = Math.random() * 0.5 + 0.1;
           break;
         case 'glyph':
-          particle.customProps.complexity = Math.floor(Math.random() * 3) + 2;
+          particle.customProps.glyphComplexity = Math.floor(Math.random() * 3) + 2;
           particle.customProps.symmetry = Math.random() < 0.7;
           break;
         case 'binary':
@@ -1015,17 +1015,17 @@ const Canvas: React.FC<CanvasProps> = ({ className = '' }) => {
           
         case 'grid':
           // Drawing a grid pattern
-          const gridSize = renderSize / (2 + detail);
+          const cellSize = renderSize / (2 + detail);
           ctx.beginPath();
           
           // Vertical lines
-          for (let x = -renderSize / 2; x <= renderSize / 2; x += gridSize) {
+          for (let x = -renderSize / 2; x <= renderSize / 2; x += cellSize) {
             ctx.moveTo(x, -renderSize / 2);
             ctx.lineTo(x, renderSize / 2);
           }
           
           // Horizontal lines
-          for (let y = -renderSize / 2; y <= renderSize / 2; y += gridSize) {
+          for (let y = -renderSize / 2; y <= renderSize / 2; y += cellSize) {
             ctx.moveTo(-renderSize / 2, y);
             ctx.lineTo(renderSize / 2, y);
           }
@@ -1279,14 +1279,14 @@ const Canvas: React.FC<CanvasProps> = ({ className = '' }) => {
           
         case 'neural':
           // Neural network visualization
-          const nodeCount = particle.customProps.nodeCount || 5;
+          const neuralNodeCount = particle.customProps.neuralNodeCount || 5;
           const connectionDensity = particle.customProps.connectionDensity || 0.5;
           const nodeRadius = renderSize * 0.06;
           const nodes: {x: number, y: number}[] = [];
           
           // Create nodes in a circular pattern
-          for (let i = 0; i < nodeCount; i++) {
-            const angle = (Math.PI * 2 * i) / nodeCount;
+          for (let i = 0; i < neuralNodeCount; i++) {
+            const angle = (Math.PI * 2 * i) / neuralNodeCount;
             const distance = renderSize * 0.4 * (0.8 + Math.random() * 0.4);
             nodes.push({
               x: Math.cos(angle) * distance,
@@ -1337,33 +1337,33 @@ const Canvas: React.FC<CanvasProps> = ({ className = '' }) => {
           
         case 'circuit':
           // Electronic circuit pattern
-          const complexity = particle.customProps.complexity || 0.5;
-          const nodeCount = particle.customProps.nodeCount || 6;
+          const circuitComplexity = particle.customProps.circuitComplexity || 0.5;
+          const componentCount = particle.customProps.componentCount || 6;
           const maxSize = renderSize / 2;
           
-          const gridSize = maxSize / 4;
+          const circuitGridSize = maxSize / 4;
           
           // Draw horizontal and vertical tracks
           ctx.beginPath();
           for (let x = -2; x <= 2; x++) {
-            if (Math.random() < complexity) {
-              ctx.moveTo(x * gridSize, -maxSize);
-              ctx.lineTo(x * gridSize, maxSize);
+            if (Math.random() < circuitComplexity) {
+              ctx.moveTo(x * circuitGridSize, -maxSize);
+              ctx.lineTo(x * circuitGridSize, maxSize);
             }
           }
           
           for (let y = -2; y <= 2; y++) {
-            if (Math.random() < complexity) {
-              ctx.moveTo(-maxSize, y * gridSize);
-              ctx.lineTo(maxSize, y * gridSize);
+            if (Math.random() < circuitComplexity) {
+              ctx.moveTo(-maxSize, y * circuitGridSize);
+              ctx.lineTo(maxSize, y * circuitGridSize);
             }
           }
           ctx.stroke();
           
           // Draw circuit components (resistors, capacitors, etc.)
-          for (let i = 0; i < nodeCount; i++) {
-            const x = Math.floor(Math.random() * 5 - 2) * gridSize;
-            const y = Math.floor(Math.random() * 5 - 2) * gridSize;
+          for (let i = 0; i < componentCount; i++) {
+            const x = Math.floor(Math.random() * 5 - 2) * circuitGridSize;
+            const y = Math.floor(Math.random() * 5 - 2) * circuitGridSize;
             const componentType = Math.floor(Math.random() * 3);
             
             ctx.save();
@@ -1408,6 +1408,8 @@ const Canvas: React.FC<CanvasProps> = ({ className = '' }) => {
                   ctx.beginPath();
                   ctx.moveTo(10, p);
                   ctx.lineTo(14, p);
+
+
                   ctx.stroke();
                 }
                 break;
@@ -1417,9 +1419,9 @@ const Canvas: React.FC<CanvasProps> = ({ className = '' }) => {
           }
           
           // Draw some connection nodes
-          for (let i = 0; i < nodeCount / 2; i++) {
-            const x = Math.floor(Math.random() * 5 - 2) * gridSize;
-            const y = Math.floor(Math.random() * 5 - 2) * gridSize;
+          for (let i = 0; i < componentCount / 2; i++) {
+            const x = Math.floor(Math.random() * 5 - 2) * circuitGridSize;
+            const y = Math.floor(Math.random() * 5 - 2) * circuitGridSize;
             
             ctx.beginPath();
             ctx.arc(x, y, renderSize * 0.03, 0, Math.PI * 2);
@@ -1430,7 +1432,7 @@ const Canvas: React.FC<CanvasProps> = ({ className = '' }) => {
         case 'fractal':
           // Recursive fractal pattern (simplified)
           const iterations = particle.customProps.iterations || 3;
-          const angle = particle.customProps.angle || Math.PI / 4;
+          const branchAngle = particle.customProps.angle || Math.PI / 4;
           
           const drawBranch = (x: number, y: number, length: number, angle: number, depth: number) => {
             if (depth === 0) return;
@@ -1444,9 +1446,9 @@ const Canvas: React.FC<CanvasProps> = ({ className = '' }) => {
             ctx.stroke();
             
             // Draw left branch
-            drawBranch(endX, endY, length * 0.7, angle - particle.customProps.angle, depth - 1);
+            drawBranch(endX, endY, length * 0.7, angle - branchAngle, depth - 1);
             // Draw right branch
-            drawBranch(endX, endY, length * 0.7, angle + particle.customProps.angle, depth - 1);
+            drawBranch(endX, endY, length * 0.7, angle + branchAngle, depth - 1);
           };
           
           // Start the fractal from the center
@@ -1569,7 +1571,7 @@ const Canvas: React.FC<CanvasProps> = ({ className = '' }) => {
           
         case 'glyph':
           // Abstract symbolic glyph
-          const complexity = particle.customProps.complexity || 3;
+          const glyphComplexity = particle.customProps.glyphComplexity || 3;
           const symmetry = particle.customProps.symmetry !== undefined ? particle.customProps.symmetry : true;
           
           // Draw base circle
@@ -1578,7 +1580,7 @@ const Canvas: React.FC<CanvasProps> = ({ className = '' }) => {
           ctx.stroke();
           
           // Draw internal pattern
-          const patternCount = complexity * 2;
+          const patternCount = glyphComplexity * 2;
           
           for (let i = 0; i < patternCount; i++) {
             const angle = (Math.PI * 2 * i) / patternCount;
@@ -1606,7 +1608,7 @@ const Canvas: React.FC<CanvasProps> = ({ className = '' }) => {
             } else {
               // Asymmetrical pattern
               const startAngle = angle;
-              const endAngle = angle + Math.PI / (complexity + 1);
+              const endAngle = angle + Math.PI / (glyphComplexity + 1);
               
               ctx.arc(0, 0, distance, startAngle, endAngle);
               
@@ -1777,9 +1779,8 @@ const Canvas: React.FC<CanvasProps> = ({ className = '' }) => {
       const avgFps = fpsRef.current.reduce((sum, value) => sum + value, 0) / fpsRef.current.length;
       
       // Update current time
-      const date = new Date();
       currentDateRef.current = "2025-03-24";
-      currentTimeRef.current = "23:02:26";
+      currentTimeRef.current = "23:13:14";
       currentUserRef.current = "darrassipro";
       
       // Adjust particle count based on FPS if needed
