@@ -4,7 +4,7 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
+  /*:root {
     --background: 0 0% 100%;
     --foreground: 0 0% 5%;
 
@@ -33,7 +33,7 @@
     --input: 240 10% 85%;
     --ring: 240 10% 65%;
 
-    --radius: 0.75rem;
+    --radius: 0.75rem;*/
   }
 
   * {
