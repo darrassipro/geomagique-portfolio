@@ -1,5 +1,5 @@
-import React from 'react';
-import { Paintbrush, Maximize, Minimize, ChevronDown } from 'lucide-react';
+import React, { useEffect } from 'react';
+import { Paintbrush, Maximize, Minimize, Check } from 'lucide-react';
 import { useTheme } from '@/hooks/use-theme';
 import { 
   DropdownMenu,
@@ -11,6 +11,11 @@ import { cn } from '@/lib/utils';
 
 export const ThemeControls = () => {
   const { theme, setTheme, isFullscreen, toggleFullscreen } = useTheme();
+  
+  // Debug output to check if the component is receiving theme updates
+  useEffect(() => {
+    console.log("ThemeControls rendered with theme:", theme);
+  }, [theme]);
 
   const themes = [
     { name: 'Default', value: 'default', icon: <Paintbrush className="h-4 w-4" /> },
@@ -32,7 +37,13 @@ export const ThemeControls = () => {
           {themes.map((t) => (
             <DropdownMenuItem
               key={t.value}
-              onClick={() => setTheme(t.value as any)}
+              onClick={() => {
+                console.log("Clicked theme:", t.value);
+                // Force a direct DOM update while also updating context
+                document.documentElement.classList.remove('theme-default', 'theme-dark', 'theme-light', 'theme-forest', 'theme-ocean');
+                document.documentElement.classList.add(`theme-${t.value}`);
+                setTheme(t.value as any);
+              }}
               className={cn(
                 "flex items-center gap-2 cursor-pointer",
                 theme === t.value && "bg-primary/10 text-primary"
@@ -40,6 +51,7 @@ export const ThemeControls = () => {
             >
               {t.icon}
               <span>{t.name}</span>
+              {theme === t.value && <Check className="h-4 w-4 ml-auto" />}
             </DropdownMenuItem>
           ))}
         </DropdownMenuContent>
