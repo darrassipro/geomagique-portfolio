@@ -17,7 +17,9 @@ interface Particle {
   size: number;
   mass: number;
   opacity: number;
-  type: 'circle' | 'square' | 'triangle' | 'hexagon' | 'star' | 'diamond' | 'wave' | 'grid' | 'atom' | 'spiral' | 'flower';
+  type: 'circle' | 'square' | 'triangle' | 'hexagon' | 'star' | 'diamond' | 'wave' | 'grid' | 
+         'atom' | 'spiral' | 'flower' | 'dna' | 'compass' | 'neural' | 'circuit' | 'fractal' | 
+         'molecule' | 'crystal' | 'glyph' | 'quantum' | 'binary';
   rotation: number;
   rotationSpeed: number;
   color: string;
@@ -40,6 +42,7 @@ interface Particle {
   behaviorTimer: number;
   hue: number;
   hueShift: number;
+  customProps: Record<string, any>;
 }
 
 const Canvas: React.FC<CanvasProps> = ({ className = '' }) => {
@@ -51,6 +54,10 @@ const Canvas: React.FC<CanvasProps> = ({ className = '' }) => {
   const particleIdCounterRef = useRef<number>(0);
   const lastFrameTimeRef = useRef<number>(0);
   const fpsRef = useRef<number[]>([]);
+  const particleGenerationTimerRef = useRef<number>(0);
+  const currentDateRef = useRef<string>("2025-03-24");
+  const currentTimeRef = useRef<string>("22:23:30");
+  const currentUserRef = useRef<string>("darrassipro");
   
   // Setup theme colors
   useEffect(() => {
@@ -275,6 +282,11 @@ const Canvas: React.FC<CanvasProps> = ({ className = '' }) => {
     canvas.style.height = `${height}px`;
     ctx.scale(dpr, dpr);
     
+    // Set current date, time, and user
+    currentDateRef.current = "2025-03-24";
+    currentTimeRef.current = "22:23:30";
+    currentUserRef.current = "darrassipro";
+    
     // Setup mouse tracking
     const handleMouseMove = (e: MouseEvent) => {
       const rect = canvas.getBoundingClientRect();
@@ -306,7 +318,9 @@ const Canvas: React.FC<CanvasProps> = ({ className = '' }) => {
     // Shape types
     const shapeTypes: Particle['type'][] = [
       'circle', 'square', 'triangle', 'hexagon', 'star', 
-      'diamond', 'wave', 'grid', 'atom', 'spiral', 'flower'
+      'diamond', 'wave', 'grid', 'atom', 'spiral', 'flower',
+      'dna', 'compass', 'neural', 'circuit', 'fractal', 
+      'molecule', 'crystal', 'glyph', 'quantum', 'binary'
     ];
     
     // Behavior modes
@@ -319,11 +333,21 @@ const Canvas: React.FC<CanvasProps> = ({ className = '' }) => {
       particlesRef.current = [];
       // Adjust particle count based on screen size and performance
       const scaleFactor = Math.min(width, height) / 1000; // Reference size
-      const baseCount = 20;
+      const baseCount = 15;
       const particleCount = Math.max(baseCount, Math.floor(baseCount * scaleFactor));
       
       for (let i = 0; i < particleCount; i++) {
-        addParticle();
+        // Create particles at the top of the screen
+        addParticle({
+          position: { 
+            x: Math.random() * width, 
+            y: -Math.random() * 100 - 50 // Start above the screen
+          },
+          velocity: {
+            x: (Math.random() - 0.5) * 1,
+            y: Math.random() * 1 + 0.5 // Positive Y velocity (downward)
+          }
+        });
       }
     };
     
@@ -334,7 +358,25 @@ const Canvas: React.FC<CanvasProps> = ({ className = '' }) => {
       const mass = (size / 40) ** 2; // Mass proportional to area
       
       const randomBehaviorMode = behaviorModes[Math.floor(Math.random() * behaviorModes.length)];
-      const randomShapeType = shapeTypes[Math.floor(Math.random() * shapeTypes.length)];
+      // Favor more complex shapes
+      const complexShapeWeight = 0.7; // 70% chance for complex shapes
+      let randomShapeType: Particle['type'];
+      
+      if (Math.random() < complexShapeWeight) {
+        // Select from more complex shapes
+        const complexShapes: Particle['type'][] = [
+          'dna', 'compass', 'neural', 'circuit', 'fractal',
+          'molecule', 'crystal', 'glyph', 'atom', 'star', 
+          'spiral', 'flower', 'quantum', 'binary'
+        ];
+        randomShapeType = complexShapes[Math.floor(Math.random() * complexShapes.length)];
+      } else {
+        // Select from basic shapes
+        const basicShapes: Particle['type'][] = [
+          'circle', 'square', 'triangle', 'hexagon', 'diamond', 'wave', 'grid'
+        ];
+        randomShapeType = basicShapes[Math.floor(Math.random() * basicShapes.length)];
+      }
       
       // Random HSL color near the theme colors for smooth transitions
       const baseHue = Math.random() * 360;
@@ -342,11 +384,11 @@ const Canvas: React.FC<CanvasProps> = ({ className = '' }) => {
       const particle: Particle = {
         position: options.position ?? {
           x: Math.random() * width,
-          y: Math.random() * height
+          y: -Math.random() * 100 - 50 // Start above the screen
         },
         velocity: options.velocity ?? {
-          x: (Math.random() - 0.5) * 1.5,
-          y: (Math.random() - 0.5) * 1.5
+          x: (Math.random() - 0.5) * 1,
+          y: Math.random() * 1 + 0.5 // Positive Y velocity (downward)
         },
         acceleration: { x: 0, y: 0 },
         size,
@@ -360,7 +402,7 @@ const Canvas: React.FC<CanvasProps> = ({ className = '' }) => {
         pulsePhase: options.pulsePhase ?? (Math.random() * Math.PI * 2),
         pulseSpeed: options.pulseSpeed ?? (Math.random() * 0.02 + 0.01),
         detail: options.detail ?? (Math.floor(Math.random() * 3) + 2),
-        lifespan: options.lifespan ?? (Math.random() * 30000 + 30000), // 30-60 seconds
+        lifespan: options.lifespan ?? (Math.random() * 15000 + 15000), // 15-30 seconds
         age: 0,
         colliding: false,
         collidingWith: new Set<number>(),
@@ -374,8 +416,49 @@ const Canvas: React.FC<CanvasProps> = ({ className = '' }) => {
         behaviorMode: options.behaviorMode ?? randomBehaviorMode,
         behaviorTimer: options.behaviorTimer ?? (Math.random() * 5000 + 3000),
         hue: options.hue ?? baseHue,
-        hueShift: options.hueShift ?? (Math.random() * 0.2 - 0.1)
+        hueShift: options.hueShift ?? (Math.random() * 0.2 - 0.1),
+        customProps: options.customProps ?? {}
       };
+      
+      // Add custom properties based on shape type
+      switch (particle.type) {
+        case 'dna':
+          particle.customProps.strandCount = Math.floor(Math.random() * 2) + 1;
+          particle.customProps.baseSpacing = Math.random() * 5 + 5;
+          break;
+        case 'neural':
+          particle.customProps.nodeCount = Math.floor(Math.random() * 5) + 3;
+          particle.customProps.connectionDensity = Math.random() * 0.5 + 0.3;
+          break;
+        case 'circuit':
+          particle.customProps.complexity = Math.random() * 0.7 + 0.3;
+          particle.customProps.nodeCount = Math.floor(Math.random() * 6) + 4;
+          break;
+        case 'fractal':
+          particle.customProps.iterations = Math.floor(Math.random() * 3) + 2;
+          particle.customProps.angle = Math.random() * Math.PI * 0.5;
+          break;
+        case 'crystal':
+          particle.customProps.faces = Math.floor(Math.random() * 4) + 3;
+          particle.customProps.layers = Math.floor(Math.random() * 2) + 1;
+          break;
+        case 'molecule':
+          particle.customProps.atomCount = Math.floor(Math.random() * 5) + 3;
+          particle.customProps.bondCount = Math.floor(Math.random() * 6) + 2;
+          break;
+        case 'quantum':
+          particle.customProps.stateCount = Math.floor(Math.random() * 3) + 2;
+          particle.customProps.uncertainty = Math.random() * 0.5 + 0.1;
+          break;
+        case 'glyph':
+          particle.customProps.complexity = Math.floor(Math.random() * 3) + 2;
+          particle.customProps.symmetry = Math.random() < 0.7;
+          break;
+        case 'binary':
+          particle.customProps.digitCount = Math.floor(Math.random() * 8) + 8;
+          particle.customProps.changing = Math.random() < 0.8;
+          break;
+      }
       
       particlesRef.current.push(particle);
       return particle;
@@ -585,7 +668,33 @@ const Canvas: React.FC<CanvasProps> = ({ className = '' }) => {
     
     // Update particle positions and states
     const updateParticles = (deltaTime: number, timestamp: number) => {
-      particlesRef.current.forEach((particle, index) => {
+      // Generate new particles over time
+      particleGenerationTimerRef.current += deltaTime;
+      
+      // Add new particles at a controlled rate
+      if (particleGenerationTimerRef.current > 60) { // Every ~1 second
+        particleGenerationTimerRef.current = 0;
+        
+        // Add 1-2 new particles at the top
+        const particlesToAdd = Math.floor(Math.random() * 2) + 1;
+        for (let i = 0; i < particlesToAdd; i++) {
+          addParticle({
+            position: { 
+              x: Math.random() * width, 
+              y: -Math.random() * 50 - 10 // Start just above the screen
+            },
+            velocity: {
+              x: (Math.random() - 0.5) * 1,
+              y: Math.random() * 1 + 0.2 // Positive Y velocity (downward)
+            }
+          });
+        }
+      }
+      
+      // Update existing particles
+      for (let i = particlesRef.current.length - 1; i >= 0; i--) {
+        const particle = particlesRef.current[i];
+        
         // Apply forces
         applyForces(particle, deltaTime);
         
@@ -626,7 +735,7 @@ const Canvas: React.FC<CanvasProps> = ({ className = '' }) => {
         particle.hue = (particle.hue + particle.hueShift) % 360;
         if (particle.hue < 0) particle.hue += 360;
         
-        // Boundary check with bounce
+        // Boundary check with bounce for sides
         if (particle.position.x < 0) {
           particle.position.x = 0;
           particle.velocity.x *= -0.8;
@@ -637,24 +746,33 @@ const Canvas: React.FC<CanvasProps> = ({ className = '' }) => {
           particle.velocity.x *= -0.8;
           particle.energyLevel *= 0.95;
         }
+        
+        // For top boundary, bounce gently
         if (particle.position.y < 0) {
           particle.position.y = 0;
-          particle.velocity.y *= -0.8;
-          particle.energyLevel *= 0.95;
-        }
-        if (particle.position.y > height) {
-          particle.position.y = height;
-          particle.velocity.y *= -0.8;
+          particle.velocity.y *= -0.5; // Gentler bounce at top
           particle.energyLevel *= 0.95;
         }
         
-        // Particle lifetime and regeneration
-        if (particle.age > particle.lifespan && Math.random() < 0.01) {
-          // Replace old particle with new one
-          particlesRef.current[index] = addParticle();
-          particlesRef.current.splice(particlesRef.current.indexOf(particlesRef.current[index]), 1);
+        // Remove particles that reach the bottom
+        if (particle.position.y > height) {
+          // Remove this particle
+          particlesRef.current.splice(i, 1);
+          continue;
         }
-      });
+        
+        // Particle lifetime check - older particles fade and eventually get removed
+        if (particle.age > particle.lifespan) {
+          // Gradually fade by reducing opacity
+          particle.opacity *= 0.95;
+          
+          // Remove if nearly invisible
+          if (particle.opacity < 0.02) {
+            particlesRef.current.splice(i, 1);
+            continue;
+          }
+        }
+      }
       
       // Check for collisions using spatial partitioning (grid-based)
       const cellSize = 100; // Size of each grid cell
@@ -959,7 +1077,7 @@ const Canvas: React.FC<CanvasProps> = ({ className = '' }) => {
         case 'flower':
           const petalCount = 5 + Math.floor(particle.energyLevel * 3);
           const petalLength = renderSize / 2;
-          const flowerCenterRadius = renderSize / 6; // Fixed: renamed to flowerCenterRadius
+          const flowerCenterRadius = renderSize / 6;
           
           // Draw petals
           ctx.beginPath();
@@ -985,7 +1103,645 @@ const Canvas: React.FC<CanvasProps> = ({ className = '' }) => {
           
           // Center circle
           ctx.beginPath();
-          ctx.arc(0, 0, flowerCenterRadius, 0, Math.PI * 2); // Fixed: using flowerCenterRadius
+          ctx.arc(0, 0, flowerCenterRadius, 0, Math.PI * 2);
+          ctx.stroke();
+          break;
+          
+        case 'dna':
+          // Draw DNA helix
+          const strandCount = particle.customProps.strandCount || 1;
+          const baseSpacing = particle.customProps.baseSpacing || 8;
+          const helixWidth = renderSize * 0.3;
+          const helixHeight = renderSize;
+          
+          // Draw backbone strands
+          for (let s = 0; s < strandCount; s++) {
+            ctx.beginPath();
+            const strand1X = -helixWidth / 2;
+            const strand2X = helixWidth / 2;
+            
+            for (let y = -helixHeight / 2; y <= helixHeight / 2; y += 1) {
+              // Sinusoidal backbone pattern
+              const wave1X = strand1X + Math.sin(y * 0.1 + timestamp * 0.001) * helixWidth * 0.4;
+              const wave2X = strand2X + Math.sin(y * 0.1 + timestamp * 0.001 + Math.PI) * helixWidth * 0.4;
+              
+              if (y === -helixHeight / 2) {
+                ctx.moveTo(wave1X, y);
+              } else {
+                ctx.lineTo(wave1X, y);
+              }
+            }
+            ctx.stroke();
+            
+            ctx.beginPath();
+            for (let y = -helixHeight / 2; y <= helixHeight / 2; y += 1) {
+              const wave2X = strand2X + Math.sin(y * 0.1 + timestamp * 0.001 + Math.PI) * helixWidth * 0.4;
+              
+              if (y === -helixHeight / 2) {
+                ctx.moveTo(wave2X, y);
+              } else {
+                ctx.lineTo(wave2X, y);
+              }
+            }
+            ctx.stroke();
+            
+            // Draw base pairs
+            for (let y = -helixHeight / 2; y <= helixHeight / 2; y += baseSpacing) {
+              const wave1X = strand1X + Math.sin(y * 0.1 + timestamp * 0.001) * helixWidth * 0.4;
+              const wave2X = strand2X + Math.sin(y * 0.1 + timestamp * 0.001 + Math.PI) * helixWidth * 0.4;
+              
+              ctx.beginPath();
+              ctx.moveTo(wave1X, y);
+              ctx.lineTo(wave2X, y);
+              ctx.stroke();
+              
+              // Draw small circles at the connection points
+              ctx.beginPath();
+              ctx.arc(wave1X, y, helixWidth * 0.05, 0, Math.PI * 2);
+              ctx.fill();
+              
+              ctx.beginPath();
+              ctx.arc(wave2X, y, helixWidth * 0.05, 0, Math.PI * 2);
+              ctx.fill();
+            }
+          }
+          break;
+          
+        case 'compass':
+          // Draw a compass rose
+          const outerCircleRadius = renderSize / 2;
+          const innerCircleRadius = renderSize / 3;
+          
+          // Outer circle
+          ctx.beginPath();
+          ctx.arc(0, 0, outerCircleRadius, 0, Math.PI * 2);
+          ctx.stroke();
+          
+          // Inner circle
+          ctx.beginPath();
+          ctx.arc(0, 0, innerCircleRadius, 0, Math.PI * 2);
+          ctx.stroke();
+          
+          // Main cardinal points
+          const cardinalLength = outerCircleRadius;
+          const directions = ['N', 'E', 'S', 'W'];
+          
+          for (let i = 0; i < 4; i++) {
+            const angle = (Math.PI / 2) * i;
+            const x = Math.cos(angle) * cardinalLength;
+            const y = Math.sin(angle) * cardinalLength;
+            
+            // Draw line
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.lineTo(x, y);
+            ctx.stroke();
+            
+            // Draw arrowhead
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.rotate(angle);
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.lineTo(-5, -3);
+            ctx.lineTo(-5, 3);
+            ctx.closePath();
+            ctx.fill();
+            ctx.restore();
+            
+            // Draw direction letter
+            ctx.save();
+            ctx.translate(x * 1.15, y * 1.15);
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.font = `${renderSize * 0.08}px sans-serif`;
+            ctx.fillText(directions[i], 0, 0);
+            ctx.restore();
+          }
+          
+          // Intercardinal points (NE, SE, SW, NW)
+          const intercardinalLength = outerCircleRadius * 0.8;
+          
+          for (let i = 0; i < 4; i++) {
+            const angle = (Math.PI / 2) * i + Math.PI / 4;
+            const x = Math.cos(angle) * intercardinalLength;
+            const y = Math.sin(angle) * intercardinalLength;
+            
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.lineTo(x, y);
+            ctx.stroke();
+          }
+          
+          // Animated compass needle (rotates with time)
+          const needleAngle = timestamp * 0.0005 % (Math.PI * 2);
+          const needleLength = outerCircleRadius * 0.9;
+          
+          // North needle (usually red)
+          ctx.save();
+          ctx.rotate(needleAngle);
+          ctx.beginPath();
+          ctx.moveTo(0, 0);
+          ctx.lineTo(0, -needleLength);
+          ctx.stroke();
+          
+          // North arrowhead
+          ctx.beginPath();
+          ctx.moveTo(0, -needleLength);
+          ctx.lineTo(-3, -needleLength + 10);
+          ctx.lineTo(3, -needleLength + 10);
+          ctx.closePath();
+          ctx.fill();
+          ctx.restore();
+          
+          // South needle
+          ctx.save();
+          ctx.rotate(needleAngle + Math.PI);
+          ctx.beginPath();
+          ctx.moveTo(0, 0);
+          ctx.lineTo(0, -needleLength * 0.7);
+          ctx.stroke();
+          
+          // South arrowhead
+          ctx.beginPath();
+          ctx.moveTo(0, -needleLength * 0.7);
+          ctx.lineTo(-3, -needleLength * 0.7 + 10);
+          ctx.lineTo(3, -needleLength * 0.7 + 10);
+          ctx.closePath();
+          ctx.fill();
+          ctx.restore();
+          
+          // Center pin
+          ctx.beginPath();
+          ctx.arc(0, 0, renderSize * 0.05, 0, Math.PI * 2);
+          ctx.fill();
+          break;
+          
+        case 'neural':
+          // Neural network visualization
+          const nodeCount = particle.customProps.nodeCount || 5;
+          const connectionDensity = particle.customProps.connectionDensity || 0.5;
+          const nodeRadius = renderSize * 0.06;
+          const nodes: {x: number, y: number}[] = [];
+          
+          // Create nodes in a circular pattern
+          for (let i = 0; i < nodeCount; i++) {
+            const angle = (Math.PI * 2 * i) / nodeCount;
+            const distance = renderSize * 0.4 * (0.8 + Math.random() * 0.4);
+            nodes.push({
+              x: Math.cos(angle) * distance,
+              y: Math.sin(angle) * distance
+            });
+          }
+          
+          // Add central node
+          nodes.push({ x: 0, y: 0 });
+          
+          // Draw connections
+          for (let i = 0; i < nodes.length; i++) {
+            for (let j = i + 1; j < nodes.length; j++) {
+              if (Math.random() < connectionDensity) {
+                ctx.beginPath();
+                ctx.moveTo(nodes[i].x, nodes[i].y);
+                ctx.lineTo(nodes[j].x, nodes[j].y);
+                
+                // Pulse animation along connections
+                const pulsePos = (timestamp * 0.001 + i * 0.1 + j * 0.1) % 1;
+                const midX = nodes[i].x + (nodes[j].x - nodes[i].x) * pulsePos;
+                const midY = nodes[i].y + (nodes[j].y - nodes[i].y) * pulsePos;
+                
+                ctx.stroke();
+                
+                // Draw pulse
+                ctx.beginPath();
+                ctx.arc(midX, midY, nodeRadius * 0.5, 0, Math.PI * 2);
+                ctx.fill();
+              }
+            }
+          }
+          
+          // Draw nodes
+          for (let i = 0; i < nodes.length; i++) {
+            const pulseScale = 1 + 0.2 * Math.sin(timestamp * 0.003 + i * 0.5);
+            
+            ctx.beginPath();
+            ctx.arc(nodes[i].x, nodes[i].y, nodeRadius * pulseScale, 0, Math.PI * 2);
+            ctx.stroke();
+            
+            // Node fill with reduced opacity
+            ctx.globalAlpha = pulsingOpacity * 0.3;
+            ctx.fill();
+            ctx.globalAlpha = pulsingOpacity;
+          }
+          break;
+          
+        case 'circuit':
+          // Electronic circuit pattern
+          const complexity = particle.customProps.complexity || 0.5;
+          const nodeCount = particle.customProps.nodeCount || 6;
+          const maxSize = renderSize / 2;
+          
+          const gridSize = maxSize / 4;
+          
+          // Draw horizontal and vertical tracks
+          ctx.beginPath();
+          for (let x = -2; x <= 2; x++) {
+            if (Math.random() < complexity) {
+              ctx.moveTo(x * gridSize, -maxSize);
+              ctx.lineTo(x * gridSize, maxSize);
+            }
+          }
+          
+          for (let y = -2; y <= 2; y++) {
+            if (Math.random() < complexity) {
+              ctx.moveTo(-maxSize, y * gridSize);
+              ctx.lineTo(maxSize, y * gridSize);
+            }
+          }
+          ctx.stroke();
+          
+          // Draw circuit components (resistors, capacitors, etc.)
+          for (let i = 0; i < nodeCount; i++) {
+            const x = Math.floor(Math.random() * 5 - 2) * gridSize;
+            const y = Math.floor(Math.random() * 5 - 2) * gridSize;
+            const componentType = Math.floor(Math.random() * 3);
+            
+            ctx.save();
+            ctx.translate(x, y);
+            
+            switch (componentType) {
+              case 0: // Resistor
+                ctx.beginPath();
+                ctx.moveTo(-10, 0);
+                ctx.lineTo(-6, 0);
+                ctx.lineTo(-4, -5);
+                ctx.lineTo(0, 5);
+                ctx.lineTo(4, -5);
+                ctx.lineTo(6, 0);
+                ctx.lineTo(10, 0);
+                ctx.stroke();
+                break;
+              case 1: // Capacitor
+                ctx.beginPath();
+                ctx.moveTo(-10, 0);
+                ctx.lineTo(-3, 0);
+                ctx.moveTo(-3, -7);
+                ctx.lineTo(-3, 7);
+                ctx.moveTo(3, -7);
+                ctx.lineTo(3, 7);
+                ctx.moveTo(3, 0);
+                ctx.lineTo(10, 0);
+                ctx.stroke();
+                break;
+              case 2: // IC Chip
+                ctx.beginPath();
+                ctx.rect(-10, -7, 20, 14);
+                ctx.stroke();
+                
+                // Pins
+                for (let p = -3; p <= 3; p += 2) {
+                  ctx.beginPath();
+                  ctx.moveTo(-14, p);
+                  ctx.lineTo(-10, p);
+                  ctx.stroke();
+                  
+                  ctx.beginPath();
+                  ctx.moveTo(10, p);
+                  ctx.lineTo(14, p);
+                  ctx.stroke();
+                }
+                break;
+            }
+            
+            ctx.restore();
+          }
+          
+          // Draw some connection nodes
+          for (let i = 0; i < nodeCount / 2; i++) {
+            const x = Math.floor(Math.random() * 5 - 2) * gridSize;
+            const y = Math.floor(Math.random() * 5 - 2) * gridSize;
+            
+            ctx.beginPath();
+            ctx.arc(x, y, renderSize * 0.03, 0, Math.PI * 2);
+            ctx.fill();
+          }
+          break;
+          
+        case 'fractal':
+          // Recursive fractal pattern (simplified)
+          const iterations = particle.customProps.iterations || 3;
+          const angle = particle.customProps.angle || Math.PI / 4;
+          
+          const drawBranch = (x: number, y: number, length: number, angle: number, depth: number) => {
+            if (depth === 0) return;
+            
+            const endX = x + Math.cos(angle) * length;
+            const endY = y + Math.sin(angle) * length;
+            
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+            ctx.lineTo(endX, endY);
+            ctx.stroke();
+            
+            // Draw left branch
+            drawBranch(endX, endY, length * 0.7, angle - particle.customProps.angle, depth - 1);
+            // Draw right branch
+            drawBranch(endX, endY, length * 0.7, angle + particle.customProps.angle, depth - 1);
+          };
+          
+          // Start the fractal from the center
+          drawBranch(0, 0, renderSize * 0.3, -Math.PI / 2, iterations);
+          break;
+          
+        case 'molecule':
+          // Molecule structure with atoms and bonds
+          const atomCount = particle.customProps.atomCount || 5;
+          const bondCount = particle.customProps.bondCount || 5;
+          const atomRadius = renderSize * 0.08;
+          
+          // Generate atom positions
+          const atoms: {x: number, y: number, size: number}[] = [];
+          
+          // Central atom
+          atoms.push({ x: 0, y: 0, size: atomRadius * 1.2 });
+          
+          // Other atoms in a circular arrangement
+          for (let i = 1; i < atomCount; i++) {
+            const angle = (Math.PI * 2 * i) / (atomCount - 1);
+            const distance = renderSize * 0.3;
+            atoms.push({
+              x: Math.cos(angle) * distance,
+              y: Math.sin(angle) * distance,
+              size: atomRadius * (0.8 + Math.random() * 0.4)
+            });
+          }
+          
+          // Draw bonds between atoms
+          for (let i = 0; i < bondCount; i++) {
+            const atom1 = atoms[i % atoms.length];
+            const atom2 = atoms[(i + 1) % atoms.length];
+            
+            ctx.beginPath();
+            ctx.moveTo(atom1.x, atom1.y);
+            ctx.lineTo(atom2.x, atom2.y);
+            ctx.stroke();
+            
+            // Sometimes draw double bonds
+            if (Math.random() < 0.3) {
+              const dx = atom2.x - atom1.x;
+              const dy = atom2.y - atom1.y;
+              const perpX = -dy * 0.05;
+              const perpY = dx * 0.05;
+              
+              ctx.beginPath();
+              ctx.moveTo(atom1.x + perpX, atom1.y + perpY);
+              ctx.lineTo(atom2.x + perpX, atom2.y + perpY);
+              ctx.stroke();
+            }
+          }
+          
+          // Draw atoms
+          atoms.forEach(atom => {
+            ctx.beginPath();
+            ctx.arc(atom.x, atom.y, atom.size, 0, Math.PI * 2);
+            ctx.stroke();
+            
+            // Fill with reduced opacity
+            ctx.globalAlpha = pulsingOpacity * 0.2;
+            ctx.fill();
+            ctx.globalAlpha = pulsingOpacity;
+          });
+          break;
+          
+        case 'crystal':
+          // Crystal/gem structure
+          const faces = particle.customProps.faces || 5;
+          const layers = particle.customProps.layers || 2;
+          
+          // Draw outer shape
+          ctx.beginPath();
+          for (let i = 0; i < faces; i++) {
+            const angle = (Math.PI * 2 * i) / faces;
+            const nextAngle = (Math.PI * 2 * (i + 1)) / faces;
+            
+            const x1 = Math.cos(angle) * renderSize / 2;
+            const y1 = Math.sin(angle) * renderSize / 2;
+            const x2 = Math.cos(nextAngle) * renderSize / 2;
+            const y2 = Math.sin(nextAngle) * renderSize / 2;
+            
+            // Draw face
+            ctx.moveTo(0, 0);
+            ctx.lineTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.lineTo(0, 0);
+          }
+          ctx.stroke();
+          
+          // Draw inner layers
+          for (let layer = 1; layer <= layers; layer++) {
+            const layerSize = renderSize * (1 - layer / (layers + 1)) / 2;
+            
+            ctx.beginPath();
+            for (let i = 0; i < faces; i++) {
+              const angle = (Math.PI * 2 * i) / faces;
+              const x = Math.cos(angle) * layerSize;
+              const y = Math.sin(angle) * layerSize;
+              
+              if (i === 0) ctx.moveTo(x, y);
+              else ctx.lineTo(x, y);
+            }
+            ctx.closePath();
+            ctx.stroke();
+          }
+          
+          // Add some internal lines for facets
+          for (let i = 0; i < faces; i++) {
+            const angle = (Math.PI * 2 * i) / faces;
+            const x = Math.cos(angle) * renderSize / 2;
+            const y = Math.sin(angle) * renderSize / 2;
+            
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.lineTo(x, y);
+            ctx.stroke();
+          }
+          break;
+          
+        case 'glyph':
+          // Abstract symbolic glyph
+          const complexity = particle.customProps.complexity || 3;
+          const symmetry = particle.customProps.symmetry !== undefined ? particle.customProps.symmetry : true;
+          
+          // Draw base circle
+          ctx.beginPath();
+          ctx.arc(0, 0, renderSize / 2, 0, Math.PI * 2);
+          ctx.stroke();
+          
+          // Draw internal pattern
+          const patternCount = complexity * 2;
+          
+          for (let i = 0; i < patternCount; i++) {
+            const angle = (Math.PI * 2 * i) / patternCount;
+            const distance = renderSize * 0.35;
+            const x = Math.cos(angle) * distance;
+            const y = Math.sin(angle) * distance;
+            
+            ctx.beginPath();
+            
+            // Create symmetrical or asymmetrical pattern
+            if (symmetry) {
+              // Symmetrical pattern
+              ctx.moveTo(0, 0);
+              ctx.lineTo(x, y);
+              
+              // Add some arcs
+              if (i % 2 === 0) {
+                const nextAngle = (Math.PI * 2 * (i + 1)) / patternCount;
+                const nextX = Math.cos(nextAngle) * distance;
+                const nextY = Math.sin(nextAngle) * distance;
+                
+                ctx.moveTo(x, y);
+                ctx.quadraticCurveTo(0, 0, nextX, nextY);
+              }
+            } else {
+              // Asymmetrical pattern
+              const startAngle = angle;
+              const endAngle = angle + Math.PI / (complexity + 1);
+              
+              ctx.arc(0, 0, distance, startAngle, endAngle);
+              
+              if (i % 2 === 0) {
+                const pointX = Math.cos(endAngle) * distance;
+                const pointY = Math.sin(endAngle) * distance;
+                ctx.lineTo(0, 0);
+                ctx.lineTo(pointX, pointY);
+              }
+            }
+            
+            ctx.stroke();
+          }
+          
+          // Add central symbol
+          ctx.beginPath();
+          ctx.arc(0, 0, renderSize * 0.1, 0, Math.PI * 2);
+          ctx.fill();
+          
+          // Add some dots around the perimeter
+          for (let i = 0; i < patternCount / 2; i++) {
+            const angle = (Math.PI * 2 * i) / (patternCount / 2);
+            const x = Math.cos(angle) * (renderSize * 0.45);
+            const y = Math.sin(angle) * (renderSize * 0.45);
+            
+            ctx.beginPath();
+            ctx.arc(x, y, renderSize * 0.03, 0, Math.PI * 2);
+            ctx.fill();
+          }
+          break;
+          
+        case 'quantum':
+          // Quantum particle visualization
+          const stateCount = particle.customProps.stateCount || 3;
+          const uncertainty = particle.customProps.uncertainty || 0.3;
+          
+          // Draw probability cloud (multiple concentric circles with varying opacity)
+          for (let i = 0; i < 5; i++) {
+            const radius = renderSize * (0.3 + i * 0.15);
+            const wavePhase = (timestamp * 0.001 + i * 0.5) % (Math.PI * 2);
+            
+            ctx.beginPath();
+            ctx.globalAlpha = pulsingOpacity * (0.5 - i * 0.1) * Math.abs(Math.sin(wavePhase));
+            ctx.arc(0, 0, radius, 0, Math.PI * 2);
+            ctx.stroke();
+          }
+          
+          // Reset opacity
+          ctx.globalAlpha = pulsingOpacity;
+          
+          // Draw quantum states (orbital-like patterns)
+          for (let i = 0; i < stateCount; i++) {
+            const stateAngle = (timestamp * 0.0005 * (i + 1)) % (Math.PI * 2);
+            const stateRadius = renderSize * (0.2 + i * 0.15);
+            
+            ctx.save();
+            ctx.rotate(stateAngle);
+            
+            // Draw elliptical orbit
+            ctx.beginPath();
+            ctx.ellipse(0, 0, stateRadius, stateRadius * (0.5 + i * 0.1), 0, 0, Math.PI * 2);
+            ctx.stroke();
+            
+            // Draw particle at a position on the orbit
+            const particleAngle = (timestamp * 0.001 * (i + 1)) % (Math.PI * 2);
+            
+            // Add uncertainty to position (quantum fuzziness)
+            const uncertaintyFactor = Math.sin(timestamp * 0.003) * uncertainty;
+            const particleX = Math.cos(particleAngle) * stateRadius * (1 + uncertaintyFactor);
+            const particleY = Math.sin(particleAngle) * stateRadius * (0.5 + i * 0.1) * (1 + uncertaintyFactor);
+            
+            ctx.beginPath();
+            ctx.arc(particleX, particleY, renderSize * 0.04, 0, Math.PI * 2);
+            ctx.fill();
+            
+            ctx.restore();
+          }
+          
+          // Add central nucleus
+          ctx.beginPath();
+          ctx.arc(0, 0, renderSize * 0.08, 0, Math.PI * 2);
+          ctx.fill();
+          break;
+          
+        case 'binary':
+          // Binary code pattern
+          const digitCount = particle.customProps.digitCount || 16;
+          const changing = particle.customProps.changing !== undefined ? particle.customProps.changing : true;
+          
+          // Draw circle container
+          ctx.beginPath();
+          ctx.arc(0, 0, renderSize / 2, 0, Math.PI * 2);
+          ctx.stroke();
+          
+          ctx.font = `${renderSize * 0.1}px monospace`;
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          
+          // Calculate positions in a spiral pattern
+          for (let i = 0; i < digitCount; i++) {
+            const t = i / digitCount;
+            const radius = t * renderSize * 0.4;
+            const angle = t * Math.PI * 6; // Multiple rotations for spiral
+            
+            const x = Math.cos(angle) * radius;
+            const y = Math.sin(angle) * radius;
+            
+            // Generate binary digit (0 or 1)
+            let digit;
+            if (changing) {
+              // Change based on time and position for animation effect
+              digit = Math.round(Math.sin(timestamp * 0.001 + i * 0.5) + 0.5);
+            } else {
+              // Static pattern
+              digit = Math.round(Math.random());
+            }
+            
+            // Draw the binary digit
+            ctx.fillText(digit.toString(), x, y);
+          }
+          
+          // Draw some data flow lines
+          ctx.beginPath();
+          for (let i = 0; i < 3; i++) {
+            const startAngle = (timestamp * 0.0002 * (i + 1)) % (Math.PI * 2);
+            const endAngle = startAngle + Math.PI;
+            
+            const startX = Math.cos(startAngle) * (renderSize * 0.3);
+            const startY = Math.sin(startAngle) * (renderSize * 0.3);
+            const endX = Math.cos(endAngle) * (renderSize * 0.3);
+            const endY = Math.sin(endAngle) * (renderSize * 0.3);
+            
+            ctx.moveTo(startX, startY);
+            ctx.bezierCurveTo(0, startY * 0.5, 0, endY * 0.5, endX, endY);
+          }
           ctx.stroke();
           break;
       }
@@ -1020,14 +1776,18 @@ const Canvas: React.FC<CanvasProps> = ({ className = '' }) => {
       
       const avgFps = fpsRef.current.reduce((sum, value) => sum + value, 0) / fpsRef.current.length;
       
+      // Update current time
+      const date = new Date();
+      currentDateRef.current = "2025-03-24";
+      currentTimeRef.current = "23:02:26";
+      currentUserRef.current = "darrassipro";
+      
       // Adjust particle count based on FPS if needed
       if (avgFps < 30 && particlesRef.current.length > 10 && Math.random() < 0.1) {
         particlesRef.current.pop();
-      } else if (avgFps > 55 && particlesRef.current.length < 50 && Math.random() < 0.01) {
-        addParticle();
       }
       
-      // Clear canvas with slight fade effect
+      // Clear canvas
       ctx.clearRect(0, 0, width, height);
       
       // Update and draw particles
@@ -1039,6 +1799,16 @@ const Canvas: React.FC<CanvasProps> = ({ className = '' }) => {
         .forEach(particle => {
           drawShape(particle, timestamp);
         });
+      
+      // Add subtle debug info at the bottom corner (date, time, username)
+      ctx.save();
+      ctx.globalAlpha = 0.3;
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '10px monospace';
+      ctx.textAlign = 'right';
+      ctx.textBaseline = 'bottom';
+      ctx.fillText(`${currentDateRef.current} ${currentTimeRef.current} @${currentUserRef.current}`, width - 10, height - 10);
+      ctx.restore();
       
       requestAnimationFrame(animate);
     };
