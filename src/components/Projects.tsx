@@ -127,178 +127,270 @@ const getColorClass = (color: string): string => {
   }
 };
 
-// Decorative SVG patterns for project borders
+// Meaningful decorative SVG patterns for project borders
 const getBorderDecoration = (index: number) => {
   const patterns = [
-    // Database project (index 0)
+    // Stage Management Project (index 0) - Database and University themed
     {
       topLeft: (
-        <svg className="absolute -top-5 -left-5 w-12 h-12 text-primary/30 transform rotate-6">
-          <path d="M10 5v10a5 5 0 0 0 5 5h5" stroke="currentColor" fill="none" strokeWidth="1.5" strokeLinecap="round"/>
-          <circle cx="20" cy="20" r="3" fill="currentColor"/>
-          <circle cx="10" cy="5" r="3" fill="currentColor"/>
+        <svg className="absolute -top-5 -left-5 w-16 h-16 text-primary/40 transform rotate-6">
+          <rect x="6" y="2" width="8" height="5" rx="1" stroke="currentColor" fill="none" strokeWidth="1" />
+          <rect x="6" y="9" width="8" height="5" rx="1" stroke="currentColor" fill="none" strokeWidth="1" />
+          <line x1="10" y1="7" x2="10" y2="9" stroke="currentColor" strokeWidth="1" />
+          <circle cx="10" cy="11.5" r="0.5" fill="currentColor" />
+          <text x="7.5" y="5" fontSize="2" fontFamily="monospace" fill="currentColor">ID</text>
+          <text x="7.5" y="12" fontSize="2" fontFamily="monospace" fill="currentColor">FK</text>
         </svg>
       ),
       topRight: (
-        <svg className="absolute -top-2 -right-2 w-8 h-8 text-primary/30">
-          <circle cx="4" cy="4" r="4" fill="currentColor"/>
-          <path d="M4 4L12 12" stroke="currentColor" strokeWidth="1.5"/>
+        <svg className="absolute -top-5 -right-5 w-16 h-16 text-primary/40">
+          <path d="M8,2 L12,2 L12,4 L14,4 L14,5 L12,5 L12,7 L8,7 L8,5 L6,5 L6,4 L8,4 Z" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <circle cx="10" cy="10" r="2" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <path d="M8,11 L12,11 L12,13 L8,13 Z" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <path d="M9,13 L9,14 L11,14 L11,13" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <text x="8.5" y="12.5" fontSize="1.5" fontFamily="monospace" fill="currentColor">UPF</text>
         </svg>
       ),
       bottomLeft: (
-        <svg className="absolute -bottom-3 -left-3 w-10 h-10 text-primary/30 transform -rotate-15">
-          <rect x="2" y="2" width="6" height="6" fill="none" stroke="currentColor" strokeWidth="1.5"/>
-          <circle cx="5" cy="5" r="1" fill="currentColor"/>
+        <svg className="absolute -bottom-5 -left-5 w-16 h-16 text-primary/40">
+          <path d="M5,5 L7,7 L9,5 L11,7 L13,5" stroke="currentColor" fill="none" strokeWidth="0.5" strokeDasharray="1 0.5" />
+          <circle cx="5" cy="5" r="1" fill="currentColor" />
+          <circle cx="9" cy="5" r="1" fill="currentColor" />
+          <circle cx="13" cy="5" r="1" fill="currentColor" />
+          <circle cx="7" cy="7" r="1" fill="currentColor" />
+          <circle cx="11" cy="7" r="1" fill="currentColor" />
+          <text x="4" y="12" fontSize="2" fontFamily="monospace" fill="currentColor">Doctrine</text>
         </svg>
       ),
       bottomRight: (
-        <svg className="absolute -bottom-5 -right-5 w-12 h-12 text-primary/30">
-          <path d="M1 20C1 9 9 1 20 1" stroke="currentColor" fill="none" strokeWidth="1.5" strokeDasharray="2 2"/>
-          <circle cx="20" cy="1" r="1" fill="currentColor"/>
+        <svg className="absolute -bottom-5 -right-5 w-16 h-16 text-primary/40">
+          <path d="M2,8 C5,3 9,3 12,8" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <path d="M2,8 C5,13 9,13 12,8" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <line x1="7" y1="2" x2="7" y2="14" stroke="currentColor" strokeWidth="0.5" strokeDasharray="1 0.5" />
+          <circle cx="7" cy="8" r="1.5" fill="currentColor" fillOpacity="0.2" stroke="currentColor" strokeWidth="0.5" />
+          <text x="5" y="8.5" fontSize="1.8" fontFamily="monospace" fill="currentColor">S</text>
         </svg>
       ),
     },
     
-    // Spa project (index 1)
+    // Spa Application (index 1) - Spa & Spring Boot themed
     {
       topLeft: (
-        <svg className="absolute -top-3 -left-3 w-10 h-10 text-primary/30 transform">
-          <path d="M2 8C2 4.5 4.5 2 8 2" stroke="currentColor" strokeWidth="1.5" fill="none"/>
-          <path d="M5 5L2 2" stroke="currentColor" strokeWidth="1.5"/>
-          <path d="M8 2L2 8" stroke="currentColor" strokeWidth="1.5" strokeDasharray="1 1"/>
+        <svg className="absolute -top-5 -left-5 w-16 h-16 text-primary/40">
+          <path d="M6,8 C12,4 12,12 6,8 Z" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <path d="M10,8 C16,4 16,12 10,8 Z" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <path d="M6,8 C6,11 10,11 10,8" stroke="currentColor" fill="none" strokeWidth="0.5" strokeDasharray="0.5 0.5" />
+          <circle cx="8" cy="8" r="0.5" fill="currentColor" />
+          <text x="5" y="14" fontSize="2" fontFamily="serif" fill="currentColor">Wellness</text>
         </svg>
       ),
       topRight: (
-        <svg className="absolute -top-4 -right-4 w-12 h-12 text-primary/30">
-          <path d="M5 20C12 15 15 12 20 5" stroke="currentColor" fill="none" strokeWidth="1.5"/>
-          <path d="M16 4C16 7.5 19.5 8 20 4.5" stroke="currentColor" fill="none" strokeWidth="1.5"/>
+        <svg className="absolute -top-5 -right-5 w-16 h-16 text-primary/40">
+          <path d="M8,2 C3,5 13,9 8,12" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <path d="M5,7 C6,4 10,4 11,7" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <path d="M5,7 C6,10 10,10 11,7" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <circle cx="8" cy="7" r="2" fill="none" stroke="currentColor" strokeWidth="0.5" />
+          <text x="7" y="7.5" fontSize="1.5" fontFamily="monospace" fill="currentColor">JPA</text>
         </svg>
       ),
       bottomLeft: (
-        <svg className="absolute -bottom-4 -left-4 w-10 h-10 text-primary/30">
-          <path d="M8 2L2 8" stroke="currentColor" strokeWidth="1.5" fill="none"/>
-          <circle cx="8" cy="2" r="2" fill="currentColor" opacity="0.5"/>
-          <circle cx="2" cy="8" r="2" fill="currentColor" opacity="0.5"/>
+        <svg className="absolute -bottom-5 -left-5 w-16 h-16 text-primary/40">
+          <path d="M10,3 C6,3 6,7 8,8 C10,9 10,13 6,13" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <circle cx="10" cy="3" r="0.5" fill="currentColor" />
+          <circle cx="6" cy="13" r="0.5" fill="currentColor" />
+          <path d="M4,11 L12,5" stroke="currentColor" strokeWidth="0.3" strokeDasharray="0.5 0.5" />
+          <text x="3" y="7" fontSize="2" fontFamily="serif" fill="currentColor">Spring</text>
         </svg>
       ),
       bottomRight: (
-        <svg className="absolute -bottom-3 -right-3 w-8 h-8 text-primary/30">
-          <path d="M1 1L7 7" stroke="currentColor" strokeWidth="1.5"/>
-          <circle cx="4" cy="4" r="3" stroke="currentColor" fill="none" strokeWidth="1.5"/>
+        <svg className="absolute -bottom-5 -right-5 w-16 h-16 text-primary/40">
+          <rect x="5" y="5" width="8" height="6" rx="1" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <line x1="5" y1="7" x2="13" y2="7" stroke="currentColor" strokeWidth="0.5" />
+          <circle cx="7" cy="6" r="0.5" fill="currentColor" />
+          <path d="M6,9 L12,9" stroke="currentColor" strokeWidth="0.5" />
+          <path d="M6,10 L10,10" stroke="currentColor" strokeWidth="0.5" />
+          <text x="5" y="13" fontSize="1.8" fontFamily="monospace" fill="currentColor">MySQL</text>
         </svg>
       ),
     },
     
-    // Pylône Électrique project (index 2)
+    // Pylône Électrique project (index 2) - Electrical towers & .NET themed
     {
       topLeft: (
-        <svg className="absolute -top-3 -left-3 w-10 h-10 text-primary/30">
-          <path d="M1 9L9 1M5 1L9 1L9 5" stroke="currentColor" strokeWidth="1.5" fill="none"/>
-          <path d="M3 5L7 9" stroke="currentColor" strokeWidth="1.5" strokeDasharray="2 1"/>
+        <svg className="absolute -top-5 -left-5 w-16 h-16 text-primary/40">
+          <path d="M8,2 L4,14" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <path d="M8,2 L12,14" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <path d="M5,8 L11,8" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <path d="M6,5 L10,5" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <path d="M6,11 L10,11" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <circle cx="8" cy="2" r="1" fill="currentColor" fillOpacity="0.3" />
+          <text x="3" y="16" fontSize="2" fontFamily="monospace" fill="currentColor">Pylône</text>
         </svg>
       ),
       topRight: (
-        <svg className="absolute -top-3 -right-3 w-10 h-10 text-primary/30 transform rotate-90">
-          <path d="M1 9L9 1M5 1L9 1L9 5" stroke="currentColor" strokeWidth="1.5" fill="none"/>
-          <path d="M3 5L7 9" stroke="currentColor" strokeWidth="1.5" strokeDasharray="2 1"/>
+        <svg className="absolute -top-5 -right-5 w-16 h-16 text-primary/40">
+          <path d="M3,8 L13,8" stroke="currentColor" strokeWidth="0.5" />
+          <path d="M3,6 L13,6" stroke="currentColor" strokeWidth="0.5" />
+          <path d="M3,10 L13,10" stroke="currentColor" strokeWidth="0.5" />
+          <circle cx="5" cy="6" r="0.8" fill="currentColor" fillOpacity="0.3" />
+          <circle cx="5" cy="8" r="0.8" fill="currentColor" fillOpacity="0.3" />
+          <circle cx="5" cy="10" r="0.8" fill="currentColor" fillOpacity="0.3" />
+          <circle cx="8" cy="6" r="0.8" fill="currentColor" fillOpacity="0.3" />
+          <circle cx="8" cy="8" r="0.8" fill="currentColor" fillOpacity="0.3" />
+          <circle cx="8" cy="10" r="0.8" fill="currentColor" fillOpacity="0.3" />
+          <text x="4" y="14" fontSize="2" fontFamily="monospace" fill="currentColor">C#.NET</text>
         </svg>
       ),
       bottomLeft: (
-        <svg className="absolute -bottom-3 -left-3 w-10 h-10 text-primary/30 transform -rotate-90">
-          <path d="M1 9L9 1M5 1L9 1L9 5" stroke="currentColor" strokeWidth="1.5" fill="none"/>
-          <path d="M3 5L7 9" stroke="currentColor" strokeWidth="1.5" strokeDasharray="2 1"/>
+        <svg className="absolute -bottom-5 -left-5 w-16 h-16 text-primary/40">
+          <path d="M4,4 L12,4 L12,12 L4,12 Z" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <path d="M6,6 L10,6 L10,10 L6,10 Z" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <path d="M4,4 L6,6" stroke="currentColor" strokeWidth="0.5" />
+          <path d="M12,4 L10,6" stroke="currentColor" strokeWidth="0.5" />
+          <path d="M4,12 L6,10" stroke="currentColor" strokeWidth="0.5" />
+          <path d="M12,12 L10,10" stroke="currentColor" strokeWidth="0.5" />
+          <text x="3" y="15" fontSize="1.6" fontFamily="monospace" fill="currentColor">Entity</text>
         </svg>
       ),
       bottomRight: (
-        <svg className="absolute -bottom-3 -right-3 w-10 h-10 text-primary/30 transform rotate-180">
-          <path d="M1 9L9 1M5 1L9 1L9 5" stroke="currentColor" strokeWidth="1.5" fill="none"/>
-          <path d="M3 5L7 9" stroke="currentColor" strokeWidth="1.5" strokeDasharray="2 1"/>
+        <svg className="absolute -bottom-5 -right-5 w-16 h-16 text-primary/40">
+          <path d="M3,8 L8,3 L13,8 L8,13 Z" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <path d="M5,8 L8,5 L11,8 L8,11 Z" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <path d="M3,8 L5,8" stroke="currentColor" strokeWidth="0.5" />
+          <path d="M8,3 L8,5" stroke="currentColor" strokeWidth="0.5" />
+          <path d="M13,8 L11,8" stroke="currentColor" strokeWidth="0.5" />
+          <path d="M8,13 L8,11" stroke="currentColor" strokeWidth="0.5" />
+          <text x="6" y="8.5" fontSize="1.5" fontFamily="monospace" fill="currentColor">EF</text>
         </svg>
       ),
     },
     
-    // TeethSeg Frontend project (index 3)
+    // TeethSeg Frontend project (index 3) - Teeth & React/UI themed
     {
       topLeft: (
-        <svg className="absolute -top-3 -left-3 w-8 h-8 text-primary/30">
-          <path d="M1 4L4 1L7 4L4 7L1 4Z" stroke="currentColor" fill="none" strokeWidth="1.5"/>
+        <svg className="absolute -top-5 -left-5 w-16 h-16 text-primary/40">
+          <circle cx="8" cy="8" r="3" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <circle cx="8" cy="8" r="6" stroke="currentColor" fill="none" strokeWidth="0.5" strokeDasharray="0.5 0.5" />
+          <circle cx="8" cy="8" r="1" fill="currentColor" fillOpacity="0.3" />
+          <path d="M5,8 C5,9.7 6.3,11 8,11 C9.7,11 11,9.7 11,8" stroke="currentColor" strokeWidth="0.3" strokeDasharray="0.5 0.3" />
+          <text x="5.5" y="15" fontSize="2" fontFamily="monospace" fill="currentColor">React</text>
         </svg>
       ),
       topRight: (
-        <svg className="absolute -top-4 -right-4 w-10 h-10 text-primary/30">
-          <path d="M2 8L8 2" stroke="currentColor" strokeWidth="1.5"/>
-          <path d="M6 2H8V4" stroke="currentColor" strokeWidth="1.5"/>
-          <circle cx="5" cy="5" r="3" fill="none" stroke="currentColor" strokeWidth="1" strokeDasharray="2 2"/>
+        <svg className="absolute -top-5 -right-5 w-16 h-16 text-primary/40">
+          <path d="M4,7 L8,3 L12,7" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <path d="M4,8 L8,12 L12,8" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <path d="M8,3 L8,12" stroke="currentColor" strokeWidth="0.5" strokeDasharray="1 0.5" />
+          <text x="4" y="15" fontSize="1.8" fontFamily="monospace" fill="currentColor">TeethSeg</text>
         </svg>
       ),
       bottomLeft: (
-        <svg className="absolute -bottom-5 -left-5 w-12 h-12 text-primary/30">
-          <path d="M3 9L9 3" stroke="currentColor" strokeWidth="1.5"/>
-          <path d="M2 6L6 2" stroke="currentColor" strokeWidth="1" strokeDasharray="1 1"/>
-          <path d="M6 10L10 6" stroke="currentColor" strokeWidth="1" strokeDasharray="1 1"/>
+        <svg className="absolute -bottom-5 -left-5 w-16 h-16 text-primary/40">
+          <path d="M7,4 C4,4 4,8 4,8 C4,12 7,12 7,12" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <path d="M9,4 C12,4 12,8 12,8 C12,12 9,12 9,12" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <path d="M7,8 L9,8" stroke="currentColor" strokeWidth="0.5" />
+          <circle cx="7" cy="8" r="0.5" fill="currentColor" />
+          <circle cx="9" cy="8" r="0.5" fill="currentColor" />
+          <text x="4" y="15" fontSize="1.8" fontFamily="monospace" fill="currentColor">TailwindCSS</text>
         </svg>
       ),
       bottomRight: (
-        <svg className="absolute -bottom-2 -right-2 w-8 h-8 text-primary/30">
-          <path d="M6 2H2V6" stroke="currentColor" fill="none" strokeWidth="1.5"/>
-          <circle cx="4" cy="4" r="2" stroke="currentColor" fill="none" strokeWidth="1"/>
+        <svg className="absolute -bottom-5 -right-5 w-16 h-16 text-primary/40">
+          <path d="M5,4 C3,7 3,9 5,12" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <path d="M7,4 C9,7 9,9 7,12" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <path d="M9,4 C11,7 11,9 9,12" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <line x1="4" y1="6" x2="10" y2="6" stroke="currentColor" strokeWidth="0.3" />
+          <line x1="4" y1="8" x2="10" y2="8" stroke="currentColor" strokeWidth="0.3" />
+          <line x1="4" y1="10" x2="10" y2="10" stroke="currentColor" strokeWidth="0.3" />
+          <text x="6" y="15" fontSize="1.8" fontFamily="monospace" fill="currentColor">Vite</text>
         </svg>
       ),
     },
     
-    // BI Application project (index 4)
+    // BI Application project (index 4) - Data visualization themed
     {
       topLeft: (
-        <svg className="absolute -top-3 -left-3 w-10 h-10 text-primary/30">
-          <path d="M2 8L5 5L8 8" stroke="currentColor" fill="none" strokeWidth="1.5"/>
-          <path d="M5 5V9" stroke="currentColor" strokeWidth="1.5"/>
+        <svg className="absolute -top-5 -left-5 w-16 h-16 text-primary/40">
+          <path d="M5,12 L5,5 L8,8 L11,4" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <circle cx="5" cy="5" r="0.8" fill="currentColor" />
+          <circle cx="8" cy="8" r="0.8" fill="currentColor" />
+          <circle cx="11" cy="4" r="0.8" fill="currentColor" />
+          <rect x="4" y="12" width="8" height="0.5" stroke="currentColor" fill="currentColor" />
+          <text x="3" y="15" fontSize="2" fontFamily="monospace" fill="currentColor">Talend</text>
         </svg>
       ),
       topRight: (
-        <svg className="absolute -top-4 -right-4 w-12 h-12 text-primary/30">
-          <path d="M2 2L6 6L10 2" stroke="currentColor" fill="none" strokeWidth="1.5"/>
-          <circle cx="6" cy="6" r="2" fill="currentColor" fillOpacity="0.3"/>
+        <svg className="absolute -top-5 -right-5 w-16 h-16 text-primary/40">
+          <rect x="4" y="4" width="8" height="8" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <path d="M4,8 L12,8" stroke="currentColor" strokeWidth="0.5" />
+          <path d="M8,4 L8,12" stroke="currentColor" strokeWidth="0.5" />
+          <circle cx="6" cy="6" r="1" fill="currentColor" fillOpacity="0.3" />
+          <circle cx="10" cy="6" r="1.5" fill="currentColor" fillOpacity="0.3" />
+          <circle cx="6" cy="10" r="0.8" fill="currentColor" fillOpacity="0.3" />
+          <circle cx="10" cy="10" r="1.2" fill="currentColor" fillOpacity="0.3" />
+          <text x="3" y="15" fontSize="2" fontFamily="monospace" fill="currentColor">Power BI</text>
         </svg>
       ),
       bottomLeft: (
-        <svg className="absolute -bottom-4 -left-4 w-12 h-12 text-primary/30">
-          <path d="M3 7L7 3" stroke="currentColor" strokeWidth="1.5"/>
-          <path d="M2 8L8 2" stroke="currentColor" strokeWidth="1" strokeDasharray="2 2"/>
-          <circle cx="5" cy="5" r="3" stroke="currentColor" fill="none" strokeWidth="1"/>
+        <svg className="absolute -bottom-5 -left-5 w-16 h-16 text-primary/40">
+          <path d="M3,8 L5,6 L7,9 L9,5 L11,7 L13,4" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <circle cx="5" cy="6" r="0.5" fill="currentColor" />
+          <circle cx="7" cy="9" r="0.5" fill="currentColor" />
+          <circle cx="9" cy="5" r="0.5" fill="currentColor" />
+          <circle cx="11" cy="7" r="0.5" fill="currentColor" />
+          <circle cx="13" cy="4" r="0.5" fill="currentColor" />
+          <text x="5" y="13" fontSize="1.8" fontFamily="monospace" fill="currentColor">ETL</text>
         </svg>
       ),
       bottomRight: (
-        <svg className="absolute -bottom-3 -right-3 w-10 h-10 text-primary/30">
-          <path d="M8 2L2 8" stroke="currentColor" strokeWidth="1.5"/>
-          <path d="M5 2H8V5" stroke="currentColor" strokeWidth="1.5" fill="none"/>
+        <svg className="absolute -bottom-5 -right-5 w-16 h-16 text-primary/40">
+          <path d="M4,12 C4,6 12,12 12,6" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <circle cx="4" cy="12" r="0.8" fill="currentColor" fillOpacity="0.3" />
+          <circle cx="12" cy="6" r="0.8" fill="currentColor" fillOpacity="0.3" />
+          <path d="M4,9 C4,6 12,9 12,6" stroke="currentColor" fill="none" strokeWidth="0.5" strokeDasharray="0.5 0.5" />
+          <text x="2" y="15" fontSize="1.8" fontFamily="monospace" fill="currentColor">Analytics</text>
         </svg>
       ),
     },
     
-    // Barbershop project (index 5)
+    // Barbershop project (index 5) - Barbershop themed
     {
       topLeft: (
-        <svg className="absolute -top-4 -left-4 w-10 h-10 text-primary/30">
-          <path d="M2 5C2 3 3 2 5 2" stroke="currentColor" fill="none" strokeWidth="1.5" strokeLinecap="round"/>
-          <path d="M2 8L8 2" stroke="currentColor" strokeWidth="1" strokeDasharray="2 1"/>
+        <svg className="absolute -top-5 -left-5 w-16 h-16 text-primary/40">
+          <path d="M4,12 C4,6 8,4 12,6" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <path d="M4,10 C4,5 8,3 12,5" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <path d="M4,8 C4,4 8,2 12,4" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <circle cx="8" cy="8" r="2" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <text x="3" y="15" fontSize="1.8" fontFamily="monospace" fill="currentColor">MongoDB</text>
         </svg>
       ),
       topRight: (
-        <svg className="absolute -top-3 -right-3 w-8 h-8 text-primary/30">
-          <path d="M6 2H2V6" stroke="currentColor" fill="none" strokeWidth="1.5" strokeLinecap="round"/>
-          <path d="M1 7L7 1" stroke="currentColor" strokeWidth="1" strokeDasharray="1 1"/>
+        <svg className="absolute -top-5 -right-5 w-16 h-16 text-primary/40">
+          <path d="M5,8 L11,8 M5,12 L11,12" stroke="currentColor" strokeWidth="0.5" />
+          <path d="M5,8 L5,12 M11,8 L11,12" stroke="currentColor" strokeWidth="0.5" />
+          <path d="M5,8 C5,5 11,5 11,8" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <path d="M6,6 L10,6" stroke="currentColor" strokeWidth="0.3" />
+          <path d="M7,4 L9,4" stroke="currentColor" strokeWidth="0.3" />
+          <text x="4" y="15" fontSize="1.8" fontFamily="monospace" fill="currentColor">Barber</text>
         </svg>
       ),
       bottomLeft: (
-        <svg className="absolute -bottom-3 -left-3 w-8 h-8 text-primary/30">
-          <path d="M2 2L6 6" stroke="currentColor" strokeWidth="1.5"/>
-          <path d="M2 6V2H6" stroke="currentColor" fill="none" strokeWidth="1.5" strokeLinecap="round"/>
+        <svg className="absolute -bottom-5 -left-5 w-16 h-16 text-primary/40">
+          <path d="M5,4 L5,12 L12,12" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <path d="M7,6 L7,10 L10,10" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <path d="M9,8 L9,9 L10,9" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <text x="5" y="15" fontSize="1.8" fontFamily="monospace" fill="currentColor">React</text>
         </svg>
       ),
       bottomRight: (
-        <svg className="absolute -bottom-5 -right-5 w-12 h-12 text-primary/30">
-          <path d="M10 5v5a5 5 0 0 1-5 5h-5" stroke="currentColor" fill="none" strokeWidth="1.5" strokeLinecap="round"/>
-          <circle cx="10" cy="5" r="2" fill="currentColor" fillOpacity="0.5"/>
+        <svg className="absolute -bottom-5 -right-5 w-16 h-16 text-primary/40">
+          <path d="M4,9 L7,6 L10,9 L7,12 Z" stroke="currentColor" fill="none" strokeWidth="0.5" />
+          <circle cx="7" cy="9" r="2" stroke="currentColor" fill="none" strokeWidth="0.5" strokeDasharray="0.5 0.5" />
+          <path d="M7,4 L7,6" stroke="currentColor" strokeWidth="0.3" />
+          <path d="M12,9 L10,9" stroke="currentColor" strokeWidth="0.3" />
+          <path d="M7,14 L7,12" stroke="currentColor" strokeWidth="0.3" />
+          <path d="M2,9 L4,9" stroke="currentColor" strokeWidth="0.3" />
+          <text x="4" y="16" fontSize="1.8" fontFamily="monospace" fill="currentColor">Node.js</text>
         </svg>
       ),
     },
