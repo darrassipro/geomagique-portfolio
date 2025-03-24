@@ -1,56 +1,201 @@
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
-import { ExternalLink, Github, ArrowUpRight, Box, Layout, Server, Database, Layers, Code, FileCode } from 'lucide-react';
+import { 
+  ExternalLink, Github, ArrowUpRight, Box, Layout, Server, Database, 
+  Layers, Code, FileCode, FileJson, Globe, Shuffle, BarChart3, 
+  Brush, Cpu, Package, Shield, Table, Zap, Brackets, Leaf, Coffee
+} from 'lucide-react';
 
 interface Project {
   title: string;
   description: string;
-  technologies: string[];
+  technologies: Array<{
+    name: string;
+    icon: React.ElementType;
+    color?: string;
+  }>;
   github?: string;
   live?: string;
   icon?: React.ElementType;
 }
 
+// Technology icon mapping
+const getTechIcon = (techName: string): React.ElementType => {
+  const iconMap: Record<string, React.ElementType> = {
+    // Frameworks & Libraries
+    "React": Layers,
+    "Vue": Layers,
+    "Angular": Layers,
+    "Symfony": FileCode,
+    "Express": Server,
+    "Spring Boot": Leaf,
+    "Spring Security": Shield,
+    "Node.js": Server,
+    "Vite": Zap,
+    ".NET": Code,
+    
+    // Languages
+    "JavaScript": Code,
+    "TypeScript": Code,
+    "PHP": Code,
+    "C#": Brackets,
+    "Java": Coffee,
+    "Python": Code,
+    
+    // Databases
+    "MongoDB": Database,
+    "MySQL": Database,
+    "PostgreSQL": Database,
+    "SQL Server": Database,
+    "Doctrine": Database,
+    "JPA Repository": Database,
+    "Entity Framework 6": Database,
+    "Code First": Code,
+    
+    // Tools & Technologies
+    "TailwindCSS": Brush,
+    "CSS": Brush,
+    "SASS": Brush,
+    "Twig": FileJson,
+    "Symfony CLI": Server,
+    "phpMyAdmin": Layout,
+    "Vercel": Globe,
+    "ETL": Shuffle,
+    "Talend": Shuffle,
+    "Power BI": BarChart3,
+    "Data Visualization": BarChart3,
+  };
+  
+  return iconMap[techName] || Cpu; // Default to Cpu icon if not found
+};
+
+// Technology color mapping
+const getTechColor = (techName: string): string => {
+  const colorMap: Record<string, string> = {
+    "React": "sky",
+    "Vue": "emerald",
+    "Angular": "red",
+    "Symfony": "purple",
+    "Express": "neutral",
+    "Spring Boot": "green",
+    "Spring Security": "red",
+    "Node.js": "green",
+    "Vite": "purple",
+    "TailwindCSS": "cyan",
+    "MongoDB": "green",
+    "MySQL": "blue",
+    "TypeScript": "blue",
+    "JavaScript": "yellow",
+    "PHP": "indigo",
+    "C#": "purple",
+    ".NET": "blue",
+    "Power BI": "yellow",
+    "Talend": "red",
+    "ETL": "blue",
+    "Data Visualization": "indigo",
+    "Doctrine": "orange",
+    "Twig": "amber",
+    "Symfony CLI": "purple",
+    "phpMyAdmin": "blue",
+    "JPA Repository": "blue",
+    "Entity Framework 6": "blue",
+    "Code First": "teal",
+    "Vercel": "black",
+  };
+  
+  return colorMap[techName] || "gray"; // Default to gray if not found
+};
+
+// Map colors to Tailwind classes
+const getColorClass = (color: string): string => {
+  switch (color) {
+    case 'blue': return 'bg-blue-500/10 text-blue-600 border-blue-500/20';
+    case 'sky': return 'bg-sky-500/10 text-sky-600 border-sky-500/20';
+    case 'green': return 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20';
+    case 'purple': return 'bg-purple-500/10 text-purple-600 border-purple-500/20';
+    case 'amber': return 'bg-amber-500/10 text-amber-600 border-amber-500/20';
+    case 'indigo': return 'bg-indigo-500/10 text-indigo-600 border-indigo-500/20';
+    case 'orange': return 'bg-orange-500/10 text-orange-600 border-orange-500/20';
+    case 'red': return 'bg-red-500/10 text-red-600 border-red-500/20';
+    case 'cyan': return 'bg-cyan-500/10 text-cyan-600 border-cyan-500/20';
+    case 'teal': return 'bg-teal-500/10 text-teal-600 border-teal-500/20';
+    case 'yellow': return 'bg-yellow-500/10 text-yellow-600 border-yellow-500/20';
+    case 'neutral': return 'bg-neutral-500/10 text-neutral-600 border-neutral-500/20';
+    case 'black': return 'bg-neutral-900/10 text-neutral-700 border-neutral-900/20';
+    default: return 'bg-primary/10 text-primary border-primary/20';
+  }
+};
+
 const projects: Project[] = [
   {
     title: "Application Web de Gestion des Stages",
     description: "Gestion de Stagiaires - Projet Symfony pour l'Université privée de Fès, permettant de programmer les soutenances.",
-    technologies: ["Twig", "Doctrine", "Symfony CLI", "phpMyAdmin"],
+    technologies: [
+      { name: "Twig", icon: getTechIcon("Twig"), color: getTechColor("Twig") },
+      { name: "Doctrine", icon: getTechIcon("Doctrine"), color: getTechColor("Doctrine") },
+      { name: "Symfony CLI", icon: getTechIcon("Symfony CLI"), color: getTechColor("Symfony CLI") },
+      { name: "phpMyAdmin", icon: getTechIcon("phpMyAdmin"), color: getTechColor("phpMyAdmin") }
+    ],
     github: "https://github.com/darrassi1/GestionDesStGES",
     icon: Database
   },
   {
     title: "Application Web pour Salons de Spa",
     description: "Développement d'une application Maven avec Thymeleaf et Spring JPA pour la gestion des salons, services, clients et rendez-vous.",
-    technologies: ["Spring Boot", "Spring Security", "JPA Repository", "MySQL"],
+    technologies: [
+      { name: "Spring Boot", icon: getTechIcon("Spring Boot"), color: getTechColor("Spring Boot") },
+      { name: "Spring Security", icon: getTechIcon("Spring Security"), color: getTechColor("Spring Security") },
+      { name: "JPA Repository", icon: getTechIcon("JPA Repository"), color: getTechColor("JPA Repository") },
+      { name: "MySQL", icon: getTechIcon("MySQL"), color: getTechColor("MySQL") }
+    ],
     github: "https://github.com/darrassi1/Gestion_SPA",
     icon: Layout
   },
   {
     title: "Gestion de Pylône Électrique",
     description: "Conception et développement d'une application C# pour la gestion de pylônes électriques avec Entity Framework 6 et approche Code First.",
-    technologies: ["C#", "Entity Framework 6", "Code First", ".NET"],
+    technologies: [
+      { name: "C#", icon: getTechIcon("C#"), color: getTechColor("C#") },
+      { name: "Entity Framework 6", icon: getTechIcon("Entity Framework 6"), color: getTechColor("Entity Framework 6") },
+      { name: "Code First", icon: getTechIcon("Code First"), color: getTechColor("Code First") },
+      { name: ".NET", icon: getTechIcon(".NET"), color: getTechColor(".NET") }
+    ],
     github: "https://github.com/darrassi1/GestionDePyloneElectrique",
     icon: Server
   },
   {
     title: "TeethSeg Frontend",
     description: "Interface utilisateur moderne pour un système de segmentation dentaire, développée avec React, Vite et TailwindCSS.",
-    technologies: ["React", "Vite", "TailwindCSS", "Vercel"],
+    technologies: [
+      { name: "React", icon: getTechIcon("React"), color: getTechColor("React") },
+      { name: "Vite", icon: getTechIcon("Vite"), color: getTechColor("Vite") },
+      { name: "TailwindCSS", icon: getTechIcon("TailwindCSS"), color: getTechColor("TailwindCSS") },
+      { name: "Vercel", icon: getTechIcon("Vercel"), color: getTechColor("Vercel") }
+    ],
     github: "https://github.com/darrassi1/SegTeeth",
     icon: Code
   },
   {
     title: "Application BI avec Talend et Power BI",
     description: "Développement d'une solution BI pour l'analyse de données, avec des visualisations permettant de prendre des décisions éclairées.",
-    technologies: ["Talend", "Power BI", "ETL", "Data Visualization"],
+    technologies: [
+      { name: "Talend", icon: getTechIcon("Talend"), color: getTechColor("Talend") },
+      { name: "Power BI", icon: getTechIcon("Power BI"), color: getTechColor("Power BI") },
+      { name: "ETL", icon: getTechIcon("ETL"), color: getTechColor("ETL") },
+      { name: "Data Visualization", icon: getTechIcon("Data Visualization"), color: getTechColor("Data Visualization") }
+    ],
     github: "https://github.com/darrassi1/Projet-BI-Talend-PowerBI",
     icon: Layers
   },
   {
     title: "Barbershop Application",
     description: "Application complète de salon de coiffure avec frontend React et backend Node.js/Express.",
-    technologies: ["React", "Node.js", "Express", "MongoDB"],
+    technologies: [
+      { name: "React", icon: getTechIcon("React"), color: getTechColor("React") },
+      { name: "Node.js", icon: getTechIcon("Node.js"), color: getTechColor("Node.js") },
+      { name: "Express", icon: getTechIcon("Express"), color: getTechColor("Express") },
+      { name: "MongoDB", icon: getTechIcon("MongoDB"), color: getTechColor("MongoDB") }
+    ],
     github: "https://github.com/darrassi1/Barbershop",
     live: "https://barbershop-pearl-seven.vercel.app",
     icon: FileCode
@@ -103,11 +248,18 @@ const Projects: React.FC = () => {
                   <p className="text-muted-foreground mb-4">{project.description}</p>
                   
                   <div className="flex flex-wrap gap-2 mb-6">
-                    {project.technologies.map((tech, i) => (
-                      <span key={i} className="px-3 py-1 text-xs font-medium bg-secondary/50 backdrop-blur-sm rounded-full transition-colors duration-300 hover:bg-secondary">
-                        {tech}
-                      </span>
-                    ))}
+                    {project.technologies.map((tech, i) => {
+                      const TechIcon = tech.icon;
+                      return (
+                        <span 
+                          key={i} 
+                          className={`px-3 py-1 text-xs font-medium backdrop-blur-sm rounded-full transition-all duration-300 hover:scale-105 flex items-center gap-1.5 border ${getColorClass(tech.color)}`}
+                        >
+                          <TechIcon className="h-3 w-3" />
+                          {tech.name}
+                        </span>
+                      );
+                    })}
                   </div>
                   
                   <div className="flex space-x-4 mt-auto">
