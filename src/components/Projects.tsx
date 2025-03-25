@@ -476,9 +476,6 @@ const projects: Project[] = [
 ];
 
 const Projects: React.FC = () => {
-  // System information
-  const currentDateTime = "2025-03-25 06:21:03";
-  const currentUser = "darrassipro";
   
   return (
     <section id="projects" className="py-24 relative overflow-hidden">
@@ -574,15 +571,8 @@ const Projects: React.FC = () => {
             );
           })}
         </div>
+       
         
-        {/* Add updated timestamp at the bottom */}
-        <div className="text-center mt-12">
-          <div className="inline-flex items-center px-3 py-1 rounded-full border border-border/40 bg-background/40 backdrop-blur-sm text-xs text-muted-foreground/70">
-            <span>Dernière mise à jour: {currentDateTime}</span>
-            <span className="mx-2 text-border/50">|</span>
-            <span>{currentUser}</span>
-          </div>
-        </div>
       </div>
       
       <div className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-background to-transparent z-[1]"></div>
