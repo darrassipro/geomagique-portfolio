@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { 
-  Terminal, ArrowUp, Clock, User, Cpu, RefreshCw, Code,
-  Mail, Phone, MapPin, ExternalLink, ArrowRight, Sparkles,
-  Braces, Globe2, Bot, Command, Copy, Check, Scan, Shield,
+  ArrowUp, Clock, User, RefreshCw, Code,
+  Mail, Phone, MapPin, ArrowRight, Sparkles,
+  Braces, Globe2, Command, Copy, Check, Scan, Shield,
   Zap, Lock
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -24,20 +24,15 @@ const Footer: React.FC = () => {
   const [visibleSection, setVisibleSection] = useState<string | null>(null);
   const [hoveredLink, setHoveredLink] = useState<string | null>(null);
   const [copiedText, setCopiedText] = useState<string | null>(null);
-  const [bootSequence, setBootSequence] = useState(true);
-  const [terminalState, setTerminalState] = useState('online');
-  const [terminalCommands, setTerminalCommands] = useState<string[]>([]);
   const [encryptionStatus, setEncryptionStatus] = useState('secure');
   
   const footerRef = useRef<HTMLElement>(null);
-  const systemTime = "2025-03-25 04:54:17"; // Updated with provided time
+  const systemTime = "2025-03-25 04:56:40"; // Updated with provided time
   const systemUser = "darrassipro";
   
   // Random values for visual elements
-  const uniqueId = `session-${Math.random().toString(36).substring(2, 10)}`;
-  const uptime = `${Math.floor(Math.random() * 60)}d ${Math.floor(Math.random() * 24)}h ${Math.floor(Math.random() * 60)}m`;
   const responseTime = `${Math.floor(Math.random() * 40 + 15)}ms`;
-  const systemVersion = "1.6.2";
+  const systemVersion = "1.7.0";
   
   // Navigation items with metadata
   const navigationItems = [
@@ -122,33 +117,6 @@ const Footer: React.FC = () => {
   useEffect(() => {
     setCurrentYear(new Date().getFullYear());
   }, []);
-  
-  // Boot sequence animation
-  useEffect(() => {
-    if (bootSequence) {
-      // Simulate terminal boot sequence
-      const bootMessages = [
-        "Initializing portfolio interface...",
-        "Loading component data...",
-        "Establishing secure connection...",
-        "Verifying user credentials...",
-        "System ready."
-      ];
-      
-      let i = 0;
-      const interval = setInterval(() => {
-        if (i < bootMessages.length) {
-          setTerminalCommands(prev => [...prev, bootMessages[i]]);
-          i++;
-        } else {
-          clearInterval(interval);
-          setBootSequence(false);
-        }
-      }, 300);
-      
-      return () => clearInterval(interval);
-    }
-  }, [bootSequence]);
 
   // Handle copy to clipboard
   const handleCopy = (text: string) => {
@@ -156,11 +124,6 @@ const Footer: React.FC = () => {
       setCopiedText(text);
       setTimeout(() => setCopiedText(null), 2000);
     });
-  };
-  
-  // Add a new command to the terminal
-  const addTerminalCommand = (command: string) => {
-    setTerminalCommands(prev => [...prev, command]);
   };
   
   return (
@@ -193,86 +156,36 @@ const Footer: React.FC = () => {
                 Web Designer passionné par la création d'expériences numériques intuitives et attrayantes.
               </p>
               
-              {/* Terminal interface */}
-              <div className="mt-4 border border-border/60 rounded-md overflow-hidden bg-background/50 backdrop-blur-sm">
-                <div className="flex items-center justify-between px-3 py-1.5 bg-background/70 border-b border-border/80">
-                  <div className="flex items-center space-x-1.5">
-                    <div className="w-2.5 h-2.5 rounded-full bg-red-500/70"></div>
-                    <div className="w-2.5 h-2.5 rounded-full bg-amber-500/70"></div>
-                    <div className="w-2.5 h-2.5 rounded-full bg-green-500/70"></div>
-                  </div>
-                  <div className="text-[10px] font-mono text-muted-foreground/70 flex items-center">
-                    <Terminal className="h-3 w-3 mr-1" />
-                    <span>terminal@{systemUser}</span>
-                  </div>
-                  <div className="flex items-center space-x-1.5">
-                    <div className={cn(
-                      "w-1.5 h-1.5 rounded-full",
-                      terminalState === 'online' ? "bg-green-500 animate-pulse" : "bg-amber-500"
-                    )}></div>
-                  </div>
+              {/* System status indicator */}
+              <div className="mt-6 inline-flex items-center space-x-2 bg-background/80 backdrop-blur-sm border border-border/40 rounded-lg p-1.5 px-3 text-xs font-mono text-muted-foreground/70">
+                <div className="flex items-center">
+                  <span className="h-1.5 w-1.5 rounded-full mr-1.5 bg-green-500 animate-pulse"></span>
+                  <Clock className="h-3 w-3 mr-1" />
+                  <span className="mr-1">{systemTime}</span>
                 </div>
-                
-                <div className="p-2 h-32 overflow-y-auto font-mono text-[10px] sm:text-xs">
-                  {terminalCommands.map((cmd, idx) => (
-                    <div key={idx} className="text-muted-foreground">
-                      {idx === terminalCommands.length - 1 ? (
-                        <div className="animate-typewriter overflow-hidden whitespace-nowrap">
-                          <span className="text-primary/80">$</span> {cmd}
-                        </div>
-                      ) : (
-                        <div>
-                          <span className="text-primary/80">$</span> {cmd}
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                  
-                  {!bootSequence && (
-                    <div className="flex items-center mt-2">
-                      <span className="text-primary/80">$</span>
-                      <span className="ml-1.5 animate-cursor w-2 h-4 bg-foreground opacity-70"></span>
-                    </div>
-                  )}
+                <span className="hidden md:inline-block text-muted-foreground/30">|</span>
+                <div className="hidden md:flex items-center">
+                  <User className="h-3 w-3 mr-1.5" />
+                  <span>{systemUser}</span>
                 </div>
-              </div>
-              
-              {/* System status */}
-              <div className="flex items-center justify-between text-[10px] mt-2 flex-wrap gap-y-2">
-                <div className="flex items-center space-x-3">
-                  <div className="flex items-center text-muted-foreground/70">
-                    <Clock className="h-3 w-3 mr-1" />
-                    <span>{systemTime}</span>
-                  </div>
-                  
-                  <div className="flex items-center text-muted-foreground/70">
-                    <User className="h-3 w-3 mr-1" />
-                    <span>{systemUser}</span>
-                  </div>
+                <span className="hidden md:inline-block text-muted-foreground/30">|</span>
+                <div className="hidden md:flex items-center">
+                  <Scan className="h-3 w-3 mr-1.5" />
+                  <span>{encryptionStatus}</span>
                 </div>
-                
-                <div className="flex items-center space-x-3">
-                  <div className="flex items-center text-muted-foreground/70">
-                    <Scan className="h-3 w-3 mr-1" />
-                    <span>{encryptionStatus}</span>
-                  </div>
-                  
-                  <div className="flex items-center text-muted-foreground/70">
-                    <RefreshCw className="h-3 w-3 mr-1" />
-                    <span>{responseTime}</span>
-                  </div>
+                <span className="hidden md:inline-block text-muted-foreground/30">|</span>
+                <div className="hidden md:flex items-center">
+                  <RefreshCw className="h-3 w-3 mr-1.5" />
+                  <span>{responseTime}</span>
                 </div>
               </div>
             </div>
             
-            {/* Social & AI interaction */}
+            {/* Social links */}
             <div className="space-y-3 mt-4">
               <div className="flex items-center justify-between">
-                <h4 className="text-sm font-medium">Réseaux & IA</h4>
+                <h4 className="text-sm font-medium">Réseaux Sociaux</h4>
                 <div className="h-px flex-1 mx-3 bg-border"></div>
-                <div className="text-[10px] text-muted-foreground/70">
-                  <span>RT: {responseTime}</span>
-                </div>
               </div>
               
               <div className="grid grid-cols-3 gap-3">
@@ -287,7 +200,6 @@ const Footer: React.FC = () => {
                         "hover:bg-primary/5 transition-all group",
                         "border border-border/30 bg-background/50 backdrop-blur-sm"
                       )}
-                      onMouseEnter={() => addTerminalCommand(`Connecting to ${social.label}...`)}
                     >
                       <div className="w-8 h-8 rounded-full flex items-center justify-center mb-1 bg-background/80 group-hover:scale-110 transition-transform">
                         <IconComponent className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
@@ -298,23 +210,6 @@ const Footer: React.FC = () => {
                     </a>
                   );
                 })}
-                
-                <div 
-                  className={cn(
-                    "flex flex-col items-center justify-center p-3 rounded-lg cursor-pointer",
-                    "border border-primary/20 bg-background/50 backdrop-blur-sm",
-                    "hover:bg-primary/5 transition-all group"
-                  )}
-                  onClick={() => addTerminalCommand("Initializing AI assistant...")}
-                >
-                  <div className="w-8 h-8 rounded-full flex items-center justify-center mb-1 bg-primary/10 group-hover:scale-110 transition-transform relative">
-                    <Bot className="h-4 w-4 text-primary" />
-                    <span className="absolute top-0 right-0 w-2 h-2 rounded-full bg-green-500 border border-background"></span>
-                  </div>
-                  <span className="text-xs text-muted-foreground group-hover:text-foreground transition-colors">
-                    AI Assistant
-                  </span>
-                </div>
               </div>
             </div>
           </div>
@@ -361,31 +256,6 @@ const Footer: React.FC = () => {
                 ))}
               </ul>
             </nav>
-            
-            {/* Live activity indicator */}
-            <div className="mt-6 pt-4 border-t border-border/30">
-              <div className="flex items-center justify-between mb-2">
-                <h5 className="text-xs font-medium">Activité</h5>
-                <span className="text-[10px] text-muted-foreground/70">live</span>
-              </div>
-              
-              <div className="space-y-1.5">
-                <div className="flex justify-between items-center text-xs">
-                  <span className="text-muted-foreground">Sections parcourues</span>
-                  <div className="w-24 h-1.5 bg-background/80 rounded-full overflow-hidden">
-                    <div 
-                      className="h-full bg-primary/60 rounded-full" 
-                      style={{ width: `${(navigationItems.findIndex(item => item.section === visibleSection) + 1) / navigationItems.length * 100}%` }}
-                    ></div>
-                  </div>
-                </div>
-                
-                <div className="flex justify-between items-center text-xs">
-                  <span className="text-muted-foreground">Page actuelle</span>
-                  <span className="text-primary text-[10px]">{visibleSection || 'hero'}.vue</span>
-                </div>
-              </div>
-            </div>
             
             {/* Security status - matching Contact component style */}
             <div className="mt-6 pt-4 border-t border-border/30">
@@ -461,7 +331,6 @@ const Footer: React.FC = () => {
                   "bg-primary/10 hover:bg-primary/20 transition-colors border border-primary/20",
                   "group relative overflow-hidden"
                 )}
-                onClick={() => addTerminalCommand("Redirecting to contact section...")}
               >
                 <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-primary-foreground/10 to-transparent -translate-x-full group-hover:animate-shimmer"></span>
                 <div className="flex items-center">
@@ -470,34 +339,6 @@ const Footer: React.FC = () => {
                 </div>
                 <ArrowRight className="h-4 w-4 text-primary group-hover:translate-x-1 transition-transform" />
               </a>
-            </div>
-            
-            {/* System info block matching Contact component */}
-            <div className="mt-6 p-4 rounded-lg border border-border/40 bg-background/30 backdrop-blur-sm">
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center text-xs font-medium">
-                  <Terminal className="h-3.5 w-3.5 mr-1.5 text-primary/70" />
-                  <span>System Status</span>
-                </div>
-                <div className="text-[10px] font-mono text-muted-foreground/60 px-1.5 py-0.5 bg-background/40 rounded-md">
-                  {systemTime}
-                </div>
-              </div>
-              
-              <div className="text-xs text-muted-foreground flex flex-col gap-1.5">
-                <div className="flex items-center justify-between">
-                  <span>Uptime</span>
-                  <span className="font-mono">{uptime}</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span>Session ID</span>
-                  <span className="font-mono">{uniqueId.substring(0, 10)}</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span>User</span>
-                  <span className="font-mono text-primary/80">{systemUser}</span>
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -511,11 +352,8 @@ const Footer: React.FC = () => {
             
             <div className="ml-3 h-4 pl-3 hidden sm:block border-l border-border/50">
               <span className="font-mono text-[10px] text-muted-foreground/60 flex items-center">
-                <Terminal className="h-3 w-3 mr-1" />
-                <span>
-                  <span className="text-primary/70">{systemUser}</span>@
-                  <span className="text-foreground/70">interface</span>
-                </span>
+                <Clock className="h-3 w-3 mr-1" />
+                <span>{systemTime}</span>
               </span>
             </div>
           </div>
@@ -532,7 +370,6 @@ const Footer: React.FC = () => {
             <a 
               href="#hero" 
               className="ml-4 flex items-center justify-center h-8 w-8 rounded-full bg-primary/10 text-primary hover:bg-primary/20 transition-colors"
-              onClick={() => addTerminalCommand("Scrolling to top...")}
             >
               <ArrowUp className="h-4 w-4" />
             </a>
