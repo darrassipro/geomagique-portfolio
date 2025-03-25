@@ -1,7 +1,7 @@
 
 import React from 'react';
 import Canvas from './Canvas';
-import { ArrowRight, MousePointer, Code, Layers, Layout, Cpu, ZapIcon, Sparkles } from 'lucide-react';
+import { ArrowRight, MousePointer, Code, Layers, Layout, Cpu, ZapIcon } from 'lucide-react';
 
 const Hero: React.FC = () => {
   return (
@@ -45,7 +45,7 @@ const Hero: React.FC = () => {
           <div className="flex flex-wrap gap-4 opacity-0 animate-fade-in" style={{ animationDelay: '0.8s', animationFillMode: 'forwards' }}>
             <a 
               href="#projects" 
-              className="group relative inline-flex items-center justify-center h-12 px-8 font-medium tracking-wide transition-all duration-300 bg-primary text-primary-foreground hover:bg-primary/90 rounded-full overflow-hidden shadow-lg hover:shadow-primary/20"
+              className="group relative inline-flex items-center justify-center h-12 px-8 font-medium tracking-wide transition-all duration-300 bg-primary text-primary-foreground hover:bg-primary/90 rounded-full overflow-hidden"
             >
               <span className="absolute inset-0 w-0 bg-gradient-to-r from-primary/80 to-primary/40 transition-all duration-500 ease-out group-hover:w-full"></span>
               <span className="relative z-10 flex items-center">
@@ -56,52 +56,49 @@ const Hero: React.FC = () => {
             
             <a 
               href="#contact" 
-              className="group relative inline-flex items-center justify-center h-12 px-8 font-medium tracking-wide transition-all duration-300 bg-secondary hover:bg-secondary/80 rounded-full backdrop-blur-sm border border-primary/10 hover:border-primary/20"
+              className="group relative inline-flex items-center justify-center h-12 px-8 font-medium tracking-wide transition-all duration-300 bg-secondary hover:bg-secondary/80 rounded-full backdrop-blur-sm"
             >
               <span className="absolute inset-0 w-0 bg-white/5 transition-all duration-500 ease-out group-hover:w-full"></span>
-              <span className="relative z-10 flex items-center">
-                Me Contacter
-                <Sparkles className="ml-2 h-4 w-4 transition-all duration-300 opacity-0 group-hover:opacity-100 group-hover:translate-x-1" />
-              </span>
+              <span className="relative z-10">Me Contacter</span>
             </a>
           </div>
           
           <div className="mt-12 grid grid-cols-3 md:grid-cols-6 gap-4 max-w-2xl opacity-0 animate-fade-in" style={{ animationDelay: '1s', animationFillMode: 'forwards' }}>
             <div className="flex flex-col items-center group">
-              <div className="w-12 h-12 rounded-full flex items-center justify-center bg-primary/5 mb-2 transition-all duration-300 group-hover:bg-primary/10 group-hover:scale-110 backdrop-blur-sm border border-primary/5 group-hover:border-primary/10">
+              <div className="w-12 h-12 rounded-full flex items-center justify-center bg-primary/5 mb-2 transition-all duration-300 group-hover:bg-primary/10 group-hover:scale-110 backdrop-blur-sm">
                 <Code className="h-5 w-5 text-primary" />
               </div>
-              <span className="text-sm text-muted-foreground group-hover:text-primary transition-colors duration-300">Frontend</span>
+              <span className="text-sm text-muted-foreground">Frontend</span>
             </div>
             <div className="flex flex-col items-center group">
-              <div className="w-12 h-12 rounded-full flex items-center justify-center bg-primary/5 mb-2 transition-all duration-300 group-hover:bg-primary/10 group-hover:scale-110 backdrop-blur-sm border border-primary/5 group-hover:border-primary/10">
+              <div className="w-12 h-12 rounded-full flex items-center justify-center bg-primary/5 mb-2 transition-all duration-300 group-hover:bg-primary/10 group-hover:scale-110 backdrop-blur-sm">
                 <Layout className="h-5 w-5 text-primary" />
               </div>
-              <span className="text-sm text-muted-foreground group-hover:text-primary transition-colors duration-300">UI/UX</span>
+              <span className="text-sm text-muted-foreground">UI/UX</span>
             </div>
             <div className="flex flex-col items-center group">
-              <div className="w-12 h-12 rounded-full flex items-center justify-center bg-primary/5 mb-2 transition-all duration-300 group-hover:bg-primary/10 group-hover:scale-110 backdrop-blur-sm border border-primary/5 group-hover:border-primary/10">
+              <div className="w-12 h-12 rounded-full flex items-center justify-center bg-primary/5 mb-2 transition-all duration-300 group-hover:bg-primary/10 group-hover:scale-110 backdrop-blur-sm">
                 <Layers className="h-5 w-5 text-primary" />
               </div>
-              <span className="text-sm text-muted-foreground group-hover:text-primary transition-colors duration-300">Responsive</span>
+              <span className="text-sm text-muted-foreground">Responsive</span>
             </div>
             <div className="flex flex-col items-center group">
-              <div className="w-12 h-12 rounded-full flex items-center justify-center bg-primary/5 mb-2 transition-all duration-300 group-hover:bg-primary/10 group-hover:scale-110 backdrop-blur-sm border border-primary/5 group-hover:border-primary/10">
+              <div className="w-12 h-12 rounded-full flex items-center justify-center bg-primary/5 mb-2 transition-all duration-300 group-hover:bg-primary/10 group-hover:scale-110 backdrop-blur-sm">
                 <MousePointer className="h-5 w-5 text-primary" />
               </div>
-              <span className="text-sm text-muted-foreground group-hover:text-primary transition-colors duration-300">Interactive</span>
+              <span className="text-sm text-muted-foreground">Interactive</span>
             </div>
             <div className="flex flex-col items-center group">
-              <div className="w-12 h-12 rounded-full flex items-center justify-center bg-primary/5 mb-2 transition-all duration-300 group-hover:bg-primary/10 group-hover:scale-110 backdrop-blur-sm border border-primary/5 group-hover:border-primary/10">
+              <div className="w-12 h-12 rounded-full flex items-center justify-center bg-primary/5 mb-2 transition-all duration-300 group-hover:bg-primary/10 group-hover:scale-110 backdrop-blur-sm">
                 <Cpu className="h-5 w-5 text-primary" />
               </div>
-              <span className="text-sm text-muted-foreground group-hover:text-primary transition-colors duration-300">Modern</span>
+              <span className="text-sm text-muted-foreground">Modern</span>
             </div>
             <div className="flex flex-col items-center group">
-              <div className="w-12 h-12 rounded-full flex items-center justify-center bg-primary/5 mb-2 transition-all duration-300 group-hover:bg-primary/10 group-hover:scale-110 backdrop-blur-sm border border-primary/5 group-hover:border-primary/10">
+              <div className="w-12 h-12 rounded-full flex items-center justify-center bg-primary/5 mb-2 transition-all duration-300 group-hover:bg-primary/10 group-hover:scale-110 backdrop-blur-sm">
                 <ZapIcon className="h-5 w-5 text-primary" />
               </div>
-              <span className="text-sm text-muted-foreground group-hover:text-primary transition-colors duration-300">Dynamique</span>
+              <span className="text-sm text-muted-foreground">Dynamique</span>
             </div>
           </div>
         </div>
