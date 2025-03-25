@@ -347,13 +347,14 @@ const Experience: React.FC = () => {
   const [expandedProjects, setExpandedProjects] = useState<number[]>([]);
   const [animatedItems, setAnimatedItems] = useState<number[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [showProjects, setShowProjects] = useState(true); // Set to true by default to ensure visibility
+  const [showProjects, setShowProjects] = useState(true); // Set to true by default
   const sectionRef = useRef<HTMLElement>(null);
   const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
   const projectsRef = useRef<HTMLDivElement>(null);
+  const filtersRef = useRef<HTMLDivElement>(null);
   
-  // System info for futuristic UI element - updated with provided values
-  const currentTime = "2025-03-25 08:36:14"; // Updated time from request
+  // System info for futuristic UI element
+  const currentTime = "2025-03-25 08:45:41"; // Updated time as provided
   const currentUser = "darrassipro";
 
   // Filter projects by category
@@ -388,7 +389,7 @@ const Experience: React.FC = () => {
           }
         });
       },
-      { threshold: 0.1 } // Lowered threshold to better detect on mobile
+      { threshold: 0.1 }
     );
 
     itemRefs.current.forEach((ref, index) => {
@@ -401,7 +402,7 @@ const Experience: React.FC = () => {
       observer.observe(projectsRef.current);
     }
 
-    // Ensure projects section is visible after a timeout, regardless of intersection observer
+    // Ensure projects section is visible after a timeout
     const timer = setTimeout(() => {
       setShowProjects(true);
     }, 500);
@@ -428,6 +429,25 @@ const Experience: React.FC = () => {
         ? prev.filter(i => i !== index) 
         : [...prev, index]
     );
+  };
+
+  // Handle filter selection without scrolling
+  const handleCategoryFilter = (e: React.MouseEvent, category: string | null) => {
+    e.preventDefault(); // Prevent default button behavior
+    
+    // Save current scroll position
+    const currentScrollY = window.scrollY;
+    
+    // Update category
+    setSelectedCategory(category);
+    
+    // After state update, restore scroll position
+    setTimeout(() => {
+      window.scrollTo({
+        top: currentScrollY,
+        behavior: 'auto' // Use 'auto' instead of 'smooth' to prevent visible scrolling
+      });
+    }, 0);
   };
 
   // Background particles animation
@@ -668,17 +688,13 @@ const Experience: React.FC = () => {
           </div>
         </div>
         
-        {/* Projects Section - Modified for visibility on mobile */}
+        {/* Projects Section */}
         <div 
           ref={projectsRef}
           id="projects-section"
-          className="mt-24 mb-8 max-w-6xl mx-auto"
-          style={{ 
-            opacity: 1, // Always visible on all devices
-            transform: showProjects ? 'translateY(0)' : 'translateY(0)', // No transform to prevent issues
-            transition: 'opacity 0.6s ease-out' // Keep transition for smooth appearance
-          }}
+          className="mt-24 mb-8 max-w-6xl mx-auto relative"
         >
+          {/* Projects Header - This stays fixed in place when filters change */}
           <div className="text-center mb-16">
             <div className="inline-block">
               <span className="px-3 py-1 text-xs font-medium tracking-wider bg-primary/10 rounded-full mb-4 inline-block relative overflow-hidden border border-primary/20">
@@ -693,10 +709,11 @@ const Experience: React.FC = () => {
               <span className="text-primary">.</span>
             </h2>
             
-            {/* Project category filters */}
-            <div className="flex flex-wrap justify-center gap-2 mt-8">
+            {/* Project category filters - With scroll prevention */}
+            <div ref={filtersRef} className="flex flex-wrap justify-center gap-2 mt-8">
               <button
-                onClick={() => setSelectedCategory(null)}
+                type="button" // Explicitly set type to button to prevent form submission
+                onClick={(e) => handleCategoryFilter(e, null)}
                 className={cn(
                   "px-3 py-1.5 rounded-full text-xs font-medium transition-all",
                   "border backdrop-blur-sm",
@@ -714,7 +731,8 @@ const Experience: React.FC = () => {
               {projectCategories.map(category => (
                 <button
                   key={category.id}
-                  onClick={() => setSelectedCategory(category.id)}
+                  type="button" // Explicitly set type to button 
+                  onClick={(e) => handleCategoryFilter(e, category.id)}
                   className={cn(
                     "px-3 py-1.5 rounded-full text-xs font-medium transition-all",
                     "border backdrop-blur-sm",
@@ -830,6 +848,7 @@ const Experience: React.FC = () => {
                   
                   {/* Toggle Features Button */}
                   <button
+                    type="button"
                     onClick={() => toggleExpandProject(idx)}
                     className={cn(
                       "w-full p-2 text-xs font-medium flex items-center justify-center",
@@ -857,7 +876,8 @@ const Experience: React.FC = () => {
               <Folder className="h-10 w-10 text-muted-foreground/40 mx-auto mb-3" />
               <p className="text-muted-foreground">Aucun projet ne correspond à cette catégorie</p>
               <button
-                onClick={() => setSelectedCategory(null)}
+                type="button"
+                onClick={(e) => handleCategoryFilter(e, null)}
                 className="mt-4 px-4 py-2 rounded-lg bg-primary/10 text-primary hover:bg-primary/20 transition-colors text-sm font-medium"
               >
                 Voir tous les projets
