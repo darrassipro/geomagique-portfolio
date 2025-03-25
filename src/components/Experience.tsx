@@ -2,7 +2,10 @@ import React, { useState, useEffect, useRef } from 'react';
 import { 
   ExternalLink, Code, Globe, Cpu, Sparkles, 
   Timer, Calendar, MapPin, ChevronRight, ArrowRight,
-  Monitor, Radio, Braces, Bot, Terminal
+  Monitor, Radio, Braces, Bot, Terminal, Laptop, 
+  Video, ShoppingCart, Tv, Film, Folder, Workflow, 
+  Presentation, LayoutGrid, Eye, Scissors, Database,
+  CircleCheck, Layers
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -23,6 +26,20 @@ interface ExperienceItem {
   icon: React.ReactNode;
 }
 
+interface PersonalProject {
+  title: string;
+  description: string;
+  url: string;
+  thumbnail?: string;
+  technologies: string[];
+  period: string;
+  category: 'frontend' | 'fullstack' | 'ui' | 'tools';
+  color: string;
+  icon: React.ReactNode;
+  features?: string[];
+}
+
+// Professional experiences
 const experiences: ExperienceItem[] = [
   {
     title: "Développement d'un Chatbot Multi-Agent avec IHM",
@@ -86,6 +103,170 @@ const experiences: ExperienceItem[] = [
   }
 ];
 
+// Personal projects
+const personalProjects: PersonalProject[] = [
+  {
+    title: "DutyEng - Assistant AI Autonome",
+    description: "Interface utilisateur pour agent AI autonome avec terminal, éditeur de code, navigateur et espace de chat",
+    url: "http://dutyeng.vercel.app",
+    technologies: ["React", "Tailwind CSS", "shadcn/ui"],
+    period: "2025",
+    category: "ui",
+    color: "#6d28d9",
+    icon: <Terminal className="h-5 w-5" />,
+    features: [
+      "Environnement de développement intégré",
+      "Interface de terminal interactive",
+      "Assistant AI conversationnel",
+      "Navigation web intégrée"
+    ]
+  },
+  {
+    title: "MarketSpace - Plateforme E-Commerce",
+    description: "Application e-commerce complète avec navigation par catégories, panier d'achat et système de recommandation",
+    url: "https://marketspace-gilt.vercel.app",
+    technologies: ["React", "Tailwind CSS", "shadcn/ui"],
+    period: "2024",
+    category: "frontend",
+    color: "#0ea5e9",
+    icon: <ShoppingCart className="h-5 w-5" />,
+    features: [
+      "Interface utilisateur moderne et réactive",
+      "Système de panier et checkout",
+      "Visualisation de produits optimisée",
+      "Expérience utilisateur fluide et intuitive"
+    ]
+  },
+  {
+    title: "VSP - Plateforme de Streaming Vidéo",
+    description: "Plateforme de streaming full-stack avec lecture vidéo, système de comptes utilisateurs et recommandations personnalisées",
+    url: "http://vspfront.vercel.app",
+    technologies: ["Angular 19", "Tailwind CSS", "Node.js", "Express", "MySQL"],
+    period: "2024",
+    category: "fullstack",
+    color: "#dc2626",
+    icon: <Video className="h-5 w-5" />,
+    features: [
+      "Architecture full-stack complète",
+      "Système de streaming optimisé",
+      "Backend Node.js avec API RESTful",
+      "Base de données relationnelle MySQL"
+    ]
+  },
+  {
+    title: "FlowVentory - Gestion d'Inventaire",
+    description: "Application de gestion d'inventaire avec tableaux de bord analytiques et suivi en temps réel",
+    url: "https://flowventory-gateway.vercel.app/",
+    technologies: ["React", "Tailwind CSS", "shadcn/ui"],
+    period: "2024",
+    category: "frontend",
+    color: "#0891b2",
+    icon: <Database className="h-5 w-5" />,
+    features: [
+      "Visualisation de données en temps réel",
+      "Interfaces d'inventaire intuitives",
+      "Rapports analytiques détaillés",
+      "Système de notifications"
+    ]
+  },
+  {
+    title: "Dragon Ball Z - Expérience Interactive",
+    description: "Site web interactif avec carrousel, épisodes et lecteur vidéo personnalisé",
+    url: "https://dragon-ball-z-lilac.vercel.app/",
+    technologies: ["Angular 19", "Tailwind CSS", "Font Awesome"],
+    period: "2023",
+    category: "frontend",
+    color: "#f59e0b",
+    icon: <Film className="h-5 w-5" />,
+    features: [
+      "Lecteur vidéo intégré",
+      "Navigation d'épisodes fluide",
+      "Carrousel d'images optimisé",
+      "Expérience utilisateur immersive"
+    ]
+  },
+  {
+    title: "SMedia - Gestion Marketing Digital",
+    description: "Interface utilisateur pour la gestion de campagnes marketing digital et analyse de données",
+    url: "http://smedia-omega.vercel.app",
+    technologies: ["React", "Tailwind CSS", "shadcn/ui"],
+    period: "2023",
+    category: "ui",
+    color: "#2dd4bf",
+    icon: <Presentation className="h-5 w-5" />,
+    features: [
+      "Tableaux de bord marketing avancés",
+      "Visualisation des données sociales",
+      "Planification de campagnes",
+      "Analyses et rapports détaillés"
+    ]
+  },
+  {
+    title: "SkipSilenceAds - Extension YouTube",
+    description: "Outils pour supprimer les publicités des vidéos YouTube et ignorer les silences",
+    url: "https://skipsilenceads.vercel.app/",
+    technologies: ["Angular 19", "Tailwind CSS", "Font Awesome"],
+    period: "2023",
+    category: "tools",
+    color: "#ec4899",
+    icon: <Scissors className="h-5 w-5" />,
+    features: [
+      "Détection intelligente des publicités",
+      "Reconnaissance des segments silencieux",
+      "Interface utilisateur minimaliste",
+      "Amélioration de l'expérience YouTube"
+    ]
+  },
+  {
+    title: "KingsLeaque - Actualités TV",
+    description: "Site web de lecteur TV et actualités avec interface moderne et fonctionnalités de streaming en direct",
+    url: "https://kingsleaque.vercel.app",
+    technologies: ["Angular", "Tailwind CSS", "Font Awesome"],
+    period: "2023",
+    category: "frontend",
+    color: "#7c3aed",
+    icon: <Tv className="h-5 w-5" />,
+    features: [
+      "Diffusion de contenu en direct",
+      "Aggrégation d'actualités",
+      "Lecteur TV intégré",
+      "Interface utilisateur moderne"
+    ]
+  },
+  {
+    title: "SightSpace - Site Entreprise",
+    description: "Site vitrine d'entreprise avec sections produits, services et présentation de l'équipe",
+    url: "http://sightspace.vercel.app",
+    technologies: ["React", "Tailwind CSS", "shadcn/ui"],
+    period: "2022",
+    category: "frontend",
+    color: "#0284c7",
+    icon: <LayoutGrid className="h-5 w-5" />,
+    features: [
+      "Présentation d'entreprise moderne",
+      "Navigation fluide et intuitive",
+      "Optimisation SEO",
+      "Expérience utilisateur raffinée"
+    ]
+  },
+  {
+    title: "CocoPark Hub - Portail RH & Marketing",
+    description: "Portail intégré pour les fonctions RH, marketing et communication d'entreprise",
+    url: "http://cocopark-hub.vercel.app",
+    technologies: ["React", "Tailwind CSS", "shadcn/ui"],
+    period: "2022",
+    category: "ui",
+    color: "#16a34a",
+    icon: <Workflow className="h-5 w-5" />,
+    features: [
+      "Intégration des fonctions RH et marketing",
+      "Outils de communication interne",
+      "Tableaux de bord analytiques",
+      "Gestion de documents centralisée"
+    ]
+  }
+];
+
 const getCategoryIcon = (category: string) => {
   switch (category) {
     case 'frontend':
@@ -103,6 +284,21 @@ const getCategoryIcon = (category: string) => {
   }
 };
 
+const getProjectCategoryIcon = (category: string) => {
+  switch (category) {
+    case 'frontend':
+      return <Globe className="h-4 w-4" />;
+    case 'fullstack':
+      return <Laptop className="h-4 w-4" />;
+    case 'ui':
+      return <Eye className="h-4 w-4" />;
+    case 'tools':
+      return <Workflow className="h-4 w-4" />;
+    default:
+      return <Folder className="h-4 w-4" />;
+  }
+};
+
 // Animated skill tag with visual level indicator
 const SkillTag = ({ skill }: { skill: Skill }) => {
   return (
@@ -116,6 +312,16 @@ const SkillTag = ({ skill }: { skill: Skill }) => {
         <span>{skill.name}</span>
       </span>
       <span className="ml-1.5 text-muted-foreground/70 group-hover:text-primary transition-colors">{skill.level}%</span>
+    </div>
+  );
+};
+
+// Technology tag for projects
+const TechTag = ({ name }: { name: string }) => {
+  return (
+    <div className="inline-flex items-center rounded-full border border-border/40 bg-background/50 backdrop-blur-sm px-2 py-0.5 text-xs mr-1.5 mb-1.5 group hover:border-primary/40 hover:bg-primary/5 transition-all duration-300">
+      <Code className="h-2.5 w-2.5 mr-1 text-primary/70" />
+      <span className="text-muted-foreground group-hover:text-foreground transition-colors">{name}</span>
     </div>
   );
 };
@@ -138,27 +344,30 @@ const TimelineConnector = ({ active = false, color = "#4361ee" }) => {
 const Experience: React.FC = () => {
   const [activeItem, setActiveItem] = useState(-1);
   const [expandedItems, setExpandedItems] = useState<number[]>([0]);
-  const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const [expandedProjects, setExpandedProjects] = useState<number[]>([]);
   const [animatedItems, setAnimatedItems] = useState<number[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [showProjects, setShowProjects] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
+  const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const projectsRef = useRef<HTMLDivElement>(null);
   
   // System info for futuristic UI element
-  const [currentTime, setCurrentTime] = useState('2025-03-25 02:09:41');
-  const [currentUser] = useState('darrassipro');
+  const currentTime = "2025-03-25 06:00:23";
+  const currentUser = "darrassipro";
 
-  // Update time
-  useEffect(() => {
-    const timer = setInterval(() => {
-      const date = new Date();
-      const formattedDate = '2025-03-25';
-      const hours = String(date.getHours()).padStart(2, '0');
-      const minutes = String(date.getMinutes()).padStart(2, '0');
-      const seconds = String(date.getSeconds()).padStart(2, '0');
-      setCurrentTime(`${formattedDate} ${hours}:${minutes}:${seconds}`);
-    }, 1000);
-    
-    return () => clearInterval(timer);
-  }, []);
+  // Filter projects by category
+  const filteredProjects = selectedCategory 
+    ? personalProjects.filter(p => p.category === selectedCategory)
+    : personalProjects;
+
+  // Project categories for filter
+  const projectCategories = [
+    { id: "frontend", label: "Frontend", icon: <Globe className="h-3.5 w-3.5" />, color: "#0ea5e9" },
+    { id: "fullstack", label: "Full Stack", icon: <Laptop className="h-3.5 w-3.5" />, color: "#dc2626" },
+    { id: "ui", label: "UI Design", icon: <Eye className="h-3.5 w-3.5" />, color: "#6d28d9" },
+    { id: "tools", label: "Outils", icon: <Workflow className="h-3.5 w-3.5" />, color: "#ec4899" }
+  ];
 
   // Set up intersection observer for animations
   useEffect(() => {
@@ -171,6 +380,11 @@ const Experience: React.FC = () => {
               setActiveItem(index);
               setAnimatedItems(prev => [...prev, index]);
             }
+            
+            // Check if it's the projects section
+            if (entry.target === projectsRef.current) {
+              setShowProjects(true);
+            }
           }
         });
       },
@@ -182,6 +396,10 @@ const Experience: React.FC = () => {
         observer.observe(ref);
       }
     });
+    
+    if (projectsRef.current) {
+      observer.observe(projectsRef.current);
+    }
 
     return () => observer.disconnect();
   }, []);
@@ -195,34 +413,14 @@ const Experience: React.FC = () => {
     );
   };
 
-  // Background particles animation
-  const [particles, setParticles] = useState<{x: number, y: number, size: number, speed: number}[]>([]);
-  
-  useEffect(() => {
-    const particleCount = 30;
-    const newParticles = [];
-    
-    for (let i = 0; i < particleCount; i++) {
-      newParticles.push({
-        x: Math.random() * 100,
-        y: Math.random() * 100,
-        size: Math.random() * 3 + 1,
-        speed: Math.random() * 0.3 + 0.1,
-      });
-    }
-    
-    setParticles(newParticles);
-    
-    const animateParticles = () => {
-      setParticles(prev => prev.map(p => ({
-        ...p,
-        y: (p.y - p.speed) % 100,
-      })));
-    };
-    
-    const interval = setInterval(animateParticles, 100);
-    return () => clearInterval(interval);
-  }, []);
+  // Toggle expanded state for a project
+  const toggleExpandProject = (index: number) => {
+    setExpandedProjects(prev => 
+      prev.includes(index) 
+        ? prev.filter(i => i !== index) 
+        : [...prev, index]
+    );
+  };
 
   return (
     <section 
@@ -234,21 +432,6 @@ const Experience: React.FC = () => {
       <div className="absolute inset-0 bg-gradient-to-b from-background via-secondary/20 to-background overflow-hidden">
         <div className="absolute top-1/3 -left-10 w-60 h-60 rounded-full bg-primary/5 blur-3xl"></div>
         <div className="absolute bottom-1/4 -right-10 w-60 h-60 rounded-full bg-primary/5 blur-3xl"></div>
-        
-        {/* Animated particles */}
-        {particles.map((particle, i) => (
-          <div 
-            key={i}
-            className="absolute w-1 h-1 rounded-full bg-primary/20"
-            style={{
-              top: `${particle.y}%`,
-              left: `${particle.x}%`,
-              width: `${particle.size}px`,
-              height: `${particle.size}px`,
-              opacity: 0.2 + (particle.size - 1) / 3 * 0.3,
-            }}
-          />
-        ))}
       </div>
       
       <div className="container px-4 md:px-6 pt-8 relative z-10">
@@ -263,7 +446,7 @@ const Experience: React.FC = () => {
             </span>
           </div>
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4 bg-clip-text text-transparent bg-gradient-to-r from-foreground to-foreground/70">
-            Mon parcours professionnel
+            Parcours professionnel
             <span className="text-primary">.</span>
           </h2>
           <p className="text-muted-foreground text-lg">
@@ -282,6 +465,7 @@ const Experience: React.FC = () => {
           </div>
         </div>
 
+        {/* Professional Experience Section */}
         <div className="space-y-14 max-w-3xl mx-auto relative">
           {/* Vertical timeline track that connects the experiences */}
           <div className="absolute left-6 top-[60px] bottom-0 w-px bg-border/30 -z-10"></div>
@@ -429,6 +613,214 @@ const Experience: React.FC = () => {
                 <Sparkles className="h-3.5 w-3.5 text-primary" />
                 Continuellement en évolution
               </span>
+            </div>
+          </div>
+        </div>
+        
+        {/* Projects Section */}
+        <div 
+          ref={projectsRef}
+          className="mt-24 max-w-6xl mx-auto animate-fade-in-up" 
+          style={{ 
+            opacity: showProjects ? 1 : 0,
+            transform: showProjects ? 'translateY(0)' : 'translateY(20px)',
+            transition: 'opacity 0.6s ease-out, transform 0.6s ease-out' 
+          }}
+        >
+          <div className="text-center mb-16">
+            <div className="inline-block">
+              <span className="px-3 py-1 text-xs font-medium tracking-wider bg-primary/10 rounded-full mb-4 inline-block relative overflow-hidden border border-primary/20">
+                <span className="relative flex items-center gap-1">
+                  <Layers className="h-3 w-3 text-primary/80" />
+                  PROJETS PERSONNELS
+                </span>
+              </span>
+            </div>
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-6 bg-clip-text text-transparent bg-gradient-to-r from-foreground to-foreground/70">
+              Explorations créatives
+              <span className="text-primary">.</span>
+            </h2>
+            
+            {/* Project category filters */}
+            <div className="flex flex-wrap justify-center gap-2 mt-8">
+              <button
+                onClick={() => setSelectedCategory(null)}
+                className={cn(
+                  "px-3 py-1.5 rounded-full text-xs font-medium transition-all",
+                  "border backdrop-blur-sm",
+                  selectedCategory === null 
+                    ? "bg-primary/20 border-primary/30 text-foreground" 
+                    : "bg-background/40 border-border/40 text-muted-foreground hover:bg-background/60"
+                )}
+              >
+                <span className="flex items-center gap-1.5">
+                  <Folder className="h-3 w-3" />
+                  Tous les projets
+                </span>
+              </button>
+              
+              {projectCategories.map(category => (
+                <button
+                  key={category.id}
+                  onClick={() => setSelectedCategory(category.id)}
+                  className={cn(
+                    "px-3 py-1.5 rounded-full text-xs font-medium transition-all",
+                    "border backdrop-blur-sm",
+                    selectedCategory === category.id 
+                      ? "bg-primary/20 border-primary/30 text-foreground" 
+                      : "bg-background/40 border-border/40 text-muted-foreground hover:bg-background/60"
+                  )}
+                >
+                  <span className="flex items-center gap-1.5">
+                    {category.icon}
+                    {category.label}
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
+          
+          {/* Projects Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredProjects.map((project, idx) => {
+              const isProjectExpanded = expandedProjects.includes(idx);
+              
+              return (
+                <div 
+                  key={project.title}
+                  className={cn(
+                    "group bg-background/70 rounded-xl border border-border/40 backdrop-blur-md overflow-hidden",
+                    "hover:border-primary/30 hover:shadow-md transition-all duration-300",
+                    "flex flex-col"
+                  )}
+                  style={{ 
+                    animationDelay: `${idx * 100}ms`,
+                    boxShadow: isProjectExpanded ? `0 5px 20px -5px ${project.color}30` : ''
+                  }}
+                >
+                  {/* Project Header */}
+                  <div className="p-5 border-b border-border/30">
+                    <div className="flex items-start justify-between">
+                      <div className="flex items-start space-x-3">
+                        <div 
+                          className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0"
+                          style={{ backgroundColor: `${project.color}20`, color: project.color }}
+                        >
+                          {project.icon}
+                        </div>
+                        <div>
+                          <h3 className="font-medium text-lg group-hover:text-primary transition-colors line-clamp-1">
+                            {project.title}
+                          </h3>
+                          <div className="flex items-center gap-1.5 mt-0.5">
+                            <span className="text-xs text-muted-foreground flex items-center gap-1">
+                              <Calendar className="h-3 w-3" />
+                              {project.period}
+                            </span>
+                            <span className="h-1 w-1 rounded-full bg-border/70"></span>
+                            <span 
+                              className="text-xs flex items-center gap-1"
+                              style={{ color: project.color }}
+                            >
+                              {getProjectCategoryIcon(project.category)}
+                              {projectCategories.find(c => c.id === project.category)?.label}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <a 
+                        href={project.url} 
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-muted-foreground hover:text-primary transition-colors"
+                        aria-label={`Visiter ${project.title}`}
+                      >
+                        <ExternalLink className="h-4 w-4" />
+                      </a>
+                    </div>
+                    
+                    <p className="text-sm text-muted-foreground mt-3 line-clamp-2">
+                      {project.description}
+                    </p>
+                  </div>
+                  
+                  {/* Technologies */}
+                  <div className="px-5 py-3 border-b border-border/30 bg-background/40">
+                    <div className="flex flex-wrap">
+                      {project.technologies.map((tech, i) => (
+                        <TechTag key={i} name={tech} />
+                      ))}
+                    </div>
+                  </div>
+                  
+                  {/* Project Features */}
+                  <div 
+                    className="px-5 overflow-hidden flex-grow flex flex-col justify-between"
+                    style={{
+                      maxHeight: isProjectExpanded ? '200px' : '0px',
+                      transition: 'max-height 400ms ease-in-out'
+                    }}
+                  >
+                    {project.features && (
+                      <div className="py-3">
+                        <p className="text-xs font-medium mb-2 text-foreground/80">Fonctionnalités</p>
+                        <ul className="space-y-1.5">
+                          {project.features.map((feature, i) => (
+                            <li key={i} className="text-xs text-muted-foreground flex items-start">
+                              <CircleCheck className="h-3 w-3 mr-1.5 mt-0.5 text-primary/70" />
+                              <span>{feature}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+                  
+                  {/* Toggle Features Button */}
+                  <button
+                    onClick={() => toggleExpandProject(idx)}
+                    className={cn(
+                      "w-full p-2 text-xs font-medium flex items-center justify-center",
+                      "transition-colors border-t border-border/30",
+                      isProjectExpanded ? "bg-primary/5" : "bg-background/50",
+                      "hover:bg-primary/10"
+                    )}
+                  >
+                    <span>{isProjectExpanded ? 'Masquer détails' : 'Voir fonctionnalités'}</span>
+                    <ArrowRight 
+                      className={cn(
+                        "h-3 w-3 ml-1.5 transition-transform",
+                        isProjectExpanded ? "rotate-90" : ""
+                      )}
+                    />
+                  </button>
+                </div>
+              );
+            })}
+          </div>
+          
+          {/* Message when no projects match filter */}
+          {filteredProjects.length === 0 && (
+            <div className="text-center py-10 bg-background/40 rounded-xl border border-border/30 backdrop-blur-sm">
+              <Folder className="h-10 w-10 text-muted-foreground/40 mx-auto mb-3" />
+              <p className="text-muted-foreground">Aucun projet ne correspond à cette catégorie</p>
+              <button
+                onClick={() => setSelectedCategory(null)}
+                className="mt-4 px-4 py-2 rounded-lg bg-primary/10 text-primary hover:bg-primary/20 transition-colors text-sm font-medium"
+              >
+                Voir tous les projets
+              </button>
+            </div>
+          )}
+          
+          {/* Latest System Update Marker */}
+          <div className="mt-12 text-center">
+            <div className="inline-flex items-center px-3 py-1 rounded-full border border-border/40 bg-background/40 backdrop-blur-sm text-xs text-muted-foreground/70">
+              <Clock className="h-3 w-3 mr-1.5 text-primary/70" />
+              <span>Dernière mise à jour: {currentTime}</span>
+              <span className="mx-2 text-border/50">|</span>
+              <User className="h-3 w-3 mr-1.5 text-primary/70" />
+              <span>{currentUser}</span>
             </div>
           </div>
         </div>
