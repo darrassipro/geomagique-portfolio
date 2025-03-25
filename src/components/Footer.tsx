@@ -2,7 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { 
   Terminal, ArrowUp, Clock, User, Cpu, RefreshCw, Code,
   Mail, Phone, MapPin, ExternalLink, ArrowRight, Sparkles,
-  Braces, Globe2, Bot, Command, Copy, Check
+  Braces, Globe2, Bot, Command, Copy, Check, Scan, Shield,
+  Zap, Lock
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -26,16 +27,17 @@ const Footer: React.FC = () => {
   const [bootSequence, setBootSequence] = useState(true);
   const [terminalState, setTerminalState] = useState('online');
   const [terminalCommands, setTerminalCommands] = useState<string[]>([]);
+  const [encryptionStatus, setEncryptionStatus] = useState('secure');
   
   const footerRef = useRef<HTMLElement>(null);
-  const systemTime = "2025-03-25 02:45:26";
+  const systemTime = "2025-03-25 04:54:17"; // Updated with provided time
   const systemUser = "darrassipro";
   
   // Random values for visual elements
   const uniqueId = `session-${Math.random().toString(36).substring(2, 10)}`;
   const uptime = `${Math.floor(Math.random() * 60)}d ${Math.floor(Math.random() * 24)}h ${Math.floor(Math.random() * 60)}m`;
   const responseTime = `${Math.floor(Math.random() * 40 + 15)}ms`;
-  const systemVersion = "1.6.0";
+  const systemVersion = "1.6.2";
   
   // Navigation items with metadata
   const navigationItems = [
@@ -66,6 +68,12 @@ const Footer: React.FC = () => {
     </svg>
   );
   
+  const DribbbleIcon: React.FC<SocialIconProps> = ({ className }) => (
+    <svg className={className} fill="currentColor" viewBox="0 0 24 24">
+      <path d="M12 0c-6.628 0-12 5.373-12 12s5.372 12 12 12 12-5.373 12-12-5.372-12-12-12zm9.885 11.441c-2.575-.422-4.943-.445-7.103-.073-.244-.563-.497-1.125-.767-1.68 2.31-1 4.165-2.358 5.548-4.082 1.35 1.594 2.197 3.619 2.322 5.835zm-3.842-7.282c-1.205 1.554-2.868 2.783-4.986 3.68-1.016-1.861-2.178-3.676-3.488-5.438.779-.197 1.591-.314 2.431-.314 2.275 0 4.368.779 6.043 2.072zm-10.516-.993c1.331 1.742 2.511 3.538 3.537 5.381-2.43.715-5.331 1.082-8.684 1.105.692-2.835 2.601-5.193 5.147-6.486zm-5.44 8.834l.013-.256c3.849-.005 7.169-.448 9.95-1.322.233.475.456.952.67 1.432-3.38 1.057-6.165 3.222-8.337 6.48-1.432-1.719-2.296-3.927-2.296-6.334zm3.829 7.81c1.969-3.088 4.482-5.098 7.598-6.027.928 2.42 1.609 4.91 2.043 7.46-3.349 1.291-6.953.666-9.641-1.433zm11.586.43c-.438-2.353-1.08-4.653-1.92-6.897 1.876-.265 3.94-.196 6.199.196-.437 2.786-2.028 5.192-4.279 6.701z"/>
+    </svg>
+  );
+  
   // Social links with properly typed icon components
   const socialLinks: SocialLink[] = [
     { 
@@ -81,10 +89,10 @@ const Footer: React.FC = () => {
       color: "#333"
     },
     { 
-      label: "Portfolio", 
+      label: "Dribbble", 
       url: "#",
-      icon: Globe2,
-      color: "#4361EE"
+      icon: DribbbleIcon,
+      color: "#ea4c89"
     }
   ];
   
@@ -163,6 +171,8 @@ const Footer: React.FC = () => {
       {/* Ambient background */}
       <div className="absolute inset-0 bg-gradient-to-b from-background via-secondary/30 to-background -z-10">
         <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent"></div>
+        <div className="absolute -bottom-10 -right-20 w-60 h-60 rounded-full bg-primary/5 blur-3xl opacity-50 pointer-events-none"></div>
+        <div className="absolute -top-20 -left-20 w-60 h-60 rounded-full bg-primary/5 blur-3xl opacity-50 pointer-events-none"></div>
       </div>
       
       <div className="container px-4 md:px-6 mx-auto">
@@ -184,7 +194,7 @@ const Footer: React.FC = () => {
               </p>
               
               {/* Terminal interface */}
-              <div className="mt-4 border border-border rounded-md overflow-hidden bg-background/50 backdrop-blur-sm">
+              <div className="mt-4 border border-border/60 rounded-md overflow-hidden bg-background/50 backdrop-blur-sm">
                 <div className="flex items-center justify-between px-3 py-1.5 bg-background/70 border-b border-border/80">
                   <div className="flex items-center space-x-1.5">
                     <div className="w-2.5 h-2.5 rounded-full bg-red-500/70"></div>
@@ -229,27 +239,27 @@ const Footer: React.FC = () => {
               
               {/* System status */}
               <div className="flex items-center justify-between text-[10px] mt-2 flex-wrap gap-y-2">
-                <div className="flex items-center text-muted-foreground/70">
-                  <Clock className="h-3 w-3 mr-1" />
-                  <span>{systemTime}</span>
-                </div>
-                
                 <div className="flex items-center space-x-3">
+                  <div className="flex items-center text-muted-foreground/70">
+                    <Clock className="h-3 w-3 mr-1" />
+                    <span>{systemTime}</span>
+                  </div>
+                  
                   <div className="flex items-center text-muted-foreground/70">
                     <User className="h-3 w-3 mr-1" />
                     <span>{systemUser}</span>
                   </div>
-                  
-                  <div className="flex items-center text-muted-foreground/70">
-                    <Cpu className="h-3 w-3 mr-1" />
-                    <span>{uniqueId}</span>
-                  </div>
                 </div>
                 
                 <div className="flex items-center space-x-3">
                   <div className="flex items-center text-muted-foreground/70">
+                    <Scan className="h-3 w-3 mr-1" />
+                    <span>{encryptionStatus}</span>
+                  </div>
+                  
+                  <div className="flex items-center text-muted-foreground/70">
                     <RefreshCw className="h-3 w-3 mr-1" />
-                    <span>{uptime}</span>
+                    <span>{responseTime}</span>
                   </div>
                 </div>
               </div>
@@ -376,6 +386,26 @@ const Footer: React.FC = () => {
                 </div>
               </div>
             </div>
+            
+            {/* Security status - matching Contact component style */}
+            <div className="mt-6 pt-4 border-t border-border/30">
+              <div className="px-3 py-2 bg-background/60 backdrop-blur-sm rounded-lg border border-border/30">
+                <div className="flex items-center text-xs mb-2">
+                  <Lock className="h-3 w-3 text-primary mr-1.5" />
+                  <span className="font-medium">Sécurité</span>
+                </div>
+                <div className="flex justify-between text-[10px] text-muted-foreground">
+                  <span className="flex items-center">
+                    <Shield className="h-3 w-3 mr-1" />
+                    <span>TLS 1.3</span>
+                  </span>
+                  <span className="flex items-center">
+                    <Zap className="h-3 w-3 mr-1" />
+                    <span>Ping: {Math.floor(Math.random() * 10) + 15}ms</span>
+                  </span>
+                </div>
+              </div>
+            </div>
           </div>
           
           {/* Contact section */}
@@ -429,16 +459,45 @@ const Footer: React.FC = () => {
                 className={cn(
                   "flex items-center justify-between py-3 px-4 rounded-lg w-full",
                   "bg-primary/10 hover:bg-primary/20 transition-colors border border-primary/20",
-                  "group"
+                  "group relative overflow-hidden"
                 )}
                 onClick={() => addTerminalCommand("Redirecting to contact section...")}
               >
+                <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-primary-foreground/10 to-transparent -translate-x-full group-hover:animate-shimmer"></span>
                 <div className="flex items-center">
                   <Mail className="h-4 w-4 text-primary mr-3" />
                   <span className="text-sm font-medium">Me contacter</span>
                 </div>
                 <ArrowRight className="h-4 w-4 text-primary group-hover:translate-x-1 transition-transform" />
               </a>
+            </div>
+            
+            {/* System info block matching Contact component */}
+            <div className="mt-6 p-4 rounded-lg border border-border/40 bg-background/30 backdrop-blur-sm">
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center text-xs font-medium">
+                  <Terminal className="h-3.5 w-3.5 mr-1.5 text-primary/70" />
+                  <span>System Status</span>
+                </div>
+                <div className="text-[10px] font-mono text-muted-foreground/60 px-1.5 py-0.5 bg-background/40 rounded-md">
+                  {systemTime}
+                </div>
+              </div>
+              
+              <div className="text-xs text-muted-foreground flex flex-col gap-1.5">
+                <div className="flex items-center justify-between">
+                  <span>Uptime</span>
+                  <span className="font-mono">{uptime}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span>Session ID</span>
+                  <span className="font-mono">{uniqueId.substring(0, 10)}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span>User</span>
+                  <span className="font-mono text-primary/80">{systemUser}</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
