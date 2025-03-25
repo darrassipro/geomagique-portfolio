@@ -48,6 +48,21 @@
     @apply bg-background text-foreground;
     font-feature-settings: "ss01", "ss02", "cv01", "cv02", "cv03";
     text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+
+  /* Improved scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    @apply bg-background/50;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    @apply bg-primary/20 rounded-full hover:bg-primary/30 transition-colors;
   }
 
   /* Custom Elements */
@@ -88,7 +103,7 @@
   }
   
   .project-card {
-    @apply overflow-hidden bg-white rounded-2xl shadow-sm border border-border transition-all duration-500 hover:shadow-md;
+    @apply overflow-hidden bg-white rounded-2xl shadow-sm border border-border transition-all duration-500 hover:shadow-md hover:border-primary/20;
   }
   
   .animate-reveal {
@@ -100,6 +115,19 @@
   .revealed {
     opacity: 1;
     transform: translateY(0);
+  }
+
+  /* Enhanced button and hover states */
+  button, 
+  .button,
+  a[href]:not(.no-hover) {
+    @apply transition-all duration-300;
+  }
+
+  /* Button press effect */
+  button:active:not(:disabled),
+  .button:active:not(:disabled) {
+    transform: translateY(1px);
   }
   
   /* Futuristic effects */
@@ -123,7 +151,7 @@
     transform: translateY(-5px);
   }
   
-  /* Animated background grain */
+  /* Enhanced animated background grain */
   @keyframes grain {
     0%, 100% { transform: translate(0, 0) scale(1.05); }
     10% { transform: translate(-1%, -1%) scale(1.05); }
@@ -149,8 +177,9 @@
     opacity: 0.05;
     animation: grain 8s steps(10) infinite;
     pointer-events: none;
+    z-index: -1;
   }
-  
+
   /* Futuristic grid background pattern */
   .grid-pattern {
     position: relative;
@@ -171,7 +200,7 @@
     z-index: -1;
   }
   
-  /* Advanced hover animations */
+  /* Enhanced hover animations */
   .hover-scale {
     transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
@@ -199,6 +228,56 @@
   
   .dynamic-underline:hover::after {
     transform: scaleX(1);
+  }
+
+  /* Enhanced button styles */
+  .btn {
+    @apply relative inline-flex items-center justify-center font-medium transition-all duration-300 overflow-hidden;
+  }
+  
+  .btn::after {
+    content: '';
+    @apply absolute inset-0 bg-white opacity-0 transition-opacity duration-300;
+    z-index: -1;
+  }
+  
+  .btn:hover::after {
+    @apply opacity-10;
+  }
+  
+  .btn:active {
+    transform: translateY(1px);
+  }
+
+  /* Loading animations */
+  .pulse-dot {
+    @apply relative inline-flex h-3 w-3 rounded-full bg-primary;
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+  }
+
+  /* Fade in animation */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-out forwards;
   }
 }
 
@@ -279,5 +358,32 @@
     100% {
       left: 125%;
     }
+  }
+
+  /* Tracking focus state */
+  .focus-ring {
+    @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-background/50;
+  }
+
+  /* Improved accessibility utilities */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+
+  /* Text gradient */
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r;
+  }
+  
+  .text-gradient-primary {
+    @apply text-gradient from-primary via-primary/90 to-primary/70;
   }
 }
