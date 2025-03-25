@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { 
-  ArrowUp, Clock, User, RefreshCw, Code,
-  Mail, Phone, MapPin, ArrowRight, Sparkles,
-  Braces, Globe2, Command, Copy, Check, Scan, Shield,
-  Zap, Lock
+  ArrowUp, Clock, Code, Mail, Phone, MapPin, 
+  ArrowRight, Sparkles, Braces, Globe2, Command, 
+  Copy, Check, Shield, Zap, Lock, User
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -24,15 +23,11 @@ const Footer: React.FC = () => {
   const [visibleSection, setVisibleSection] = useState<string | null>(null);
   const [hoveredLink, setHoveredLink] = useState<string | null>(null);
   const [copiedText, setCopiedText] = useState<string | null>(null);
-  const [encryptionStatus, setEncryptionStatus] = useState('secure');
   
   const footerRef = useRef<HTMLElement>(null);
-  const systemTime = "2025-03-25 04:56:40"; // Updated with provided time
-  const systemUser = "darrassipro";
-  
-  // Random values for visual elements
-  const responseTime = `${Math.floor(Math.random() * 40 + 15)}ms`;
-  const systemVersion = "1.7.0";
+  const systemTime = "2025-03-25 05:06:02"; // Updated timestamp
+  const systemUser = "darrassipro"; // Username
+  const systemVersion = "1.8.0";
   
   // Navigation items with metadata
   const navigationItems = [
@@ -155,30 +150,6 @@ const Footer: React.FC = () => {
               <p className="text-muted-foreground text-sm md:max-w-xs">
                 Web Designer passionné par la création d'expériences numériques intuitives et attrayantes.
               </p>
-              
-              {/* System status indicator */}
-              <div className="mt-6 inline-flex items-center space-x-2 bg-background/80 backdrop-blur-sm border border-border/40 rounded-lg p-1.5 px-3 text-xs font-mono text-muted-foreground/70">
-                <div className="flex items-center">
-                  <span className="h-1.5 w-1.5 rounded-full mr-1.5 bg-green-500 animate-pulse"></span>
-                  <Clock className="h-3 w-3 mr-1" />
-                  <span className="mr-1">{systemTime}</span>
-                </div>
-                <span className="hidden md:inline-block text-muted-foreground/30">|</span>
-                <div className="hidden md:flex items-center">
-                  <User className="h-3 w-3 mr-1.5" />
-                  <span>{systemUser}</span>
-                </div>
-                <span className="hidden md:inline-block text-muted-foreground/30">|</span>
-                <div className="hidden md:flex items-center">
-                  <Scan className="h-3 w-3 mr-1.5" />
-                  <span>{encryptionStatus}</span>
-                </div>
-                <span className="hidden md:inline-block text-muted-foreground/30">|</span>
-                <div className="hidden md:flex items-center">
-                  <RefreshCw className="h-3 w-3 mr-1.5" />
-                  <span>{responseTime}</span>
-                </div>
-              </div>
             </div>
             
             {/* Social links */}
@@ -349,13 +320,6 @@ const Footer: React.FC = () => {
             <span className="mr-2">&copy; {currentYear} Younes Darrassi</span>
             <span className="hidden md:inline-block">•</span>
             <span className="hidden md:block ml-2">Tous droits réservés</span>
-            
-            <div className="ml-3 h-4 pl-3 hidden sm:block border-l border-border/50">
-              <span className="font-mono text-[10px] text-muted-foreground/60 flex items-center">
-                <Clock className="h-3 w-3 mr-1" />
-                <span>{systemTime}</span>
-              </span>
-            </div>
           </div>
           
           {/* Privacy and terms links */}
