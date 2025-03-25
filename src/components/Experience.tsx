@@ -347,14 +347,14 @@ const Experience: React.FC = () => {
   const [expandedProjects, setExpandedProjects] = useState<number[]>([]);
   const [animatedItems, setAnimatedItems] = useState<number[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [showProjects, setShowProjects] = useState(true);
+  const [showProjects, setShowProjects] = useState(true); // Set to true by default
   const sectionRef = useRef<HTMLElement>(null);
   const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
   const projectsRef = useRef<HTMLDivElement>(null);
-  const projectsHeaderRef = useRef<HTMLDivElement>(null);
+  const filtersRef = useRef<HTMLDivElement>(null);
   
-  // System info for futuristic UI element - updated with current values
-  const currentTime = "2025-03-25 08:52:31"; // Updated time as requested
+  // System info for futuristic UI element
+  const currentTime = "2025-03-25 08:45:41"; // Updated time as provided
   const currentUser = "darrassipro";
 
   // Filter projects by category
@@ -431,10 +431,23 @@ const Experience: React.FC = () => {
     );
   };
 
-  // Handle category change without scrolling
-  const handleCategoryChange = (category: string | null) => {
-    // Just update the state - no scrolling operations
+  // Handle filter selection without scrolling
+  const handleCategoryFilter = (e: React.MouseEvent, category: string | null) => {
+    e.preventDefault(); // Prevent default button behavior
+    
+    // Save current scroll position
+    const currentScrollY = window.scrollY;
+    
+    // Update category
     setSelectedCategory(category);
+    
+    // After state update, restore scroll position
+    setTimeout(() => {
+      window.scrollTo({
+        top: currentScrollY,
+        behavior: 'auto' // Use 'auto' instead of 'smooth' to prevent visible scrolling
+      });
+    }, 0);
   };
 
   // Background particles animation
@@ -679,10 +692,10 @@ const Experience: React.FC = () => {
         <div 
           ref={projectsRef}
           id="projects-section"
-          className="mt-24 mb-8 max-w-6xl mx-auto"
+          className="mt-24 mb-8 max-w-6xl mx-auto relative"
         >
-          {/* Projects Header */}
-          <div ref={projectsHeaderRef} className="text-center mb-16">
+          {/* Projects Header - This stays fixed in place when filters change */}
+          <div className="text-center mb-16">
             <div className="inline-block">
               <span className="px-3 py-1 text-xs font-medium tracking-wider bg-primary/10 rounded-full mb-4 inline-block relative overflow-hidden border border-primary/20">
                 <span className="relative flex items-center gap-1">
@@ -696,14 +709,14 @@ const Experience: React.FC = () => {
               <span className="text-primary">.</span>
             </h2>
             
-            {/* Project category filters - Fixed to prevent scroll issues */}
-            <div className="flex flex-wrap justify-center gap-2 mt-8 static">
+            {/* Project category filters - With scroll prevention */}
+            <div ref={filtersRef} className="flex flex-wrap justify-center gap-2 mt-8">
               <button
-                type="button"
-                onClick={() => handleCategoryChange(null)}
+                type="button" // Explicitly set type to button to prevent form submission
+                onClick={(e) => handleCategoryFilter(e, null)}
                 className={cn(
-                  "px-3 py-1.5 rounded-full text-xs font-medium transition-colors",
-                  "border backdrop-blur-sm focus:outline-none",
+                  "px-3 py-1.5 rounded-full text-xs font-medium transition-all",
+                  "border backdrop-blur-sm",
                   selectedCategory === null 
                     ? "bg-primary/20 border-primary/30 text-foreground" 
                     : "bg-background/40 border-border/40 text-muted-foreground hover:bg-background/60"
@@ -718,11 +731,11 @@ const Experience: React.FC = () => {
               {projectCategories.map(category => (
                 <button
                   key={category.id}
-                  type="button"
-                  onClick={() => handleCategoryChange(category.id)}
+                  type="button" // Explicitly set type to button 
+                  onClick={(e) => handleCategoryFilter(e, category.id)}
                   className={cn(
-                    "px-3 py-1.5 rounded-full text-xs font-medium transition-colors",
-                    "border backdrop-blur-sm focus:outline-none",
+                    "px-3 py-1.5 rounded-full text-xs font-medium transition-all",
+                    "border backdrop-blur-sm",
                     selectedCategory === category.id 
                       ? "bg-primary/20 border-primary/30 text-foreground" 
                       : "bg-background/40 border-border/40 text-muted-foreground hover:bg-background/60"
@@ -737,142 +750,140 @@ const Experience: React.FC = () => {
             </div>
           </div>
           
-          {/* Projects Grid - Wrapped in a div with fixed height to prevent layout shifts */}
-          <div className="min-h-[200px]">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-              {filteredProjects.map((project, idx) => {
-                const isProjectExpanded = expandedProjects.includes(idx);
-                
-                return (
+          {/* Projects Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+            {filteredProjects.map((project, idx) => {
+              const isProjectExpanded = expandedProjects.includes(idx);
+              
+              return (
+                <div 
+                  key={project.title}
+                  className={cn(
+                    "group bg-background/70 rounded-xl border border-border/40 backdrop-blur-md overflow-hidden",
+                    "hover:border-primary/30 hover:shadow-md transition-all duration-300",
+                    "flex flex-col"
+                  )}
+                  style={{ 
+                    animationDelay: `${idx * 100}ms`,
+                    boxShadow: isProjectExpanded ? `0 5px 20px -5px ${project.color}30` : ''
+                  }}
+                >
+                  {/* Project Header */}
+                  <div className="p-5 border-b border-border/30">
+                    <div className="flex items-start justify-between">
+                      <div className="flex items-start space-x-3">
+                        <div 
+                          className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0"
+                          style={{ backgroundColor: `${project.color}20`, color: project.color }}
+                        >
+                          {project.icon}
+                        </div>
+                        <div>
+                          <h3 className="font-medium text-lg group-hover:text-primary transition-colors line-clamp-1">
+                            {project.title}
+                          </h3>
+                          <div className="flex items-center gap-1.5 mt-0.5">
+                            <span className="text-xs text-muted-foreground flex items-center gap-1">
+                              <Calendar className="h-3 w-3" />
+                              {project.period}
+                            </span>
+                            <span className="h-1 w-1 rounded-full bg-border/70"></span>
+                            <span 
+                              className="text-xs flex items-center gap-1"
+                              style={{ color: project.color }}
+                            >
+                              {getProjectCategoryIcon(project.category)}
+                              {projectCategories.find(c => c.id === project.category)?.label}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <a 
+                        href={project.url} 
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-muted-foreground hover:text-primary transition-colors"
+                        aria-label={`Visiter ${project.title}`}
+                      >
+                        <ExternalLink className="h-4 w-4" />
+                      </a>
+                    </div>
+                    
+                    <p className="text-sm text-muted-foreground mt-3 line-clamp-2">
+                      {project.description}
+                    </p>
+                  </div>
+                  
+                  {/* Technologies */}
+                  <div className="px-5 py-3 border-b border-border/30 bg-background/40">
+                    <div className="flex flex-wrap">
+                      {project.technologies.map((tech, i) => (
+                        <TechTag key={i} name={tech} />
+                      ))}
+                    </div>
+                  </div>
+                  
+                  {/* Project Features */}
                   <div 
-                    key={project.title}
-                    className={cn(
-                      "group bg-background/70 rounded-xl border border-border/40 backdrop-blur-md overflow-hidden",
-                      "hover:border-primary/30 hover:shadow-md transition-all duration-300",
-                      "flex flex-col"
-                    )}
-                    style={{ 
-                      animationDelay: `${idx * 100}ms`,
-                      boxShadow: isProjectExpanded ? `0 5px 20px -5px ${project.color}30` : ''
+                    className="px-5 overflow-hidden flex-grow flex flex-col justify-between"
+                    style={{
+                      maxHeight: isProjectExpanded ? '200px' : '0px',
+                      transition: 'max-height 400ms ease-in-out'
                     }}
                   >
-                    {/* Project Header */}
-                    <div className="p-5 border-b border-border/30">
-                      <div className="flex items-start justify-between">
-                        <div className="flex items-start space-x-3">
-                          <div 
-                            className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0"
-                            style={{ backgroundColor: `${project.color}20`, color: project.color }}
-                          >
-                            {project.icon}
-                          </div>
-                          <div>
-                            <h3 className="font-medium text-lg group-hover:text-primary transition-colors line-clamp-1">
-                              {project.title}
-                            </h3>
-                            <div className="flex items-center gap-1.5 mt-0.5">
-                              <span className="text-xs text-muted-foreground flex items-center gap-1">
-                                <Calendar className="h-3 w-3" />
-                                {project.period}
-                              </span>
-                              <span className="h-1 w-1 rounded-full bg-border/70"></span>
-                              <span 
-                                className="text-xs flex items-center gap-1"
-                                style={{ color: project.color }}
-                              >
-                                {getProjectCategoryIcon(project.category)}
-                                {projectCategories.find(c => c.id === project.category)?.label}
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                        <a 
-                          href={project.url} 
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-muted-foreground hover:text-primary transition-colors"
-                          aria-label={`Visiter ${project.title}`}
-                        >
-                          <ExternalLink className="h-4 w-4" />
-                        </a>
+                    {project.features && (
+                      <div className="py-3">
+                        <p className="text-xs font-medium mb-2 text-foreground/80">Fonctionnalités</p>
+                        <ul className="space-y-1.5">
+                          {project.features.map((feature, i) => (
+                            <li key={i} className="text-xs text-muted-foreground flex items-start">
+                              <CircleCheck className="h-3 w-3 mr-1.5 mt-0.5 text-primary/70" />
+                              <span>{feature}</span>
+                            </li>
+                          ))}
+                        </ul>
                       </div>
-                      
-                      <p className="text-sm text-muted-foreground mt-3 line-clamp-2">
-                        {project.description}
-                      </p>
-                    </div>
-                    
-                    {/* Technologies */}
-                    <div className="px-5 py-3 border-b border-border/30 bg-background/40">
-                      <div className="flex flex-wrap">
-                        {project.technologies.map((tech, i) => (
-                          <TechTag key={i} name={tech} />
-                        ))}
-                      </div>
-                    </div>
-                    
-                    {/* Project Features */}
-                    <div 
-                      className="px-5 overflow-hidden flex-grow flex flex-col justify-between"
-                      style={{
-                        maxHeight: isProjectExpanded ? '200px' : '0px',
-                        transition: 'max-height 400ms ease-in-out'
-                      }}
-                    >
-                      {project.features && (
-                        <div className="py-3">
-                          <p className="text-xs font-medium mb-2 text-foreground/80">Fonctionnalités</p>
-                          <ul className="space-y-1.5">
-                            {project.features.map((feature, i) => (
-                              <li key={i} className="text-xs text-muted-foreground flex items-start">
-                                <CircleCheck className="h-3 w-3 mr-1.5 mt-0.5 text-primary/70" />
-                                <span>{feature}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      )}
-                    </div>
-                    
-                    {/* Toggle Features Button */}
-                    <button
-                      type="button"
-                      onClick={() => toggleExpandProject(idx)}
-                      className={cn(
-                        "w-full p-2 text-xs font-medium flex items-center justify-center",
-                        "transition-colors border-t border-border/30",
-                        isProjectExpanded ? "bg-primary/5" : "bg-background/50",
-                        "hover:bg-primary/10"
-                      )}
-                    >
-                      <span>{isProjectExpanded ? 'Masquer détails' : 'Voir fonctionnalités'}</span>
-                      <ArrowRight 
-                        className={cn(
-                          "h-3 w-3 ml-1.5 transition-transform",
-                          isProjectExpanded ? "rotate-90" : ""
-                        )}
-                      />
-                    </button>
+                    )}
                   </div>
-                );
-              })}
-            </div>
-            
-            {/* Message when no projects match filter */}
-            {filteredProjects.length === 0 && (
-              <div className="text-center py-10 bg-background/40 rounded-xl border border-border/30 backdrop-blur-sm">
-                <Folder className="h-10 w-10 text-muted-foreground/40 mx-auto mb-3" />
-                <p className="text-muted-foreground">Aucun projet ne correspond à cette catégorie</p>
-                <button
-                  type="button"
-                  onClick={() => handleCategoryChange(null)}
-                  className="mt-4 px-4 py-2 rounded-lg bg-primary/10 text-primary hover:bg-primary/20 transition-colors text-sm font-medium focus:outline-none"
-                >
-                  Voir tous les projets
-                </button>
-              </div>
-            )}
+                  
+                  {/* Toggle Features Button */}
+                  <button
+                    type="button"
+                    onClick={() => toggleExpandProject(idx)}
+                    className={cn(
+                      "w-full p-2 text-xs font-medium flex items-center justify-center",
+                      "transition-colors border-t border-border/30",
+                      isProjectExpanded ? "bg-primary/5" : "bg-background/50",
+                      "hover:bg-primary/10"
+                    )}
+                  >
+                    <span>{isProjectExpanded ? 'Masquer détails' : 'Voir fonctionnalités'}</span>
+                    <ArrowRight 
+                      className={cn(
+                        "h-3 w-3 ml-1.5 transition-transform",
+                        isProjectExpanded ? "rotate-90" : ""
+                      )}
+                    />
+                  </button>
+                </div>
+              );
+            })}
           </div>
+          
+          {/* Message when no projects match filter */}
+          {filteredProjects.length === 0 && (
+            <div className="text-center py-10 bg-background/40 rounded-xl border border-border/30 backdrop-blur-sm">
+              <Folder className="h-10 w-10 text-muted-foreground/40 mx-auto mb-3" />
+              <p className="text-muted-foreground">Aucun projet ne correspond à cette catégorie</p>
+              <button
+                type="button"
+                onClick={(e) => handleCategoryFilter(e, null)}
+                className="mt-4 px-4 py-2 rounded-lg bg-primary/10 text-primary hover:bg-primary/20 transition-colors text-sm font-medium"
+              >
+                Voir tous les projets
+              </button>
+            </div>
+          )}
           
           {/* Latest System Update Marker */}
           <div className="mt-12 text-center">
