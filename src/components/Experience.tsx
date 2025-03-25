@@ -5,7 +5,7 @@ import {
   Monitor, Radio, Braces, Bot, Terminal, Laptop, 
   Video, ShoppingCart, Tv, Film, Folder, Workflow, 
   Presentation, LayoutGrid, Eye, Scissors, Database,
-  CircleCheck, Layers
+  CircleCheck, Layers, Clock, User
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -353,7 +353,7 @@ const Experience: React.FC = () => {
   const projectsRef = useRef<HTMLDivElement>(null);
   
   // System info for futuristic UI element
-  const currentTime = "2025-03-25 06:00:23";
+  const currentTime = "2025-03-25 06:06:30"; // Updated time
   const currentUser = "darrassipro";
 
   // Filter projects by category
@@ -422,6 +422,35 @@ const Experience: React.FC = () => {
     );
   };
 
+  // Background particles animation
+  const [particles, setParticles] = useState<{x: number, y: number, size: number, speed: number}[]>([]);
+  
+  useEffect(() => {
+    const particleCount = 30;
+    const newParticles = [];
+    
+    for (let i = 0; i < particleCount; i++) {
+      newParticles.push({
+        x: Math.random() * 100,
+        y: Math.random() * 100,
+        size: Math.random() * 3 + 1,
+        speed: Math.random() * 0.3 + 0.1,
+      });
+    }
+    
+    setParticles(newParticles);
+    
+    const animateParticles = () => {
+      setParticles(prev => prev.map(p => ({
+        ...p,
+        y: (p.y - p.speed) % 100,
+      })));
+    };
+    
+    const interval = setInterval(animateParticles, 100);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <section 
       ref={sectionRef} 
@@ -432,6 +461,21 @@ const Experience: React.FC = () => {
       <div className="absolute inset-0 bg-gradient-to-b from-background via-secondary/20 to-background overflow-hidden">
         <div className="absolute top-1/3 -left-10 w-60 h-60 rounded-full bg-primary/5 blur-3xl"></div>
         <div className="absolute bottom-1/4 -right-10 w-60 h-60 rounded-full bg-primary/5 blur-3xl"></div>
+        
+        {/* Animated particles */}
+        {particles.map((particle, i) => (
+          <div 
+            key={i}
+            className="absolute w-1 h-1 rounded-full bg-primary/20"
+            style={{
+              top: `${particle.y}%`,
+              left: `${particle.x}%`,
+              width: `${particle.size}px`,
+              height: `${particle.size}px`,
+              opacity: 0.2 + (particle.size - 1) / 3 * 0.3,
+            }}
+          />
+        ))}
       </div>
       
       <div className="container px-4 md:px-6 pt-8 relative z-10">
@@ -446,7 +490,7 @@ const Experience: React.FC = () => {
             </span>
           </div>
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4 bg-clip-text text-transparent bg-gradient-to-r from-foreground to-foreground/70">
-            Parcours professionnel
+            Mon parcours professionnel
             <span className="text-primary">.</span>
           </h2>
           <p className="text-muted-foreground text-lg">
@@ -465,7 +509,6 @@ const Experience: React.FC = () => {
           </div>
         </div>
 
-        {/* Professional Experience Section */}
         <div className="space-y-14 max-w-3xl mx-auto relative">
           {/* Vertical timeline track that connects the experiences */}
           <div className="absolute left-6 top-[60px] bottom-0 w-px bg-border/30 -z-10"></div>
