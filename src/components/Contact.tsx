@@ -2,9 +2,298 @@ import React, { useState, useEffect, useRef } from 'react';
 import { 
   Mail, Phone, MapPin, ArrowRight, Loader, Sparkles, 
   MessageSquare, Send, User, Bot, RefreshCw, Scan, Terminal,
-  Link as LinkIcon, CornerRightDown, Check, Globe2 as Globe
+  Link as LinkIcon, CornerRightDown, Check, Globe2 as Globe,
+  X, ArrowUpRight
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+
+// ChatBot Component
+const ChatBot = ({ isOpen, onClose, currentUser, currentTime }) => {
+  const [messages, setMessages] = useState([]);
+  const [currentMessage, setCurrentMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const chatContainerRef = useRef(null);
+
+  // API configuration
+  const apiKey = 'AIzaSyDuG7w7EtezIXePz1EQkmShlfQdhmZLf3I'; 
+  const apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent';
+
+  // Project information for AI context
+  const projectContext = `
+    # About Younes Darrassi
+    - Web Designer focused on creating intuitive digital experiences
+    - Email: younes.darrassi@usmba.ac.ma
+    - Phone: +212 629 419 616
+    - Location: Fès, Morocco
+
+    # Academic Projects
+    1. Application Web de Gestion des Stages (GitHub: https://github.com/darrassi1/GestionDesStGES)
+       - Symfony project for Université privée de Fès for internship management
+       - Technologies: Twig, Doctrine, Symfony CLI, phpMyAdmin
+
+    2. Application Web pour Salons de Spa (GitHub: https://github.com/darrassi1/Gestion_SPA)
+       - Maven application with Thymeleaf and Spring JPA for salon management
+       - Technologies: Spring Boot, Spring Security, JPA Repository, MySQL
+
+    3. Gestion de Pylône Électrique (GitHub: https://github.com/darrassi1/GestionDePyloneElectrique)
+       - C# application for electric pylon management using Entity Framework 6
+       - Technologies: C#, Entity Framework 6, Code First, .NET
+
+    4. TeethSeg Frontend (GitHub: https://github.com/darrassi1/SegTeeth)
+       - UI for dental segmentation system
+       - Technologies: React, Vite, TailwindCSS, Vercel
+
+    5. Application BI avec Talend et Power BI (GitHub: https://github.com/darrassi1/Projet-BI-Talend-PowerBI)
+       - BI solution for data analysis with visualizations
+       - Technologies: Talend, Power BI, ETL, Data Visualization
+
+    6. Barbershop Application (GitHub: https://github.com/darrassi1/Barbershop, Live: https://barbershop-pearl-seven.vercel.app)
+       - Complete barbershop app with React frontend and Node.js/Express backend
+       - Technologies: React, Node.js, Express, MongoDB
+
+    # Personal Projects
+    1. DutyEng - Assistant AI Autonome (Live: http://dutyeng.vercel.app)
+       - UI for autonomous AI agent with terminal, code editor, browser and chat
+       - Technologies: React, Tailwind CSS, shadcn/ui
+
+    2. MarketSpace - Plateforme E-Commerce (Live: https://marketspace-gilt.vercel.app)
+       - E-commerce app with category navigation, shopping cart and recommendation system
+       - Technologies: React, Tailwind CSS, shadcn/ui
+
+    3. VSP - Plateforme de Streaming Vidéo (Live: http://vspfront.vercel.app)
+       - Full-stack streaming platform with video playback and recommendations
+       - Technologies: Angular 19, Tailwind CSS, Node.js, Express, MySQL
+
+    4. FlowVentory - Gestion d'Inventaire (Live: https://flowventory-gateway.vercel.app/)
+       - Inventory management app with analytical dashboards 
+       - Technologies: React, Tailwind CSS, shadcn/ui
+
+    5. Dragon Ball Z - Expérience Interactive (Live: https://dragon-ball-z-lilac.vercel.app/)
+       - Interactive website with carousel, episodes, and custom video player
+       - Technologies: Angular 19, Tailwind CSS, Font Awesome
+
+    6. SMedia - Gestion Marketing Digital (Live: http://smedia-omega.vercel.app)
+       - UI for digital marketing campaign management and data analysis
+       - Technologies: React, Tailwind CSS, shadcn/ui
+
+    7. SkipSilenceAds - Extension YouTube (Live: https://skipsilenceads.vercel.app/)
+       - Tools to remove ads from YouTube videos and skip silences
+       - Technologies: Angular 19, Tailwind CSS, Font Awesome
+
+    8. KingsLeaque - Actualités TV (Live: https://kingsleaque.vercel.app)
+       - TV player and news website with modern interface
+       - Technologies: Angular, Tailwind CSS, Font Awesome
+
+    9. SightSpace - Site Entreprise (Live: http://sightspace.vercel.app)
+       - Company website with products, services, and team presentation
+       - Technologies: React, Tailwind CSS, shadcn/ui
+
+    10. CocoPark Hub - Portail RH & Marketing (Live: http://cocopark-hub.vercel.app)
+        - Integrated portal for HR, marketing, and company communication
+        - Technologies: React, Tailwind CSS, shadcn/ui
+  `;
+
+  // Initialize with welcome message
+  useEffect(() => {
+    // Check for saved messages in localStorage
+    const storedMessages = localStorage.getItem('chatMessages');
+    if (storedMessages) {
+      setMessages(JSON.parse(storedMessages));
+    } else {
+      // Add initial welcome message
+      addBotMessage("👋 Bonjour ! Je suis l'assistant IA de Younes Darrassi. Je peux vous renseigner sur ses projets, compétences et expériences. Comment puis-je vous aider aujourd'hui ?");
+    }
+  }, []);
+
+  // Scroll to bottom when new messages are added
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
+  }, [messages]);
+
+  // Add bot message
+  const addBotMessage = (text) => {
+    const newMessage = {
+      text,
+      isUser: false,
+      timestamp: new Date()
+    };
+    setMessages(prev => [...prev, newMessage]);
+    localStorage.setItem('chatMessages', JSON.stringify([...messages, newMessage]));
+  };
+
+  // Add user message
+  const addUserMessage = (text) => {
+    const newMessage = {
+      text,
+      isUser: true,
+      timestamp: new Date()
+    };
+    setMessages(prev => [...prev, newMessage]);
+    localStorage.setItem('chatMessages', JSON.stringify([...messages, newMessage]));
+  };
+
+  // Send message to AI API
+  const getAIResponse = async (userQuery) => {
+    try {
+      const prompt = `You are Younes Darrassi's personal AI assistant. You help visitors learn about Younes, his projects, skills, and experience.
+      
+      Always be helpful, professional, and informative. If asked about contact details, provide the appropriate information.
+      
+      When discussing projects, be specific about their features, technologies used, and provide links when available.
+      
+      Here's information about Younes and his projects:
+      ${projectContext}
+      
+      User query: ${userQuery}`;
+
+      const response = await fetch(`${apiUrl}?key=${apiKey}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{
+            parts: [{ text: prompt }]
+          }]
+        })
+      });
+
+      const data = await response.json();
+      
+      if (data.candidates && data.candidates[0].content && data.candidates[0].content.parts[0].text) {
+        return data.candidates[0].content.parts[0].text;
+      } else {
+        return "Désolé, je n'ai pas pu générer une réponse. Veuillez réessayer plus tard.";
+      }
+    } catch (error) {
+      console.error('Error getting AI response:', error);
+      return "Je rencontre des difficultés techniques. Veuillez réessayer dans un instant.";
+    }
+  };
+
+  // Handle sending messages
+  const handleSendMessage = async () => {
+    if (currentMessage.trim() === '') return;
+    
+    addUserMessage(currentMessage);
+    const userQuery = currentMessage;
+    setCurrentMessage('');
+    setIsLoading(true);
+    
+    try {
+      const response = await getAIResponse(userQuery);
+      addBotMessage(response);
+    } catch (error) {
+      addBotMessage("Désolé, je rencontre des problèmes de connexion. Veuillez réessayer plus tard.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Format timestamp
+  const formatTime = (date) => {
+    return new Date(date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed bottom-5 right-5 z-50">
+      <div className="w-80 h-96 bg-background rounded-lg shadow-2xl flex flex-col border border-border/40 overflow-hidden">
+        {/* Chat Header */}
+        <div className="bg-gradient-to-r from-primary/80 to-primary/50 p-4 text-primary-foreground rounded-t-lg">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <div className="w-8 h-8 rounded-full bg-background/20 flex items-center justify-center">
+                <Bot className="h-4 w-4" />
+              </div>
+              <div className="ml-3">
+                <h3 className="text-lg font-semibold">Assistant IA</h3>
+                <div className="text-xs opacity-90">Répondez à vos questions</div>
+              </div>
+            </div>
+            <button onClick={onClose} className="hover:bg-white/10 rounded-full p-1 transition-colors">
+              <X className="h-5 w-5" />
+            </button>
+          </div>
+        </div>
+
+        {/* Chat Messages */}
+        <div ref={chatContainerRef} className="flex-1 p-4 overflow-y-auto space-y-3 bg-background/90">
+          {messages.map((message, idx) => (
+            <div
+              key={idx}
+              className={cn(
+                "max-w-[85%] p-3 rounded-xl break-words",
+                message.isUser 
+                  ? "self-end ml-auto bg-primary/10 text-foreground rounded-br-sm border border-primary/30" 
+                  : "self-start bg-secondary/30 text-foreground rounded-bl-sm border border-border/40"
+              )}
+            >
+              <div 
+                className="message-content text-sm" 
+                dangerouslySetInnerHTML={{ 
+                  __html: message.text
+                    .replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" rel="noopener noreferrer" class="text-primary hover:underline">$1</a>')
+                }}
+              />
+              <div className="text-[10px] opacity-70 text-right mt-1 font-mono">
+                {formatTime(message.timestamp)}
+              </div>
+            </div>
+          ))}
+          
+          {isLoading && (
+            <div className="self-start bg-secondary/30 text-foreground p-3 rounded-xl flex space-x-1 border border-border/40">
+              <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
+              <div className="w-2 h-2 bg-primary rounded-full animate-pulse delay-150"></div>
+              <div className="w-2 h-2 bg-primary rounded-full animate-pulse delay-300"></div>
+            </div>
+          )}
+        </div>
+
+        {/* Chat Input */}
+        <div className="p-3 bg-background flex border-t border-border/30">
+          <input
+            type="text"
+            value={currentMessage}
+            onChange={(e) => setCurrentMessage(e.target.value)}
+            placeholder="Posez-moi une question..."
+            onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+            disabled={isLoading}
+            className="flex-1 p-2 rounded-full bg-secondary/20 text-foreground placeholder-muted-foreground/70 focus:outline-none focus:ring-1 focus:ring-primary/50 border border-border/40"
+          />
+          <button
+            onClick={handleSendMessage}
+            disabled={isLoading || currentMessage.trim() === ''}
+            className={cn(
+              "ml-3 w-10 h-10 rounded-full flex items-center justify-center text-primary-foreground",
+              "bg-primary hover:bg-primary/90 transition-colors",
+              "disabled:opacity-50 disabled:cursor-not-allowed"
+            )}
+          >
+            <Send className="h-4 w-4" />
+          </button>
+        </div>
+        
+        {/* System info footer */}
+        <div className="px-3 py-1.5 bg-background text-[10px] text-muted-foreground/50 flex justify-between items-center border-t border-border/30">
+          <div className="flex items-center">
+            <Terminal className="h-3 w-3 mr-1" />
+            <span>{currentTime}</span>
+          </div>
+          <div className="flex items-center">
+            <span className="mr-1">Status:</span>
+            <span className="text-green-500 flex items-center">
+              <span className="h-1.5 w-1.5 bg-green-500 rounded-full mr-1"></span>
+              Online
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const Contact: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -17,12 +306,13 @@ const Contact: React.FC = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [focusedField, setFocusedField] = useState<string | null>(null);
   const [typingField, setTypingField] = useState<string | null>(null);
-  const [currentDate, setCurrentDate] = useState('2025-03-25 02:22:25');
+  const [currentDate, setCurrentDate] = useState('2025-03-25 06:39:12');
   const [currentUser] = useState('darrassipro');
   const [connectionStatus, setConnectionStatus] = useState('connected');
   const [encryptionStatus, setEncryptionStatus] = useState('secure');
   const [responseTime, setResponseTime] = useState('35ms');
   const [liveTypingPreview, setLiveTypingPreview] = useState('');
+  const [isChatbotOpen, setIsChatbotOpen] = useState(false);
   
   const formRef = useRef<HTMLFormElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -30,14 +320,16 @@ const Contact: React.FC = () => {
   // Update system time
   useEffect(() => {
     const timer = setInterval(() => {
+      // Keep the date from the requirement but update seconds
       const now = new Date();
-      const year = 2025;
-      const month = String(3).padStart(2, '0');
-      const day = String(25).padStart(2, '0');
-      const hours = String(now.getHours()).padStart(2, '0');
-      const minutes = String(now.getMinutes()).padStart(2, '0');
       const seconds = String(now.getSeconds()).padStart(2, '0');
-      setCurrentDate(`${year}-${month}-${day} ${hours}:${minutes}:${seconds}`);
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      const hours = String(now.getHours()).padStart(2, '0');
+      
+      // Update only time part (hours:minutes:seconds)
+      const timeParts = currentDate.split(' ');
+      timeParts[1] = `${hours}:${minutes}:${seconds}`;
+      setCurrentDate(timeParts.join(' '));
       
       // Simulate random response time variations
       if (Math.random() > 0.7) {
@@ -46,7 +338,7 @@ const Contact: React.FC = () => {
     }, 1000);
     
     return () => clearInterval(timer);
-  }, []);
+  }, [currentDate]);
   
   // Canvas animation for data visualization
   useEffect(() => {
@@ -271,6 +563,11 @@ const Contact: React.FC = () => {
       color: '#ea4c89'
     }
   ];
+  
+  // Toggle chatbot visibility
+  const toggleChatbot = () => {
+    setIsChatbotOpen(!isChatbotOpen);
+  };
   
   return (
     <section id="contact" className="py-24 relative overflow-hidden">
@@ -631,7 +928,8 @@ const Contact: React.FC = () => {
             <div className="pt-6 mt-8">
               <div className={cn(
                 "p-5 rounded-xl",
-                "bg-background/70 backdrop-blur-md border border-border/40"
+                "bg-background/70 backdrop-blur-md border border-border/40",
+                "hover:border-primary/20 hover:shadow-md transition-all duration-300"
               )}>
                 <div className="flex items-start mb-4">
                   <div className="mr-4 w-10 h-10 rounded-full flex items-center justify-center bg-primary/10 border border-primary/30">
@@ -649,15 +947,41 @@ const Contact: React.FC = () => {
                     <RefreshCw className="h-3 w-3 mr-1.5" />
                     <span>Mis à jour: 2025-03-24</span>
                   </div>
-                  <button className="text-xs flex items-center text-primary hover:text-primary/80 transition-colors">
+                  <button 
+                    className="text-xs flex items-center text-primary hover:text-primary/80 transition-colors group"
+                    onClick={toggleChatbot}
+                  >
                     <span>Discuter</span>
-                    <ArrowRight className="h-3 w-3 ml-1" />
+                    <ArrowUpRight className="h-3 w-3 ml-1 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                   </button>
                 </div>
               </div>
             </div>
           </div>
         </div>
+      </div>
+      
+      {/* ChatBot component */}
+      {isChatbotOpen && (
+        <ChatBot
+          isOpen={isChatbotOpen}
+          onClose={() => setIsChatbotOpen(false)}
+          currentUser={currentUser}
+          currentTime={currentDate}
+        />
+      )}
+      
+      {/* Chat toggle button for mobile */}
+      <div className="fixed bottom-5 right-5 z-50 lg:hidden">
+        {!isChatbotOpen && (
+          <button
+            onClick={toggleChatbot}
+            className="w-14 h-14 rounded-full bg-gradient-to-r from-primary/80 to-primary/90 flex items-center justify-center shadow-lg text-white text-2xl hover:scale-105 transition transform"
+            aria-label="Ouvrir l'assistant IA"
+          >
+            <Bot className="h-6 w-6" />
+          </button>
+        )}
       </div>
     </section>
   );
