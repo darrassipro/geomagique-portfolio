@@ -347,13 +347,13 @@ const Experience: React.FC = () => {
   const [expandedProjects, setExpandedProjects] = useState<number[]>([]);
   const [animatedItems, setAnimatedItems] = useState<number[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [showProjects, setShowProjects] = useState(false);
+  const [showProjects, setShowProjects] = useState(true); // Set to true by default to ensure visibility
   const sectionRef = useRef<HTMLElement>(null);
   const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
   const projectsRef = useRef<HTMLDivElement>(null);
   
-  // System info for futuristic UI element
-  const currentTime = "2025-03-25 06:06:30"; // Updated time
+  // System info for futuristic UI element - updated with provided values
+  const currentTime = "2025-03-25 08:36:14"; // Updated time from request
   const currentUser = "darrassipro";
 
   // Filter projects by category
@@ -388,7 +388,7 @@ const Experience: React.FC = () => {
           }
         });
       },
-      { threshold: 0.3 }
+      { threshold: 0.1 } // Lowered threshold to better detect on mobile
     );
 
     itemRefs.current.forEach((ref, index) => {
@@ -401,7 +401,15 @@ const Experience: React.FC = () => {
       observer.observe(projectsRef.current);
     }
 
-    return () => observer.disconnect();
+    // Ensure projects section is visible after a timeout, regardless of intersection observer
+    const timer = setTimeout(() => {
+      setShowProjects(true);
+    }, 500);
+
+    return () => {
+      observer.disconnect();
+      clearTimeout(timer);
+    };
   }, []);
 
   // Toggle expanded state for an item
@@ -660,14 +668,15 @@ const Experience: React.FC = () => {
           </div>
         </div>
         
-        {/* Projects Section */}
+        {/* Projects Section - Modified for visibility on mobile */}
         <div 
           ref={projectsRef}
-          className="mt-24 max-w-6xl mx-auto animate-fade-in-up" 
+          id="projects-section"
+          className="mt-24 mb-8 max-w-6xl mx-auto"
           style={{ 
-            opacity: showProjects ? 1 : 0,
-            transform: showProjects ? 'translateY(0)' : 'translateY(20px)',
-            transition: 'opacity 0.6s ease-out, transform 0.6s ease-out' 
+            opacity: 1, // Always visible on all devices
+            transform: showProjects ? 'translateY(0)' : 'translateY(0)', // No transform to prevent issues
+            transition: 'opacity 0.6s ease-out' // Keep transition for smooth appearance
           }}
         >
           <div className="text-center mb-16">
@@ -724,7 +733,7 @@ const Experience: React.FC = () => {
           </div>
           
           {/* Projects Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {filteredProjects.map((project, idx) => {
               const isProjectExpanded = expandedProjects.includes(idx);
               
