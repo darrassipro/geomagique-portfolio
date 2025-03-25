@@ -1802,14 +1802,14 @@ const Canvas: React.FC<CanvasProps> = ({ className = '' }) => {
         });
       
       // Add subtle debug info at the bottom corner (date, time, username)
- //     ctx.save();
-  //    ctx.globalAlpha = 0.3;
-  //    ctx.fillStyle = '#ffffff';
+      ctx.save();
+      ctx.globalAlpha = 0.3;
+  //   ctx.fillStyle = '#ffffff';
   //    ctx.font = '10px monospace';
  //     ctx.textAlign = 'right';
    //   ctx.textBaseline = 'bottom';
  //     ctx.fillText(`${currentDateRef.current} ${currentTimeRef.current} @${currentUserRef.current}`, width - 10, height - 10);
-    //  ctx.restore();
+      ctx.restore();
       
       requestAnimationFrame(animate);
     };
