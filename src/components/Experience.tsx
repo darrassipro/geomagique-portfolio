@@ -347,13 +347,13 @@ const Experience: React.FC = () => {
   const [expandedProjects, setExpandedProjects] = useState<number[]>([]);
   const [animatedItems, setAnimatedItems] = useState<number[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [showProjects, setShowProjects] = useState(false);
+  const [showProjects, setShowProjects] = useState(true); // Initialize as true to show by default
   const sectionRef = useRef<HTMLElement>(null);
   const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
   const projectsRef = useRef<HTMLDivElement>(null);
   
-  // System info for futuristic UI element
-  const currentTime = "2025-03-25 06:06:30"; // Updated time
+  // System info for futuristic UI element - updated with provided values
+  const currentTime = "2025-03-25 08:19:03"; // Updated with the provided timestamp
   const currentUser = "darrassipro";
 
   // Filter projects by category
@@ -369,7 +369,7 @@ const Experience: React.FC = () => {
     { id: "tools", label: "Outils", icon: <Workflow className="h-3.5 w-3.5" />, color: "#ec4899" }
   ];
 
-  // Set up intersection observer for animations
+  // Set up intersection observer for animations with lower threshold for mobile
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -388,7 +388,7 @@ const Experience: React.FC = () => {
           }
         });
       },
-      { threshold: 0.3 }
+      { threshold: 0.1 } // Lower threshold for better mobile detection
     );
 
     itemRefs.current.forEach((ref, index) => {
@@ -401,7 +401,15 @@ const Experience: React.FC = () => {
       observer.observe(projectsRef.current);
     }
 
-    return () => observer.disconnect();
+    // Force projects to be visible after a timeout to ensure they're shown
+    const timer = setTimeout(() => {
+      setShowProjects(true);
+    }, 1000);
+
+    return () => {
+      observer.disconnect();
+      clearTimeout(timer);
+    };
   }, []);
 
   // Toggle expanded state for an item
@@ -660,17 +668,17 @@ const Experience: React.FC = () => {
           </div>
         </div>
         
-        {/* Projects Section */}
+        {/* Projects Section - Always visible with animation-based reveal */}
         <div 
           ref={projectsRef}
-          className="mt-24 max-w-6xl mx-auto animate-fade-in-up" 
+          id="projects-section" // Added ID for direct access
+          className="mt-24 max-w-6xl mx-auto"
           style={{ 
-            opacity: showProjects ? 1 : 0,
-            transform: showProjects ? 'translateY(0)' : 'translateY(20px)',
+            opacity: 1, // Always visible
             transition: 'opacity 0.6s ease-out, transform 0.6s ease-out' 
           }}
         >
-          <div className="text-center mb-16">
+          <div className="text-center mb-12">
             <div className="inline-block">
               <span className="px-3 py-1 text-xs font-medium tracking-wider bg-primary/10 rounded-full mb-4 inline-block relative overflow-hidden border border-primary/20">
                 <span className="relative flex items-center gap-1">
@@ -684,8 +692,8 @@ const Experience: React.FC = () => {
               <span className="text-primary">.</span>
             </h2>
             
-            {/* Project category filters */}
-            <div className="flex flex-wrap justify-center gap-2 mt-8">
+            {/* Project category filters with more responsive layout */}
+            <div className="flex flex-wrap justify-center gap-2 mt-6">
               <button
                 onClick={() => setSelectedCategory(null)}
                 className={cn(
@@ -698,7 +706,7 @@ const Experience: React.FC = () => {
               >
                 <span className="flex items-center gap-1.5">
                   <Folder className="h-3 w-3" />
-                  Tous les projets
+                  <span className="whitespace-nowrap">Tous</span>
                 </span>
               </button>
               
@@ -716,15 +724,15 @@ const Experience: React.FC = () => {
                 >
                   <span className="flex items-center gap-1.5">
                     {category.icon}
-                    {category.label}
+                    <span className="whitespace-nowrap">{category.label}</span>
                   </span>
                 </button>
               ))}
             </div>
           </div>
           
-          {/* Projects Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {/* Projects Grid - Improved responsive layout */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
             {filteredProjects.map((project, idx) => {
               const isProjectExpanded = expandedProjects.includes(idx);
               
@@ -742,7 +750,7 @@ const Experience: React.FC = () => {
                   }}
                 >
                   {/* Project Header */}
-                  <div className="p-5 border-b border-border/30">
+                  <div className="p-4 border-b border-border/30">
                     <div className="flex items-start justify-between">
                       <div className="flex items-start space-x-3">
                         <div 
@@ -751,11 +759,11 @@ const Experience: React.FC = () => {
                         >
                           {project.icon}
                         </div>
-                        <div>
-                          <h3 className="font-medium text-lg group-hover:text-primary transition-colors line-clamp-1">
+                        <div className="min-w-0 flex-1"> {/* Added min-width to prevent overflow */}
+                          <h3 className="font-medium text-lg group-hover:text-primary transition-colors truncate">
                             {project.title}
                           </h3>
-                          <div className="flex items-center gap-1.5 mt-0.5">
+                          <div className="flex items-center gap-1.5 mt-0.5 flex-wrap">
                             <span className="text-xs text-muted-foreground flex items-center gap-1">
                               <Calendar className="h-3 w-3" />
                               {project.period}
@@ -775,7 +783,7 @@ const Experience: React.FC = () => {
                         href={project.url} 
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-muted-foreground hover:text-primary transition-colors"
+                        className="text-muted-foreground hover:text-primary transition-colors flex-shrink-0 ml-2"
                         aria-label={`Visiter ${project.title}`}
                       >
                         <ExternalLink className="h-4 w-4" />
@@ -788,7 +796,7 @@ const Experience: React.FC = () => {
                   </div>
                   
                   {/* Technologies */}
-                  <div className="px-5 py-3 border-b border-border/30 bg-background/40">
+                  <div className="px-4 py-3 border-b border-border/30 bg-background/40">
                     <div className="flex flex-wrap">
                       {project.technologies.map((tech, i) => (
                         <TechTag key={i} name={tech} />
@@ -796,9 +804,9 @@ const Experience: React.FC = () => {
                     </div>
                   </div>
                   
-                  {/* Project Features */}
+                  {/* Project Features - improved for small screens */}
                   <div 
-                    className="px-5 overflow-hidden flex-grow flex flex-col justify-between"
+                    className="px-4 overflow-hidden flex-grow flex flex-col justify-between"
                     style={{
                       maxHeight: isProjectExpanded ? '200px' : '0px',
                       transition: 'max-height 400ms ease-in-out'
@@ -810,7 +818,7 @@ const Experience: React.FC = () => {
                         <ul className="space-y-1.5">
                           {project.features.map((feature, i) => (
                             <li key={i} className="text-xs text-muted-foreground flex items-start">
-                              <CircleCheck className="h-3 w-3 mr-1.5 mt-0.5 text-primary/70" />
+                              <CircleCheck className="h-3 w-3 mr-1.5 mt-0.5 text-primary/70 flex-shrink-0" />
                               <span>{feature}</span>
                             </li>
                           ))}
