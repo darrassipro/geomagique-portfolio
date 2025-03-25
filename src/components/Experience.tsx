@@ -2,8 +2,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { 
   Calendar, Code, MoveRight, Github, Globe2 as Globe, 
-  Filter, Monitor, ArrowUpRight, X, RotateCw,
-  Sparkles, MapPin
+  Filter, Monitor, ArrowUpRight, X, RotateCw
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
