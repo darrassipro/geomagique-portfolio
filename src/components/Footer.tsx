@@ -25,9 +25,9 @@ const Footer: React.FC = () => {
   const [copiedText, setCopiedText] = useState<string | null>(null);
   
   const footerRef = useRef<HTMLElement>(null);
-  const systemTime = "2025-03-25 05:06:02"; // Updated timestamp
+  const systemTime = "2025-03-25 05:11:02"; // Updated timestamp
   const systemUser = "darrassipro"; // Username
-  const systemVersion = "1.8.0";
+  const systemVersion = "1.8.5";
   
   // Navigation items with metadata
   const navigationItems = [
@@ -134,9 +134,10 @@ const Footer: React.FC = () => {
       </div>
       
       <div className="container px-4 md:px-6 mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
-          {/* Main content */}
-          <div className="md:col-span-5 space-y-6">
+        {/* Footer grid with responsive columns */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-8">
+          {/* Main content - takes full width on mobile, then adjusts on larger screens */}
+          <div className="sm:col-span-2 lg:col-span-5 space-y-6">
             <div className="space-y-2">
               <div className="flex items-center space-x-2">
                 <h3 className="text-lg font-bold bg-clip-text text-transparent bg-gradient-to-r from-foreground to-foreground/70 tracking-tight">
@@ -147,7 +148,7 @@ const Footer: React.FC = () => {
                 </div>
               </div>
               
-              <p className="text-muted-foreground text-sm md:max-w-xs">
+              <p className="text-muted-foreground text-sm max-w-xs">
                 Web Designer passionné par la création d'expériences numériques intuitives et attrayantes.
               </p>
             </div>
@@ -185,8 +186,8 @@ const Footer: React.FC = () => {
             </div>
           </div>
           
-          {/* Navigation section */}
-          <div className="md:col-span-3">
+          {/* Navigation section - stacks with Contact on mobile/tablets, separate on larger screens */}
+          <div className="lg:col-span-3">
             <h4 className="text-xs font-semibold uppercase tracking-wider mb-4 flex items-center">
               <Command className="h-3.5 w-3.5 mr-1.5 text-primary/70" />
               Navigation
@@ -249,8 +250,8 @@ const Footer: React.FC = () => {
             </div>
           </div>
           
-          {/* Contact section */}
-          <div className="md:col-span-4">
+          {/* Contact section with improved responsive layout */}
+          <div className="lg:col-span-4">
             <h4 className="text-xs font-semibold uppercase tracking-wider mb-4 flex items-center">
               <Sparkles className="h-3.5 w-3.5 mr-1.5 text-primary/70" />
               Contact
@@ -261,25 +262,27 @@ const Footer: React.FC = () => {
                 <li 
                   key={idx} 
                   className={cn(
-                    "flex items-center justify-between py-2 px-3 rounded-lg group",
+                    "flex items-start sm:items-center justify-between py-2 px-3 rounded-lg group",
                     "hover:bg-primary/5 transition-all",
                     "border border-border/30 bg-background/50 backdrop-blur-sm"
                   )}
                 >
-                  <div className="flex items-center">
-                    <div className="w-7 h-7 rounded-full flex items-center justify-center mr-3 bg-primary/10">
+                  <div className="flex items-start">
+                    <div className="w-7 h-7 rounded-full flex items-center justify-center mr-3 bg-primary/10 flex-shrink-0 mt-0.5 sm:mt-0">
                       {info.icon}
                     </div>
-                    <div>
+                    <div className="min-w-0"> {/* Control width for text containment */}
                       <p className="text-xs font-medium mb-0.5">{info.label}</p>
-                      <p className="text-muted-foreground text-xs">{info.value}</p>
+                      <p className="text-muted-foreground text-xs truncate max-w-[160px] sm:max-w-[140px] md:max-w-[200px] lg:max-w-[180px] xl:max-w-[220px]">
+                        {info.value}
+                      </p>
                     </div>
                   </div>
                   
                   {info.copyable && (
                     <button 
                       onClick={() => handleCopy(info.value)}
-                      className="h-6 w-6 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-background/80"
+                      className="h-6 w-6 rounded-full flex items-center justify-center opacity-70 sm:opacity-0 group-hover:opacity-100 transition-opacity bg-background/80 flex-shrink-0 ml-2"
                       aria-label={`Copier ${info.label}`}
                     >
                       {copiedText === info.value ? (
@@ -314,9 +317,9 @@ const Footer: React.FC = () => {
           </div>
         </div>
         
-        {/* Footer bottom bar */}
+        {/* Footer bottom bar - more responsive */}
         <div className="border-t border-border/30 mt-10 pt-6 flex flex-col md:flex-row justify-between items-center">
-          <div className="text-xs text-muted-foreground flex items-center">
+          <div className="text-xs text-muted-foreground flex items-center text-center md:text-left">
             <span className="mr-2">&copy; {currentYear} Younes Darrassi</span>
             <span className="hidden md:inline-block">•</span>
             <span className="hidden md:block ml-2">Tous droits réservés</span>
