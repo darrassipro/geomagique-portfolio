@@ -476,6 +476,10 @@ const projects: Project[] = [
 ];
 
 const Projects: React.FC = () => {
+  // System information
+  const currentDateTime = "2025-03-25 06:21:03";
+  const currentUser = "darrassipro";
+  
   return (
     <section id="projects" className="py-24 relative overflow-hidden">
       <div className="absolute top-0 left-0 w-full h-24 bg-gradient-to-b from-background to-transparent z-[1]"></div>
@@ -499,6 +503,8 @@ const Projects: React.FC = () => {
           {projects.map((project, index) => {
             const Icon = project.icon || Box;
             const decorations = getBorderDecoration(index);
+            // Determine the target URL (live site or GitHub)
+            const targetUrl = project.live || project.github || "#";
             
             return (
               <div key={index} className="relative animate-reveal" style={{ animationDelay: `${index * 100}ms` }}>
@@ -520,9 +526,16 @@ const Projects: React.FC = () => {
                       <h3 className="text-xl font-bold flex-1">
                         {project.title}
                       </h3>
-                      <span className="h-8 w-8 rounded-full flex items-center justify-center bg-primary/5 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
+                      {/* Make the arrow icon clickable and navigate to the appropriate URL */}
+                      <a 
+                        href={targetUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="h-8 w-8 rounded-full flex items-center justify-center bg-primary/5 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 hover:bg-primary/20"
+                        aria-label={`Voir ${project.title}`}
+                      >
                         <ArrowUpRight className="h-4 w-4 text-primary" />
-                      </span>
+                      </a>
                     </div>
                     <p className="text-muted-foreground mb-4">{project.description}</p>
                     
@@ -560,6 +573,15 @@ const Projects: React.FC = () => {
               </div>
             );
           })}
+        </div>
+        
+        {/* Add updated timestamp at the bottom */}
+        <div className="text-center mt-12">
+          <div className="inline-flex items-center px-3 py-1 rounded-full border border-border/40 bg-background/40 backdrop-blur-sm text-xs text-muted-foreground/70">
+            <span>Dernière mise à jour: {currentDateTime}</span>
+            <span className="mx-2 text-border/50">|</span>
+            <span>{currentUser}</span>
+          </div>
         </div>
       </div>
       
