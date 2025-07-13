@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UltraSmart Paint Pro</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 100vh;
+            overflow: hidden;
+            touch-action: manipulation;
+        }
+
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            max-width: 100vw;
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(90deg, #4f46e5, #7c3aed);
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 100;
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .main-content {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .toolbar {
+            background: #f8fafc;
+            border-right: 1px solid #e2e8f0;
+            width: 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px 5px;
+            overflow-y: auto;
+            z-index: 50;
+        }
+
+        .canvas-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .canvas-wrapper {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+            background: #ffffff;
+            border: 2px solid #e2e8f0;
+            margin: 10px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        #paintCanvas {
+            display: block;
+            cursor: crosshair;
+            width: 100%;
+            height: 100%;
+            touch-action: none;
+        }
+
+        .tool-btn {
+            width: 60px;
+            height: 60px;
+            border: 2px solid #e2e8f0;
+            background: white;
+            border-radius: 12px;
+            margin: 5px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 1.5rem;
+            position: relative;
+        }
+
+        .tool-btn:hover {
+            background: #f1f5f9;
+            border-color: #4f46e5;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
+        }
+
+        .tool-btn.active {
+            background: #4f46e5;
+            color: white;
+            border-color: #4f46e5;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+        }
+
+        .ai-panel {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 12px;
+            margin: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            z-index: 40;
+        }
+
+        .ai-panel h3 {
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .ai-tools {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .ai-btn {
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.9rem;
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .ai-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            padding: 10px 20px;
+            background: #f8fafc;
+            border-top: 1px solid #e2e8f0;
+            flex-wrap: wrap;
+        }
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .control-group label {
+            font-size: 0.85rem;
+            color: #475569;
+            font-weight: 500;
+        }
+
+        input[type="range"] {
+            width: 80px;
+            height: 20px;
+        }
+
+        input[type="color"] {
+            width: 40px;
+            height: 40px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .action-btn {
+            background: #4f46e5;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            min-height: 44px;
+            transition: all 0.2s ease;
+        }
+
+        .action-btn:hover {
+            background: #4338ca;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(67, 56, 202, 0.3);
+        }
+
+        /* Mobile Responsive Styles */
+        @media (max-width: 768px) {
+            .header {
+                padding: 8px 15px;
+            }
+
+            .header h1 {
+                font-size: 1.2rem;
+            }
+
+            .main-content {
+                flex-direction: column;
+            }
+
+            .toolbar {
+                width: 100%;
+                height: auto;
+                flex-direction: row;
+                justify-content: center;
+                border-right: none;
+                border-bottom: 1px solid #e2e8f0;
+                padding: 8px;
+                overflow-x: auto;
+                overflow-y: hidden;
+            }
+
+            .tool-btn {
+                width: 50px;
+                height: 50px;
+                margin: 0 3px;
+                flex-shrink: 0;
+            }
+
+            .canvas-wrapper {
+                margin: 5px;
+                border-radius: 4px;
+            }
+
+            .ai-panel {
+                margin: 5px;
+                padding: 10px;
+                width: calc(100% - 10px);
+            }
+
+            .ai-tools {
+                justify-content: center;
+            }
+
+            .ai-btn {
+                flex: 1;
+                min-width: 120px;
+                justify-content: center;
+            }
+
+            .controls {
+                padding: 8px 10px;
+                justify-content: center;
+            }
+
+            .control-group {
+                margin: 2px;
+            }
+
+            .control-group label {
+                font-size: 0.8rem;
+            }
+
+            input[type="range"] {
+                width: 60px;
+            }
+
+            input[type="color"] {
+                width: 36px;
+                height: 36px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1rem;
+            }
+
+            .tool-btn {
+                width: 44px;
+                height: 44px;
+                font-size: 1.2rem;
+            }
+
+            .ai-btn {
+                min-width: 100px;
+                padding: 6px 10px;
+                font-size: 0.8rem;
+            }
+
+            .action-btn {
+                padding: 6px 12px;
+                font-size: 0.8rem;
+            }
+
+            .control-group label {
+                font-size: 0.75rem;
+            }
+
+            input[type="range"] {
+                width: 50px;
+            }
+
+            input[type="color"] {
+                width: 32px;
+                height: 32px;
+            }
+        }
+
+        /* Touch-friendly enhancements */
+        @media (hover: none) and (pointer: coarse) {
+            .tool-btn, .ai-btn, .action-btn {
+                min-height: 44px;
+                min-width: 44px;
+            }
+
+            .tool-btn:hover {
+                transform: none;
+            }
+
+            .tool-btn:active {
+                background: #4f46e5;
+                color: white;
+                transform: scale(0.95);
+            }
+
+            .ai-btn:hover {
+                transform: none;
+            }
+
+            .ai-btn:active {
+                background: rgba(255,255,255,0.4);
+                transform: scale(0.95);
+            }
+
+            .action-btn:hover {
+                transform: none;
+            }
+
+            .action-btn:active {
+                background: #4338ca;
+                transform: scale(0.95);
+            }
+        }
+
+        .tool-tooltip {
+            position: absolute;
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1f2937;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+            z-index: 1000;
+        }
+
+        .tool-btn:hover .tool-tooltip {
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            .tool-tooltip {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="header">
+            <h1>🎨 UltraSmart Paint Pro</h1>
+            <div>Version 3.0</div>
+        </div>
+
+        <div class="main-content">
+            <div class="toolbar">
+                <div class="tool-btn active" data-tool="brush" title="Brush">
+                    🖌️
+                    <div class="tool-tooltip">Brush</div>
+                </div>
+                <div class="tool-btn" data-tool="pencil" title="Pencil">
+                    ✏️
+                    <div class="tool-tooltip">Pencil</div>
+                </div>
+                <div class="tool-btn" data-tool="eraser" title="Eraser">
+                    🧽
+                    <div class="tool-tooltip">Eraser</div>
+                </div>
+                <div class="tool-btn" data-tool="line" title="Line">
+                    📏
+                    <div class="tool-tooltip">Line</div>
+                </div>
+                <div class="tool-btn" data-tool="rectangle" title="Rectangle">
+                    ⬜
+                    <div class="tool-tooltip">Rectangle</div>
+                </div>
+                <div class="tool-btn" data-tool="circle" title="Circle">
+                    ⭕
+                    <div class="tool-tooltip">Circle</div>
+                </div>
+                <div class="tool-btn" data-tool="magic-wand" title="Magic Wand">
+                    ⭐
+                    <div class="tool-tooltip">Magic Wand</div>
+                </div>
+                <div class="tool-btn" data-tool="smart-fill" title="Smart Fill">
+                    🎨
+                    <div class="tool-tooltip">Smart Fill</div>
+                </div>
+            </div>
+
+            <div class="canvas-container">
+                <div class="ai-panel">
+                    <h3>🤖 AI Assistant</h3>
+                    <div class="ai-tools">
+                        <button class="ai-btn" id="enhanceBtn">
+                            ✨ Enhance
+                        </button>
+                        <button class="ai-btn" id="autoColorBtn">
+                            🌈 Auto Color
+                        </button>
+                        <button class="ai-btn" id="smartBlendBtn">
+                            🔄 Smart Blend
+                        </button>
+                        <button class="ai-btn" id="magicCleanBtn">
+                            🧹 Magic Clean
+                        </button>
+                    </div>
+                </div>
+
+                <div class="canvas-wrapper">
+                    <canvas id="paintCanvas"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <div class="control-group">
+                <label for="brushSize">Size:</label>
+                <input type="range" id="brushSize" min="1" max="50" value="5">
+                <span id="sizeDisplay">5</span>
+            </div>
+            <div class="control-group">
+                <label for="colorPicker">Color:</label>
+                <input type="color" id="colorPicker" value="#000000">
+            </div>
+            <div class="control-group">
+                <label for="opacity">Opacity:</label>
+                <input type="range" id="opacity" min="0.1" max="1" step="0.1" value="1">
+                <span id="opacityDisplay">100%</span>
+            </div>
+            <button class="action-btn" id="clearBtn">Clear</button>
+            <button class="action-btn" id="undoBtn">Undo</button>
+            <button class="action-btn" id="redoBtn">Redo</button>
+            <button class="action-btn" id="saveBtn">Save</button>
+        </div>
+    </div>
+
+    <script>
+        class UltraSmartPaintPro {
+            constructor() {
+                this.canvas = document.getElementById('paintCanvas');
+                this.ctx = this.canvas.getContext('2d');
+                this.isDrawing = false;
+                this.currentTool = 'brush';
+                this.currentColor = '#000000';
+                this.currentSize = 5;
+                this.currentOpacity = 1;
+                this.startX = 0;
+                this.startY = 0;
+                this.history = [];
+                this.historyStep = -1;
+                
+                this.initCanvas();
+                this.attachEventListeners();
+                this.saveState();
+            }
+
+            initCanvas() {
+                this.resizeCanvas();
+                this.ctx.lineCap = 'round';
+                this.ctx.lineJoin = 'round';
+                window.addEventListener('resize', () => this.resizeCanvas());
+            }
+
+            resizeCanvas() {
+                const container = this.canvas.parentElement;
+                const rect = container.getBoundingClientRect();
+                
+                // Store current canvas data
+                const imageData = this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height);
+                
+                // Set new dimensions
+                this.canvas.width = rect.width;
+                this.canvas.height = rect.height;
+                
+                // Restore canvas data if it existed
+                if (imageData.width > 0) {
+                    this.ctx.putImageData(imageData, 0, 0);
+                }
+                
+                // Reset canvas properties
+                this.ctx.lineCap = 'round';
+                this.ctx.lineJoin = 'round';
+            }
+
+            attachEventListeners() {
+                // Tool selection
+                document.querySelectorAll('.tool-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                        this.currentTool = btn.dataset.tool;
+                    });
+                });
+
+                // Controls
+                document.getElementById('brushSize').addEventListener('input', (e) => {
+                    this.currentSize = e.target.value;
+                    document.getElementById('sizeDisplay').textContent = e.target.value;
+                });
+
+                document.getElementById('colorPicker').addEventListener('change', (e) => {
+                    this.currentColor = e.target.value;
+                });
+
+                document.getElementById('opacity').addEventListener('input', (e) => {
+                    this.currentOpacity = e.target.value;
+                    document.getElementById('opacityDisplay').textContent = Math.round(e.target.value * 100) + '%';
+                });
+
+                // Action buttons
+                document.getElementById('clearBtn').addEventListener('click', () => this.clearCanvas());
+                document.getElementById('undoBtn').addEventListener('click', () => this.undo());
+                document.getElementById('redoBtn').addEventListener('click', () => this.redo());
+                document.getElementById('saveBtn').addEventListener('click', () => this.saveImage());
+
+                // AI buttons
+                document.getElementById('enhanceBtn').addEventListener('click', () => this.enhance());
+                document.getElementById('autoColorBtn').addEventListener('click', () => this.autoColor());
+                document.getElementById('smartBlendBtn').addEventListener('click', () => this.smartBlend());
+                document.getElementById('magicCleanBtn').addEventListener('click', () => this.magicClean());
+
+                // Canvas events (mouse)
+                this.canvas.addEventListener('mousedown', (e) => this.startDrawing(e));
+                this.canvas.addEventListener('mousemove', (e) => this.draw(e));
+                this.canvas.addEventListener('mouseup', () => this.stopDrawing());
+                this.canvas.addEventListener('mouseout', () => this.stopDrawing());
+
+                // Canvas events (touch)
+                this.canvas.addEventListener('touchstart', (e) => this.startDrawing(e), { passive: false });
+                this.canvas.addEventListener('touchmove', (e) => this.draw(e), { passive: false });
+                this.canvas.addEventListener('touchend', () => this.stopDrawing());
+                this.canvas.addEventListener('touchcancel', () => this.stopDrawing());
+            }
+
+            getEventPos(e) {
+                const rect = this.canvas.getBoundingClientRect();
+                const scaleX = this.canvas.width / rect.width;
+                const scaleY = this.canvas.height / rect.height;
+                
+                let clientX, clientY;
+                
+                if (e.touches && e.touches.length > 0) {
+                    clientX = e.touches[0].clientX;
+                    clientY = e.touches[0].clientY;
+                    e.preventDefault();
+                } else {
+                    clientX = e.clientX;
+                    clientY = e.clientY;
+                }
+                
+                return {
+                    x: (clientX - rect.left) * scaleX,
+                    y: (clientY - rect.top) * scaleY
+                };
+            }
+
+            startDrawing(e) {
+                this.isDrawing = true;
+                const pos = this.getEventPos(e);
+                this.startX = pos.x;
+                this.startY = pos.y;
+                
+                this.ctx.globalAlpha = this.currentOpacity;
+                this.ctx.strokeStyle = this.currentColor;
+                this.ctx.fillStyle = this.currentColor;
+                this.ctx.lineWidth = this.currentSize;
+                
+                if (this.currentTool === 'brush' || this.currentTool === 'pencil') {
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(pos.x, pos.y);
+                } else if (this.currentTool === 'eraser') {
+                    this.ctx.globalCompositeOperation = 'destination-out';
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(pos.x, pos.y);
+                } else if (this.currentTool === 'magic-wand') {
+                    this.magicWandSelection(pos.x, pos.y);
+                } else if (this.currentTool === 'smart-fill') {
+                    this.smartFill(pos.x, pos.y);
+                }
+            }
+
+            draw(e) {
+                if (!this.isDrawing) return;
+                
+                const pos = this.getEventPos(e);
+                
+                if (this.currentTool === 'brush' || this.currentTool === 'pencil' || this.currentTool === 'eraser') {
+                    this.ctx.lineTo(pos.x, pos.y);
+                    this.ctx.stroke();
+                }
+            }
+
+            stopDrawing() {
+                if (!this.isDrawing) return;
+                
+                this.isDrawing = false;
+                this.ctx.globalCompositeOperation = 'source-over';
+                
+                if (this.currentTool === 'line') {
+                    const pos = this.getEventPos(event);
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(this.startX, this.startY);
+                    this.ctx.lineTo(pos.x, pos.y);
+                    this.ctx.stroke();
+                } else if (this.currentTool === 'rectangle') {
+                    const pos = this.getEventPos(event);
+                    this.ctx.beginPath();
+                    this.ctx.rect(this.startX, this.startY, pos.x - this.startX, pos.y - this.startY);
+                    this.ctx.stroke();
+                } else if (this.currentTool === 'circle') {
+                    const pos = this.getEventPos(event);
+                    const radius = Math.sqrt(Math.pow(pos.x - this.startX, 2) + Math.pow(pos.y - this.startY, 2));
+                    this.ctx.beginPath();
+                    this.ctx.arc(this.startX, this.startY, radius, 0, 2 * Math.PI);
+                    this.ctx.stroke();
+                }
+                
+                this.saveState();
+            }
+
+            magicWandSelection(x, y) {
+                // Simulate magic wand selection with a glow effect
+                this.ctx.save();
+                this.ctx.globalCompositeOperation = 'overlay';
+                this.ctx.fillStyle = 'rgba(255, 255, 0, 0.3)';
+                this.ctx.beginPath();
+                this.ctx.arc(x, y, 30, 0, 2 * Math.PI);
+                this.ctx.fill();
+                this.ctx.restore();
+                
+                // Add sparkle effect
+                for (let i = 0; i < 5; i++) {
+                    setTimeout(() => {
+                        this.ctx.save();
+                        this.ctx.fillStyle = '#FFD700';
+                        const sparkleX = x + (Math.random() - 0.5) * 60;
+                        const sparkleY = y + (Math.random() - 0.5) * 60;
+                        this.ctx.beginPath();
+                        this.ctx.arc(sparkleX, sparkleY, 2, 0, 2 * Math.PI);
+                        this.ctx.fill();
+                        this.ctx.restore();
+                    }, i * 100);
+                }
+            }
+
+            smartFill(x, y) {
+                // Simulate smart fill with gradient effect
+                const gradient = this.ctx.createRadialGradient(x, y, 0, x, y, 50);
+                gradient.addColorStop(0, this.currentColor);
+                gradient.addColorStop(1, 'transparent');
+                
+                this.ctx.save();
+                this.ctx.fillStyle = gradient;
+                this.ctx.globalAlpha = this.currentOpacity * 0.7;
+                this.ctx.beginPath();
+                this.ctx.arc(x, y, 50, 0, 2 * Math.PI);
+                this.ctx.fill();
+                this.ctx.restore();
+            }
+
+            enhance() {
+                // Simulate AI enhancement with brightness/contrast adjustment
+                const imageData = this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height);
+                const data = imageData.data;
+                
+                for (let i = 0; i < data.length; i += 4) {
+                    // Enhance brightness and contrast
+                    data[i] = Math.min(255, data[i] * 1.1); // Red
+                    data[i + 1] = Math.min(255, data[i + 1] * 1.1); // Green
+                    data[i + 2] = Math.min(255, data[i + 2] * 1.1); // Blue
+                }
+                
+                this.ctx.putImageData(imageData, 0, 0);
+                this.saveState();
+            }
+
+            autoColor() {
+                // Simulate auto coloring with random color overlays
+                this.ctx.save();
+                this.ctx.globalCompositeOperation = 'overlay';
+                this.ctx.globalAlpha = 0.3;
+                
+                const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FECA57'];
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                
+                this.ctx.fillStyle = color;
+                this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+                this.ctx.restore();
+                this.saveState();
+            }
+
+            smartBlend() {
+                // Simulate smart blending with blur effect
+                this.ctx.save();
+                this.ctx.filter = 'blur(2px)';
+                this.ctx.globalCompositeOperation = 'multiply';
+                this.ctx.globalAlpha = 0.5;
+                this.ctx.drawImage(this.canvas, 0, 0);
+                this.ctx.restore();
+                this.saveState();
+            }
+
+            magicClean() {
+                // Simulate magic cleaning by removing noise
+                const imageData = this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height);
+                const data = imageData.data;
+                
+                // Simple noise reduction by averaging nearby pixels
+                for (let i = 0; i < data.length; i += 4) {
+                    if (data[i + 3] < 50) { // If alpha is low, make transparent
+                        data[i + 3] = 0;
+                    }
+                }
+                
+                this.ctx.putImageData(imageData, 0, 0);
+                this.saveState();
+            }
+
+            saveState() {
+                this.historyStep++;
+                if (this.historyStep < this.history.length) {
+                    this.history.length = this.historyStep;
+                }
+                this.history.push(this.canvas.toDataURL());
+            }
+
+            undo() {
+                if (this.historyStep > 0) {
+                    this.historyStep--;
+                    this.restoreState();
+                }
+            }
+
+            redo() {
+                if (this.historyStep < this.history.length - 1) {
+                    this.historyStep++;
+                    this.restoreState();
+                }
+            }
+
+            restoreState() {
+                const img = new Image();
+                img.onload = () => {
+                    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                    this.ctx.drawImage(img, 0, 0);
+                };
+                img.src = this.history[this.historyStep];
+            }
+
+            clearCanvas() {
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                this.saveState();
+            }
+
+            saveImage() {
+                const link = document.createElement('a');
+                link.download = 'ultrasmartpaint-artwork.png';
+                link.href = this.canvas.toDataURL();
+                link.click();
+            }
+        }
+
+        // Initialize the application when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            new UltraSmartPaintPro();
+        });
+    </script>
+</body>
+</html>
