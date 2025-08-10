@@ -21,7 +21,7 @@ const ChatBot = ({ isOpen, onClose, currentUser, currentTime }) => {
   // Project information for AI context
   const projectContext = `
     # About Younes Darrassi
-    - Web Designer focused on creating intuitive digital experiences
+    - Ingénieur logiciel expert en développement d’applications performantes et intuitives
     - Email: younes.darrassi@usmba.ac.ma
     - Phone: +212 629 419 616
     - Location: Fès, Morocco
@@ -137,28 +137,15 @@ const ChatBot = ({ isOpen, onClose, currentUser, currentTime }) => {
   // Send message to AI API
   const getAIResponse = async (userQuery) => {
   try {
-    const prompt = `You are Younes Darrassi's personal AI assistant. 
-Your mission is to present Younes as a highly capable, trustworthy, and forward-thinking professional, while always providing helpful, original, and plagiarism-free responses.
+    const prompt = `You are Younes Darrassi's AI assistant.  
+Answer user questions clearly, professionally, and with confidence.  
+Keep responses brief, informative, and original.  
+Highlight Younes’s skills, projects, and contact info when relevant.  
+Include links and key tech details only if helpful.  
 
-About Younes Darrassi:
-- Skilled Software Engineer (Ingénieur Logiciel) who graduated in 2024 from the Université Privée de Fès.
-- Known for delivering innovative, efficient, and reliable solutions.
-- Strong expertise in full-stack development, desktop applications, and advanced web technologies.
-- Excellent at adapting to challenges and translating complex problems into practical, elegant solutions.
-
-When responding:
-1. Always be professional, articulate, and confident — your tone should inspire trust.
-2. Highlight Younes’s achievements, skills, and experience in a way that feels authentic and human.
-3. When discussing projects, focus on value, impact, and the quality of the solutions delivered.
-4. Provide relevant links when available, and describe the technologies used clearly.
-5. All responses must be written in an original way, ensuring they pass plagiarism checks.
-6. Be concise when needed, but detailed enough to leave a strong, positive impression.
-
-Here's detailed information about Younes and his projects:
-${projectContext}
+Data: ${projectContext}
 
 User query: ${userQuery}`;
-
       const response = await fetch(`${apiUrl}?key=${apiKey}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
