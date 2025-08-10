@@ -1,41 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Canvas from './Canvas';
-import { ArrowRight, MousePointer, Code, Layers, Layout, Cpu, Zap } from 'lucide-react';
-
-const TypewriterText = ({ text, delay = 80 }) => {
-  const [displayText, setDisplayText] = useState('');
-  const [showCursor, setShowCursor] = useState(true);
-  
-  useEffect(() => {
-    let index = 0;
-    const timer = setInterval(() => {
-      if (index < text.length) {
-        setDisplayText(text.slice(0, index + 1));
-        index++;
-      } else {
-        clearInterval(timer);
-        setTimeout(() => setShowCursor(false), 1000);
-      }
-    }, delay);
-    
-    return () => clearInterval(timer);
-  }, [text, delay]);
-  
-  useEffect(() => {
-    const cursorTimer = setInterval(() => {
-      setShowCursor(prev => !prev);
-    }, 500);
-    
-    return () => clearInterval(cursorTimer);
-  }, []);
-  
-  return (
-    <>
-      {displayText}
-      <span className={`inline-block w-0.5 h-6 bg-primary ml-1 transition-opacity ${showCursor ? 'opacity-100' : 'opacity-0'}`}>|</span>
-    </>
-  );
-};
+import { ArrowRight, MousePointer, Code, Layers, Layout, Cpu, ZapIcon } from 'lucide-react';
 
 const Hero: React.FC = () => {
   return (
@@ -65,7 +30,7 @@ const Hero: React.FC = () => {
           <div className="relative">
             <h2 className="text-2xl md:text-3xl text-muted-foreground mb-6 opacity-0 animate-fade-in flex items-center" style={{ animationDelay: '0.5s', animationFillMode: 'forwards' }}>
               <span className="mr-3 relative overflow-hidden group inline-block">
-                <TypewriterText text="Ingénieur logiciel" delay={80} />
+                Ingénieur logiciel 
                 <span className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-primary/0 via-primary/80 to-primary/0 transform scale-x-0 transition-transform duration-500 group-hover:scale-x-100"></span>
               </span>
               <div className="h-px flex-grow max-w-[120px] bg-gradient-to-r from-primary/50 to-transparent"></div>
@@ -73,7 +38,7 @@ const Hero: React.FC = () => {
           </div>
           
           <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mb-8 opacity-0 animate-fade-in" style={{ animationDelay: '0.6s', animationFillMode: 'forwards' }}>
-            Fortement passionné par le développement et les nouvelles technologies, je suis à la recherche d'un poste me permettant de mettre en œuvre mes compétences techniques avec rigueur et engagement.
+            Fortement passionné par le développement et les nouvelles technologies, je suis à la recherche d’un poste me permettant de mettre en œuvre mes compétences techniques avec rigueur et engagement.
           </p>
           
           <div className="flex flex-wrap gap-4 opacity-0 animate-fade-in" style={{ animationDelay: '0.8s', animationFillMode: 'forwards' }}>
@@ -130,7 +95,7 @@ const Hero: React.FC = () => {
             </div>
             <div className="flex flex-col items-center group">
               <div className="w-12 h-12 rounded-full flex items-center justify-center bg-primary/5 mb-2 transition-all duration-300 group-hover:bg-primary/10 group-hover:scale-110 backdrop-blur-sm">
-                <Zap className="h-5 w-5 text-primary" />
+                <ZapIcon className="h-5 w-5 text-primary" />
               </div>
               <span className="text-sm text-muted-foreground">Dynamique</span>
             </div>
