@@ -104,7 +104,7 @@ const Navbar: React.FC = () => {
                 YOUNES DARRASSI
                 <span className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-primary/0 via-primary/50 to-primary/0 transform scale-x-0 transition-transform duration-500 group-hover:scale-x-100"></span>
               </span>
-              <span className="text-xs text-muted-foreground tracking-wider">WEB DESIGNER</span>
+              <span className="text-xs text-muted-foreground tracking-wider">INGÉNIEUR LOGICIEL</span>
             </div>
           </a>
           
