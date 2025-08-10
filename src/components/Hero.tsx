@@ -50,7 +50,7 @@ const Hero: React.FC = () => {
           <div className="relative">
             <h2 className="text-2xl md:text-3xl text-muted-foreground mb-6 opacity-0 animate-fade-in flex items-center" style={{ animationDelay: '0.5s', animationFillMode: 'forwards' }}>
               <span className="mr-3 relative overflow-hidden group inline-block">
-                <TypewriterText text="Ingénieur logiciel" delay={80} />
+                <TypewriterText text="Ingénieur logiciel" delay={60} />
                 <span className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-primary/0 via-primary/80 to-primary/0 transform scale-x-0 transition-transform duration-500 group-hover:scale-x-100"></span>
               </span>
               <div className="h-px flex-grow max-w-[120px] bg-gradient-to-r from-primary/50 to-transparent"></div>
