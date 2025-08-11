@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Canvas from './Canvas';
-import { ArrowRight, MousePointer, Code, Layers, Layout, Cpu, Zap, Database, Server, ChevronDown } from 'lucide-react';
+import { ArrowRight, MousePointer, Code, Layers, Layout, Cpu, Zap, Database, Server } from 'lucide-react';
 
 const TypewriterText = ({ text, delay = 80 }) => {
   const [displayText, setDisplayText] = useState('');
@@ -94,7 +94,7 @@ const Hero: React.FC = () => {
               <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors duration-300">Frontend</span>
             </div>
             
-            {/* New Backend icon */}
+            {/* Backend icon */}
             <div className="flex flex-col items-center group">
               <div className="w-14 h-14 rounded-full flex items-center justify-center bg-primary/5 mb-3 transition-all duration-300 group-hover:bg-primary/10 group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-primary/10 backdrop-blur-sm relative overflow-hidden">
                 <Server className="h-6 w-6 text-primary group-hover:animate-pulse" />
@@ -139,12 +139,6 @@ const Hero: React.FC = () => {
             </div>
           </div>
         </div>
-      </div>
-      
-      <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 z-20 animate-bounce opacity-0 animate-fade-in" style={{ animationDelay: '2s', animationFillMode: 'forwards' }}>
-        <a href="#about" className="w-10 h-10 rounded-full flex items-center justify-center bg-primary/10 hover:bg-primary/20 transition-colors duration-300">
-          <ChevronDown className="h-5 w-5 text-primary" />
-        </a>
       </div>
       
       <div className="absolute bottom-0 left-0 w-full h-48 bg-gradient-to-t from-background to-transparent z-10"></div>
