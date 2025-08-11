@@ -1,28 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import Canvas from "./Canvas";
 import { ArrowRight, MousePointer, Code, Layers, Layout, Cpu, Zap, Server, Database, Globe, Smartphone, Palette, Users, Settings, Cloud, Shield, GitBranch, Box } from "lucide-react";
 
 const Hero: React.FC = () => {
-  const [activeCategory, setActiveCategory] = useState<string | null>(null);
-
-  const frontendSubCategories = [
-    { name: "UI Design", icon: Palette, color: "text-pink-500" },
-    { name: "UX Research", icon: Users, color: "text-blue-500" },
-    { name: "CX Strategy", icon: Globe, color: "text-green-500" },
-    { name: "Interactive", icon: MousePointer, color: "text-purple-500" },
-    { name: "Mobile UI", icon: Smartphone, color: "text-orange-500" },
-    { name: "Responsive", icon: Layout, color: "text-cyan-500" }
-  ];
-
-  const backendSubCategories = [
-    { name: "API Design", icon: Settings, color: "text-blue-600" },
-    { name: "Database", icon: Database, color: "text-green-600" },
-    { name: "Cloud", icon: Cloud, color: "text-sky-500" },
-    { name: "Security", icon: Shield, color: "text-red-500" },
-    { name: "DevOps", icon: GitBranch, color: "text-orange-600" },
-    { name: "Microservices", icon: Box, color: "text-indigo-500" }
-  ];
-
   return (
     <section
       id="hero"
@@ -65,17 +45,13 @@ const Hero: React.FC = () => {
           </div>
 
           {/* Right Content */}
-          <div className="flex-1 space-y-8">
+          <div className="flex-1 space-y-6">
             
-            {/* Main Categories */}
+            {/* Main Skills Grid */}
             <div className="grid grid-cols-3 gap-6">
               
               {/* Frontend */}
-              <div 
-                className="flex flex-col items-center group cursor-pointer"
-                onMouseEnter={() => setActiveCategory('frontend')}
-                onMouseLeave={() => setActiveCategory(null)}
-              >
+              <div className="flex flex-col items-center group">
                 <div className="w-12 h-12 rounded-full flex items-center justify-center bg-primary/5 mb-2 
                                 transition-all duration-300 group-hover:bg-primary/10 group-hover:scale-110 backdrop-blur-sm
                                 group-hover:shadow-[0_0_12px_rgba(255,100,100,0.5)]">
@@ -85,11 +61,7 @@ const Hero: React.FC = () => {
               </div>
 
               {/* Backend */}
-              <div 
-                className="flex flex-col items-center group cursor-pointer"
-                onMouseEnter={() => setActiveCategory('backend')}
-                onMouseLeave={() => setActiveCategory(null)}
-              >
+              <div className="flex flex-col items-center group">
                 <div className="w-12 h-12 rounded-full flex items-center justify-center bg-primary/5 mb-2 
                                 transition-all duration-300 group-hover:bg-primary/10 group-hover:scale-110 backdrop-blur-sm
                                 group-hover:shadow-[0_0_12px_rgba(0,150,255,0.5)]">
@@ -107,7 +79,7 @@ const Hero: React.FC = () => {
                 <span className="text-sm text-muted-foreground">Dynamique</span>
               </div>
 
-              {/* Other Skills */}
+              {/* UI/UX */}
               <div className="flex flex-col items-center group">
                 <div className="w-12 h-12 rounded-full flex items-center justify-center bg-primary/5 mb-2 
                                 transition-all duration-300 group-hover:bg-primary/10 group-hover:scale-110 backdrop-blur-sm">
@@ -116,6 +88,7 @@ const Hero: React.FC = () => {
                 <span className="text-sm text-muted-foreground">UI/UX</span>
               </div>
 
+              {/* Code Quality */}
               <div className="flex flex-col items-center group">
                 <div className="w-12 h-12 rounded-full flex items-center justify-center bg-primary/5 mb-2 
                                 transition-all duration-300 group-hover:bg-primary/10 group-hover:scale-110 backdrop-blur-sm">
@@ -124,6 +97,7 @@ const Hero: React.FC = () => {
                 <span className="text-sm text-muted-foreground">Propreté du Code</span>
               </div>
 
+              {/* Architecture */}
               <div className="flex flex-col items-center group">
                 <div className="w-12 h-12 rounded-full flex items-center justify-center bg-primary/5 mb-2 
                                 transition-all duration-300 group-hover:bg-primary/10 group-hover:scale-110 backdrop-blur-sm">
@@ -134,46 +108,116 @@ const Hero: React.FC = () => {
             </div>
 
             {/* Frontend Subcategories */}
-            {activeCategory === 'frontend' && (
-              <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 transition-all duration-300">
-                <h3 className="text-lg font-semibold mb-4 text-center">Frontend Specializations</h3>
-                <div className="grid grid-cols-3 gap-4">
-                  {frontendSubCategories.map((item, index) => {
-                    const IconComponent = item.icon;
-                    return (
-                      <div key={index} className="flex flex-col items-center group">
-                        <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-white/5 mb-2 
-                                        transition-all duration-300 group-hover:bg-white/10 group-hover:scale-110">
-                          <IconComponent className={`h-4 w-4 ${item.color}`} />
-                        </div>
-                        <span className="text-xs text-muted-foreground text-center">{item.name}</span>
-                      </div>
-                    );
-                  })}
+            <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-4 border border-white/10">
+              <h4 className="text-sm font-medium mb-3 text-center text-muted-foreground">Frontend Specializations</h4>
+              <div className="grid grid-cols-3 gap-3">
+                
+                <div className="flex flex-col items-center group">
+                  <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-white/5 mb-1 
+                                  transition-all duration-300 group-hover:bg-white/10 group-hover:scale-110">
+                    <Palette className="h-3 w-3 text-pink-400" />
+                  </div>
+                  <span className="text-xs text-muted-foreground">UI Design</span>
                 </div>
+
+                <div className="flex flex-col items-center group">
+                  <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-white/5 mb-1 
+                                  transition-all duration-300 group-hover:bg-white/10 group-hover:scale-110">
+                    <Users className="h-3 w-3 text-blue-400" />
+                  </div>
+                  <span className="text-xs text-muted-foreground">UX</span>
+                </div>
+
+                <div className="flex flex-col items-center group">
+                  <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-white/5 mb-1 
+                                  transition-all duration-300 group-hover:bg-white/10 group-hover:scale-110">
+                    <Globe className="h-3 w-3 text-green-400" />
+                  </div>
+                  <span className="text-xs text-muted-foreground">CX</span>
+                </div>
+
+                <div className="flex flex-col items-center group">
+                  <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-white/5 mb-1 
+                                  transition-all duration-300 group-hover:bg-white/10 group-hover:scale-110">
+                    <MousePointer className="h-3 w-3 text-purple-400" />
+                  </div>
+                  <span className="text-xs text-muted-foreground">Interactive</span>
+                </div>
+
+                <div className="flex flex-col items-center group">
+                  <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-white/5 mb-1 
+                                  transition-all duration-300 group-hover:bg-white/10 group-hover:scale-110">
+                    <Smartphone className="h-3 w-3 text-orange-400" />
+                  </div>
+                  <span className="text-xs text-muted-foreground">Mobile</span>
+                </div>
+
+                <div className="flex flex-col items-center group">
+                  <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-white/5 mb-1 
+                                  transition-all duration-300 group-hover:bg-white/10 group-hover:scale-110">
+                    <Layout className="h-3 w-3 text-cyan-400" />
+                  </div>
+                  <span className="text-xs text-muted-foreground">Responsive</span>
+                </div>
+
               </div>
-            )}
+            </div>
 
             {/* Backend Subcategories */}
-            {activeCategory === 'backend' && (
-              <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 transition-all duration-300">
-                <h3 className="text-lg font-semibold mb-4 text-center">Backend Specializations</h3>
-                <div className="grid grid-cols-3 gap-4">
-                  {backendSubCategories.map((item, index) => {
-                    const IconComponent = item.icon;
-                    return (
-                      <div key={index} className="flex flex-col items-center group">
-                        <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-white/5 mb-2 
-                                        transition-all duration-300 group-hover:bg-white/10 group-hover:scale-110">
-                          <IconComponent className={`h-4 w-4 ${item.color}`} />
-                        </div>
-                        <span className="text-xs text-muted-foreground text-center">{item.name}</span>
-                      </div>
-                    );
-                  })}
+            <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-4 border border-white/10">
+              <h4 className="text-sm font-medium mb-3 text-center text-muted-foreground">Backend Specializations</h4>
+              <div className="grid grid-cols-3 gap-3">
+                
+                <div className="flex flex-col items-center group">
+                  <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-white/5 mb-1 
+                                  transition-all duration-300 group-hover:bg-white/10 group-hover:scale-110">
+                    <Settings className="h-3 w-3 text-blue-400" />
+                  </div>
+                  <span className="text-xs text-muted-foreground">API</span>
                 </div>
+
+                <div className="flex flex-col items-center group">
+                  <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-white/5 mb-1 
+                                  transition-all duration-300 group-hover:bg-white/10 group-hover:scale-110">
+                    <Database className="h-3 w-3 text-green-400" />
+                  </div>
+                  <span className="text-xs text-muted-foreground">Database</span>
+                </div>
+
+                <div className="flex flex-col items-center group">
+                  <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-white/5 mb-1 
+                                  transition-all duration-300 group-hover:bg-white/10 group-hover:scale-110">
+                    <Cloud className="h-3 w-3 text-sky-400" />
+                  </div>
+                  <span className="text-xs text-muted-foreground">Cloud</span>
+                </div>
+
+                <div className="flex flex-col items-center group">
+                  <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-white/5 mb-1 
+                                  transition-all duration-300 group-hover:bg-white/10 group-hover:scale-110">
+                    <Shield className="h-3 w-3 text-red-400" />
+                  </div>
+                  <span className="text-xs text-muted-foreground">Security</span>
+                </div>
+
+                <div className="flex flex-col items-center group">
+                  <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-white/5 mb-1 
+                                  transition-all duration-300 group-hover:bg-white/10 group-hover:scale-110">
+                    <GitBranch className="h-3 w-3 text-orange-400" />
+                  </div>
+                  <span className="text-xs text-muted-foreground">DevOps</span>
+                </div>
+
+                <div className="flex flex-col items-center group">
+                  <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-white/5 mb-1 
+                                  transition-all duration-300 group-hover:bg-white/10 group-hover:scale-110">
+                    <Box className="h-3 w-3 text-indigo-400" />
+                  </div>
+                  <span className="text-xs text-muted-foreground">Microservices</span>
+                </div>
+
               </div>
-            )}
+            </div>
 
           </div>
         </div>
