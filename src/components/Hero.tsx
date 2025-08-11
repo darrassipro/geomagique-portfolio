@@ -1,20 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Canvas from './Canvas';
-import { 
-  ArrowRight, 
-  MousePointer, 
-  Code, 
-  Layers, 
-  Layout, 
-  Cpu, 
-  Zap,
-  Database,
-  Server,
-  Globe,
-  Terminal,
-  PenTool,
-  Smartphone
-} from 'lucide-react';
+import { ArrowRight, MousePointer, Code, Layers, Layout, Cpu, Zap } from 'lucide-react';
 
 const TypewriterText = ({ text, delay = 80 }) => {
   const [displayText, setDisplayText] = useState('');
@@ -34,24 +20,6 @@ const TypewriterText = ({ text, delay = 80 }) => {
   }, [text, delay]);
   
   return displayText;
-};
-
-// Icon component with optional glowing effect
-const SkillIcon = ({ icon: Icon, label, glowing = false }) => {
-  return (
-    <div className="flex flex-col items-center group">
-      <div className={`relative w-12 h-12 rounded-full flex items-center justify-center 
-        bg-primary/5 mb-2 transition-all duration-300 group-hover:bg-primary/10 
-        group-hover:scale-110 backdrop-blur-sm ${glowing ? 'border border-primary/10' : ''}`}>
-        {glowing && (
-          <div className="absolute inset-0 rounded-full bg-primary/5 blur-md 
-            group-hover:blur-xl group-hover:bg-primary/20 transition-all duration-500"></div>
-        )}
-        <Icon className="h-5 w-5 text-primary relative z-10" />
-      </div>
-      <span className="text-sm text-muted-foreground">{label}</span>
-    </div>
-  );
 };
 
 const Hero: React.FC = () => {
@@ -114,38 +82,46 @@ const Hero: React.FC = () => {
             </a>
           </div>
           
-          <div className="mt-12 space-y-8 opacity-0 animate-fade-in" style={{ animationDelay: '1s', animationFillMode: 'forwards' }}>
-            {/* Frontend Skills */}
-            <div>
-              <h3 className="text-sm uppercase font-semibold text-muted-foreground/70 mb-3 tracking-wider">Frontend</h3>
-              <div className="grid grid-cols-3 md:grid-cols-4 gap-4">
-                <SkillIcon icon={Code} label="Frontend" glowing={true} />
-                <SkillIcon icon={Layout} label="UI/UX" />
-                <SkillIcon icon={Smartphone} label="Responsive" />
-                <SkillIcon icon={MousePointer} label="Interactive" />
-                <SkillIcon icon={PenTool} label="Design" />
-                <SkillIcon icon={Zap} label="Dynamique" glowing={true} />
+          <div className="mt-12 grid grid-cols-3 md:grid-cols-6 gap-4 max-w-2xl opacity-0 animate-fade-in" style={{ animationDelay: '1s', animationFillMode: 'forwards' }}>
+            <div className="flex flex-col items-center group">
+              <div className="w-12 h-12 rounded-full flex items-center justify-center bg-primary/5 mb-2 transition-all duration-300 group-hover:bg-primary/10 group-hover:scale-110 backdrop-blur-sm">
+                <Code className="h-5 w-5 text-primary" />
               </div>
+              <span className="text-sm text-muted-foreground">Frontend</span>
             </div>
-            
-            {/* Backend Skills */}
-            <div>
-              <h3 className="text-sm uppercase font-semibold text-muted-foreground/70 mb-3 tracking-wider">Backend</h3>
-              <div className="grid grid-cols-3 md:grid-cols-4 gap-4">
-                <SkillIcon icon={Server} label="Serveurs" glowing={true} />
-                <SkillIcon icon={Database} label="Databases" glowing={true} />
-                <SkillIcon icon={Globe} label="API" />
-                <SkillIcon icon={Terminal} label="CLI" />
-                <SkillIcon icon={Cpu} label="Architecture" />
-                <SkillIcon icon={Layers} label="Microservices" />
+            <div className="flex flex-col items-center group">
+              <div className="w-12 h-12 rounded-full flex items-center justify-center bg-primary/5 mb-2 transition-all duration-300 group-hover:bg-primary/10 group-hover:scale-110 backdrop-blur-sm">
+                <Layout className="h-5 w-5 text-primary" />
               </div>
+              <span className="text-sm text-muted-foreground">UI/UX</span>
+            </div>
+            <div className="flex flex-col items-center group">
+              <div className="w-12 h-12 rounded-full flex items-center justify-center bg-primary/5 mb-2 transition-all duration-300 group-hover:bg-primary/10 group-hover:scale-110 backdrop-blur-sm">
+                <Layers className="h-5 w-5 text-primary" />
+              </div>
+              <span className="text-sm text-muted-foreground">Responsive</span>
+            </div>
+            <div className="flex flex-col items-center group">
+              <div className="w-12 h-12 rounded-full flex items-center justify-center bg-primary/5 mb-2 transition-all duration-300 group-hover:bg-primary/10 group-hover:scale-110 backdrop-blur-sm">
+                <MousePointer className="h-5 w-5 text-primary" />
+              </div>
+              <span className="text-sm text-muted-foreground">Interactive</span>
+            </div>
+            <div className="flex flex-col items-center group">
+              <div className="w-12 h-12 rounded-full flex items-center justify-center bg-primary/5 mb-2 transition-all duration-300 group-hover:bg-primary/10 group-hover:scale-110 backdrop-blur-sm">
+                <Cpu className="h-5 w-5 text-primary" />
+              </div>
+              <span className="text-sm text-muted-foreground">Modern</span>
+            </div>
+            <div className="flex flex-col items-center group">
+              <div className="w-12 h-12 rounded-full flex items-center justify-center bg-primary/5 mb-2 transition-all duration-300 group-hover:bg-primary/10 group-hover:scale-110 backdrop-blur-sm">
+                <Zap className="h-5 w-5 text-primary" />
+              </div>
+              <span className="text-sm text-muted-foreground">Dynamique</span>
             </div>
           </div>
         </div>
       </div>
-      
-      {/* Floating glowing orb for ambient effect */}
-      <div className="absolute bottom-20 right-10 w-64 h-64 rounded-full bg-primary/5 blur-3xl animate-pulse-slow opacity-50 z-0 hidden md:block"></div>
       
       <div className="absolute bottom-0 left-0 w-full h-48 bg-gradient-to-t from-background to-transparent z-10"></div>
     </section>
