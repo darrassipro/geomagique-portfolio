@@ -35,7 +35,7 @@ const Canvas: React.FC<CanvasProps> = ({ className }) => {
         
         {/* Corner shapes - contained within image bounds */}
         {[
-          { position: 'top-left', rotation: '-rotate-25' },
+          { position: 'top-left', rotation: '-rotate+25' },
           { position: 'top-right', rotation: 'rotate-25' },
           { position: 'bottom-left', rotation: 'rotate-[200deg]' },
           { position: 'bottom-right', rotation: 'rotate-[110deg]' }
