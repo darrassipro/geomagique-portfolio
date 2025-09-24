@@ -20,7 +20,7 @@ const Canvas: React.FC<CanvasProps> = ({ className }) => {
     {
       // Top-Right Corner
       position: 'top-0 left-0',
-      rotation: 'rotate-270',
+      rotation: 'rotate-225',
             origin: 'transform-origin-bottom-left',
      
     },
