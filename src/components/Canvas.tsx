@@ -35,10 +35,10 @@ const Canvas: React.FC<CanvasProps> = ({ className }) => {
         
         {/* Corner shapes - contained within image bounds */}
         {[
-          { position: 'top-left', rotation: '-rotate-45' },
-          { position: 'top-right', rotation: 'rotate-45' },
-          { position: 'bottom-left', rotation: 'rotate-[225deg]' },
-          { position: 'bottom-right', rotation: 'rotate-[135deg]' }
+          { position: 'top-left', rotation: '-rotate-25' },
+          { position: 'top-right', rotation: 'rotate-25' },
+          { position: 'bottom-left', rotation: 'rotate-[200deg]' },
+          { position: 'bottom-right', rotation: 'rotate-[110deg]' }
         ].map(({ position, rotation }) => (
           <div
             key={position}
