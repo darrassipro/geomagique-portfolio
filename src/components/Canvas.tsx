@@ -11,7 +11,7 @@ const Canvas: React.FC<CanvasProps> = ({ className }) => {
 
   // Define the corners with precise transform classes for positioning and rotation
  const corners = [ { position: 'bottom-0 left-0', rotation: '-rotate-180', origin: 'transform-origin-top-left', },
-                  { position: 'top-0 left-0', rotation: 'rotate-0', origin: 'transform-origin-buttom-right', },
+                  { position: 'top-0 left-0', rotation: 'rotate-0', origin: 'transform-origin-buttom-left', },
                   { position: 'top-0 right-0', rotation: 'rotate-0', origin: 'transform-origin-top-left', },
                   { position: 'bottom-0 right-0', rotation: 'rotate-90', origin: 'transform-origin-top-right', }, 
                  
