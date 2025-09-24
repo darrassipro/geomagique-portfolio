@@ -13,9 +13,9 @@ const Canvas: React.FC<CanvasProps> = ({ className }) => {
     <div className={cn(
       'absolute right-0 transition-opacity duration-300',
       // Responsive positioning and spacing
-      'w-full h-[300px] top-[400px]', // Mobile: below text
-      'sm:w-[400px] sm:h-[400px] sm:top-[200px] sm:right-4', // Tablet: side position
-      'lg:w-[500px] lg:h-[500px] lg:top-32 lg:right-8', // Desktop: larger side position
+      'w-full h-[50px] top-[50px]', // Mobile: below text
+      'sm:w-[100px] sm:h-[100px] sm:top-[200px] sm:right-4', // Tablet: side position
+      'lg:w-[300px] lg:h-[300px] lg:top-32 lg:right-8', // Desktop: larger side position
       className
     )}>
       {/* Container for image and corners */}
