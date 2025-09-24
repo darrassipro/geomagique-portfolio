@@ -9,73 +9,49 @@ interface CanvasProps {
 const Canvas: React.FC<CanvasProps> = ({ className }) => {
   const { theme } = useTheme();
 
+  // Define corner positions and their correct rotations for a framing effect
+  const corners = [
+    { position: 'top-left', transform: 'top-0 left-0 rotate-0' },
+    { position: 'top-right', transform: 'top-0 right-0 rotate-90' },
+    { position: 'bottom-right', transform: 'bottom-0 right-0 rotate-180' },
+    { position: 'bottom-left', transform: 'bottom-0 left-0 -rotate-90' },
+  ];
+
   return (
-    <div className={cn(
-      'absolute right-0 transition-opacity duration-300',
-      // Responsive positioning and spacing
-      'w-full h-[100px] w-[100px] top-[200px] right-8', // Mobile: below text
-      'sm:w-[100px] sm:h-[100px] sm:top-[200px] sm:right-8', // Tablet: side position
-      'lg:w-[300px] lg:h-[300px] lg:top-32 lg:right-8', // Desktop: larger side position
-      className
-    )}>
-      {/* Container for image and corners */}
-      <div className="relative w-full h-full">
-        {/* Main profile image container */}
-        <div className="absolute inset-0">
-          <img 
-            src="/younes.jpeg" 
-            alt="Younes Darrassi"
+    <div className={cn("relative w-full max-w-[200px] sm:max-w-[250px] md:max-w-[300px] lg:max-w-[350px] aspect-square", className)}>
+      {/* Main profile image with a subtle border */}
+      <div className="absolute inset-2 sm:inset-4 rounded-lg overflow-hidden shadow-2xl shadow-primary/10 border-2 border-primary/20">
+        <img
+          src="/younes.jpeg"
+          alt="Younes Darrassi"
+          className={cn(
+            "w-full h-full object-cover transition-all duration-300",
+            theme === 'dark' ? 'brightness-90' : 'brightness-100'
+          )}
+        />
+      </div>
+
+      {/* Corner shapes that scale with the container */}
+      {corners.map(({ position, transform }) => (
+        <div
+          key={position}
+          className={cn(
+            "absolute w-[40%] h-[40%] transition-all duration-300",
+            transform,
+            "animate-corner-pulse" // Custom animation for corners
+          )}
+          style={{ animationDelay: `${Math.random() * 2}s` }} // Stagger animation
+        >
+          <img
+            src="/corner-img.png"
+            alt={`Decorative ${position} corner`}
             className={cn(
-              "w-full h-full object-cover rounded-lg",
-              "transition-all duration-300",
-              theme === 'dark' ? 'brightness-90' : 'brightness-100'
+              "w-full h-full object-contain",
+              theme === 'dark' ? 'opacity-50' : 'opacity-80',
             )}
           />
         </div>
-        
-        {/* Corner shapes - contained within image bounds */}
-        {[
-          { position: 'top-left', rotation: 'rotate-[25deg]' },
-          { position: 'top-right', rotation: 'rotate-[-25deg]' },
-          { position: 'bottom-left', rotation: 'rotate-[-200deg]' },
-          { position: 'bottom-right', rotation: 'rotate-[200deg]' }
-        ].map(({ position, rotation }) => (
-          <div
-            key={position}
-            className={cn(
-              "absolute",
-              // Responsive corner sizes
-              "w-[60px] h-[60px]",
-              "sm:w-[80px] sm:h-[80px]",
-              "lg:w-[100px] lg:h-[100px]",
-              // Position corners inside image bounds
-              position === 'top-left' && "top-0 left-0",
-              position === 'top-right' && "top-0 right-0",
-              position === 'bottom-left' && "bottom-0 left-0",
-              position === 'bottom-right' && "bottom-0 right-0"
-            )}
-          >
-            <img 
-              src="/corner-img.png"
-              alt={`Decorative ${position} corner`}
-              className={cn(
-                "w-full h-full object-contain",
-                "transition-all duration-300",
-                rotation,
-                theme === 'dark' ? 'opacity-70' : 'opacity-100'
-              )}
-            />
-          </div>
-        ))}
-
-        {/* Overlay effects */}
-        <div className="absolute inset-0 rounded-lg">
-          <div className="absolute inset-0 bg-gradient-to-b from-background/0 via-background/5 to-background/20" />
-          {theme === 'dark' && (
-            <div className="absolute inset-0 bg-gradient-radial from-primary/5 to-transparent opacity-50" />
-          )}
-        </div>
-      </div>
+      ))}
     </div>
   );
 };
