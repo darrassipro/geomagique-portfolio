@@ -10,10 +10,10 @@ const Canvas: React.FC<CanvasProps> = ({ className }) => {
   const { theme } = useTheme();
 
   const corners = [
-    { position: 'top-left', transform: 'top-0 left-0 rotate-25' },
-    { position: 'top-right', transform: 'top-0 right-0 rotate+25' },
-    { position: 'bottom-right', transform: 'bottom-0 right-0 rotate-180' },
-    { position: 'bottom-left', transform: 'bottom-0 left-0 -rotate-90' },
+    { position: 'top-left', transform: 'top-1 left-1 rotate-25' },
+    { position: 'top-right', transform: 'top-1 right-1 rotate+25' },
+    { position: 'bottom-right', transform: 'bottom-1 right-1 rotate-180' },
+    { position: 'bottom-left', transform: 'bottom-1 left-1 -rotate-90' },
   ];
 
   return (
