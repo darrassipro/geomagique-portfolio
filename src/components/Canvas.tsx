@@ -11,7 +11,7 @@ const Canvas: React.FC<CanvasProps> = ({ className }) => {
 
   // Define corner positions and their correct rotations for a framing effect
   const corners = [
-    { position: 'top-left', transform: 'top-0 left-0 rotate-0' },
+    { position: 'top-left', transform: 'top-0 left-0 rotate-25' },
     { position: 'top-right', transform: 'top-0 right-0 rotate-90' },
     { position: 'bottom-right', transform: 'bottom-0 right-0 rotate-180' },
     { position: 'bottom-left', transform: 'bottom-0 left-0 -rotate-90' },
