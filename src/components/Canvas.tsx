@@ -11,32 +11,29 @@ const Canvas: React.FC<CanvasProps> = ({ className }) => {
 
   return (
     <div className={cn(
-      'absolute right-0 w-full lg:w-1/2 h-full transition-opacity duration-300',
-      'flex items-center justify-center',
+      'absolute right-0 transition-opacity duration-300',
+      // Responsive positioning and spacing
+      'w-full h-[300px] top-[400px]', // Mobile: below text
+      'sm:w-[400px] sm:h-[400px] sm:top-[200px] sm:right-4', // Tablet: side position
+      'lg:w-[500px] lg:h-[500px] lg:top-32 lg:right-8', // Desktop: larger side position
       className
     )}>
-      <div className="relative w-full h-full max-w-[300px] max-h-[300px] 
-        sm:max-w-[400px] sm:max-h-[400px] 
-        lg:max-w-[500px] lg:max-h-[500px] mx-auto">
-        
-        {/* Main profile image */}
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2
-          w-[240px] h-[240px] 
-          sm:w-[320px] sm:h-[320px]
-          lg:w-[400px] lg:h-[400px] 
-          rounded-lg overflow-hidden">
+      {/* Container for image and corners */}
+      <div className="relative w-full h-full">
+        {/* Main profile image container */}
+        <div className="absolute inset-0">
           <img 
             src="/younes.jpeg" 
             alt="Younes Darrassi"
             className={cn(
-              "w-full h-full object-cover",
+              "w-full h-full object-cover rounded-lg",
               "transition-all duration-300",
               theme === 'dark' ? 'brightness-90' : 'brightness-100'
             )}
           />
         </div>
         
-        {/* Corner decorative images */}
+        {/* Corner shapes - contained within image bounds */}
         {[
           { position: 'top-left', rotation: '-rotate-45' },
           { position: 'top-right', rotation: 'rotate-45' },
@@ -47,13 +44,15 @@ const Canvas: React.FC<CanvasProps> = ({ className }) => {
             key={position}
             className={cn(
               "absolute",
-              "w-[100px] h-[100px]",
-              "sm:w-[120px] sm:h-[120px]",
-              "lg:w-[150px] lg:h-[150px]",
-              position === 'top-left' && "top-0 left-0",
-              position === 'top-right' && "top-0 right-0",
-              position === 'bottom-left' && "bottom-0 left-0",
-              position === 'bottom-right' && "bottom-0 right-0"
+              // Responsive corner sizes
+              "w-[60px] h-[60px]",
+              "sm:w-[80px] sm:h-[80px]",
+              "lg:w-[100px] lg:h-[100px]",
+              // Position corners inside image bounds
+              position === 'top-left' && "top-2 left-2",
+              position === 'top-right' && "top-2 right-2",
+              position === 'bottom-left' && "bottom-2 left-2",
+              position === 'bottom-right' && "bottom-2 right-2"
             )}
           >
             <img 
