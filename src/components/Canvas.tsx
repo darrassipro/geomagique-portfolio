@@ -9,38 +9,19 @@ interface CanvasProps {
 const Canvas: React.FC<CanvasProps> = ({ className }) => {
   const { theme } = useTheme();
 
-  // Define the corners with precise transform classes for positioning and rotation
+  // This structure is now much simpler and more direct.
   const corners = [
-    {
-      // Top-Left Corner
-      position: 'top-0 left-0',
-      rotation: 'rotate-0',
-      origin: 'transform-origin-top-bottom',
-    },
-    {
-      // Top-Right Corner
-      position: 'top-0 right-0',
-      rotation: 'rotate-90',
-      origin: 'transform-origin-top-right',
-    },
-    {
-      // Bottom-Right Corner
-      position: 'bottom-0 right-0',
-      rotation: 'rotate-180',
-      origin: 'transform-origin-bottom-right',
-    },
-    {
-      // Bottom-Left Corner
-      position: 'bottom-0 left-0',
-      rotation: '-rotate-90',
-      origin: 'transform-origin-bottom-left',
-    },
+    { position: 'top-0 left-0', rotation: 'rotate-0' },      // Top-Left
+    { position: 'top-0 right-0', rotation: 'rotate-90' },     // Top-Right
+    { position: 'bottom-0 right-0', rotation: 'rotate-180' },  // Bottom-Right
+    { position: 'bottom-0 left-0', rotation: '-rotate-90' },   // Bottom-Left
   ];
 
   return (
     <div className={cn("relative w-full max-w-[200px] sm:max-w-[250px] md:max-w-[300px] lg:max-w-[350px] aspect-square", className)}>
-      {/* The main image container now has padding to create the space for the corners */}
-      <div className="absolute inset-[15%] rounded-lg overflow-hidden shadow-2xl shadow-primary/10">
+      
+      {/* The main profile image is now padded from the edge of the container */}
+      <div className="absolute inset-[12%] rounded-lg overflow-hidden shadow-2xl shadow-primary/10">
         <img
           src="/younes.jpeg"
           alt="Younes Darrassi"
@@ -51,31 +32,27 @@ const Canvas: React.FC<CanvasProps> = ({ className }) => {
         />
       </div>
 
-      {/* This container will hold the corner pieces, aligned with the padded image */}
-      <div className="absolute inset-[15%]">
-        {corners.map(({ position, rotation, origin }, index) => (
-          <div
-            key={position}
+      {/* The corner images are positioned at the very edges of the main container */}
+      {corners.map(({ position, rotation }, index) => (
+        <div
+          key={position}
+          className={cn(
+            'absolute w-[45%] h-[45%]', // Size of the corner image container
+            position, // Pins the container to the corner (top-0 left-0, etc.)
+            'opacity-0 animate-corner-enter'
+          )}
+          style={{ animationDelay: `${0.8 + index * 0.15}s` }}
+        >
+          <img
+            src="/corner-img.png"
+            alt={`Decorative corner`}
             className={cn(
-              "absolute w-1/2 h-1/2", // Each corner takes up a 50% quadrant
-              position, // Positions the div in the corner of the container
-              "opacity-0 animate-corner-enter"
+              'w-full h-full object-contain',
+              rotation // Applies the correct rotation to the image itself
             )}
-            style={{ animationDelay: `${0.8 + index * 0.15}s` }}
-          >
-            <img
-              src="/corner-img.png"
-              alt={`Decorative corner`}
-              className={cn(
-                "absolute w-full h-full object-contain",
-                origin, // Sets the rotation point
-                rotation, // Applies the rotation
-                theme === 'dark' ? 'opacity-50' : 'opacity-80'
-              )}
-            />
-          </div>
-        ))}
-      </div>
+          />
+        </div>
+      ))}
     </div>
   );
 };
