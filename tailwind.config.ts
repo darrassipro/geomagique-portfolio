@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -136,6 +135,11 @@ export default {
 					'60%': { transform: 'rotate(0.0deg)' },
 					'100%': { transform: 'rotate(0.0deg)' },
 				},
+                // Added for the canvas corner animation
+				'corner-pulse': {
+					'0%, 100%': { transform: 'scale(1)', opacity: '0.7' },
+					'50%': { transform: 'scale(1.05)', opacity: '1' },
+				},
 			},
 			animation: {
 				"accordion-down": "accordion-down 0.2s ease-out",
@@ -152,6 +156,8 @@ export default {
 				"slow-spin": 'rotate 15s linear infinite',
 				bounce: 'bounce 2s ease infinite',
 				wave: 'wave 2.5s ease infinite',
+                // Added for the canvas corner animation
+				'corner-pulse': 'corner-pulse 4s ease-in-out infinite',
 			},
 			transitionDuration: {
 				'2000': '2000ms',
