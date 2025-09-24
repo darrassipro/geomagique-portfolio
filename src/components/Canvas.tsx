@@ -13,8 +13,8 @@ const Canvas: React.FC<CanvasProps> = ({ className }) => {
     <div className={cn(
       'absolute right-0 transition-opacity duration-300',
       // Responsive positioning and spacing
-      'w-full h-[50px] w-[50px] top-[200px]', // Mobile: below text
-      'sm:w-[100px] sm:h-[100px] sm:top-[200px] sm:right-4', // Tablet: side position
+      'w-full h-[100px] w-[100px] top-[200px] right-8', // Mobile: below text
+      'sm:w-[100px] sm:h-[100px] sm:top-[200px] sm:right-8', // Tablet: side position
       'lg:w-[300px] lg:h-[300px] lg:top-32 lg:right-8', // Desktop: larger side position
       className
     )}>
