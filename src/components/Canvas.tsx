@@ -15,7 +15,7 @@ const Canvas: React.FC<CanvasProps> = ({ className }) => {
       // Top-Left Corner
       position: 'bottom-0 left-0',
       rotation: '-rotate-90',
-      origin: 'transform-origin-bottom-buttom',
+      origin: 'transform-origin-top-left',
     },
     {
       // Top-Right Corner
