@@ -9,17 +9,15 @@ interface CanvasProps {
 const Canvas: React.FC<CanvasProps> = ({ className }) => {
   const { theme } = useTheme();
 
-  // Define corner positions and their correct rotations for a framing effect
   const corners = [
     { position: 'top-left', transform: 'top-0 left-0 rotate-25' },
-    { position: 'top-right', transform: 'top-0 right-0 rotate-90' },
+    { position: 'top-right', transform: 'top-0 right-0 rotate+25' },
     { position: 'bottom-right', transform: 'bottom-0 right-0 rotate-180' },
     { position: 'bottom-left', transform: 'bottom-0 left-0 -rotate-90' },
   ];
 
   return (
     <div className={cn("relative w-full max-w-[200px] sm:max-w-[250px] md:max-w-[300px] lg:max-w-[350px] aspect-square", className)}>
-      {/* Main profile image with a subtle border */}
       <div className="absolute inset-2 sm:inset-4 rounded-lg overflow-hidden shadow-2xl shadow-primary/10 border-2 border-primary/20">
         <img
           src="/younes.jpeg"
@@ -31,16 +29,15 @@ const Canvas: React.FC<CanvasProps> = ({ className }) => {
         />
       </div>
 
-      {/* Corner shapes that scale with the container */}
-      {corners.map(({ position, transform }) => (
+      {corners.map(({ position, transform }, index) => (
         <div
           key={position}
           className={cn(
-            "absolute w-[40%] h-[40%] transition-all duration-300",
+            "absolute w-[40%] h-[40%]",
             transform,
-            "animate-corner-pulse" // Custom animation for corners
+            "opacity-0 animate-corner-enter" // Use the new entrance animation
           )}
-          style={{ animationDelay: `${Math.random() * 2}s` }} // Stagger animation
+          style={{ animationDelay: `${0.8 + index * 0.15}s` }} // Stagger the animation start
         >
           <img
             src="/corner-img.png"
