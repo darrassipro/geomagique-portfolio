@@ -68,13 +68,13 @@ const Footer: React.FC = () => {
   const socialLinks: SocialLink[] = [
     { 
       label: "LinkedIn", 
-      url: "#",
+      url: "https://www.linkedin.com/in/younes-darrassi",
       icon: LinkedInIcon,
       color: "#0077B5"
     },
     { 
       label: "GitHub", 
-      url: "#",
+      url: "https://github.com/darrassi1",
       icon: GitHubIcon,
       color: "#333"
     },
