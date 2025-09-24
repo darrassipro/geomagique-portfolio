@@ -9,12 +9,14 @@ interface CanvasProps {
 const Canvas: React.FC<CanvasProps> = ({ className }) => {
   const { theme } = useTheme();
 
-  const corners = [
-    { position: 'top-0 left-0', rotation: 'scale-x-[-1]', origin: 'transform-origin-top-left' }, // inverted top-left
-    { position: 'top-0 right-0', rotation: 'rotate-90', origin: 'transform-origin-top-right' },
-    { position: 'bottom-0 right-0', rotation: 'rotate-180', origin: 'transform-origin-bottom-right' },
-    { position: 'bottom-0 left-0', rotation: '-rotate-90', origin: 'transform-origin-bottom-left' },
-  ];
+  // Define the corners with precise transform classes for positioning and rotation
+ const corners = [ { position: 'bottom-0 left-0', rotation: '-rotate-180', origin: 'transform-origin-top-left', },
+                  { position: 'top-0 left-0',   rotation: 'rotate-0 scale-x-[-1]', 
+  origin: 'transform-origin-top-left', },
+                  { position: 'top-0 right-0', rotation: 'rotate-0', origin: 'transform-origin-top-left', },
+                  { position: 'bottom-0 right-0', rotation: 'rotate-90', origin: 'transform-origin-top-right', }, 
+                 
+                 ];
 
   return (
     <div className={cn("relative w-full max-w-[220px] sm:max-w-[260px] md:max-w-[300px] lg:max-w-[350px] aspect-square", className)}>
