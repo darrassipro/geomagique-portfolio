@@ -15,7 +15,7 @@ const ChatBot = ({ isOpen, onClose, currentUser, currentTime }) => {
   const chatContainerRef = useRef(null);
 
   // API configuration
-  const apiKey = 'AIzaSyDuG7w7EtezIXePz1EQkmShlfQdhmZLf3I'; 
+  const apiKey = import.meta.env.VITE_GEMINI_API_KEY; 
   const apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent';
 
   // Project information for AI context
