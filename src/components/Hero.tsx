@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import Canvas from './Canvas';
 import { ArrowRight } from 'lucide-react';
+import Clock from './ui/Clock';
+
+
 
 const TypewriterText = ({ text, delay = 80 }) => {
   const [displayText, setDisplayText] = useState('');
@@ -37,14 +40,18 @@ const Hero: React.FC = () => {
       <div className="relative z-10 container mx-auto grid grid-cols-1 md:grid-cols-2 items-center gap-12 md:gap-8">
         {/* Left side: Text content */}
         <div className="max-w-2xl text-center md:text-left">
-          {/* Portfolio badge */}
+          {/* Portfolio badge & Clock */}
           <div
-            className="inline-block animate-fade-in opacity-0"
+            className="inline-flex items-center gap-4 animate-fade-in opacity-0"
             style={{ animationDelay: '0.2s', animationFillMode: 'forwards' }}
           >
             <div className="glass-badge px-4 py-2 rounded-full mb-6 inline-flex items-center space-x-2 backdrop-blur-md bg-white/10 border border-white/20 hover:border-white/30 transition-all duration-300 shadow-lg shadow-primary/5">
               <span className="h-2 w-2 rounded-full bg-primary animate-pulse"></span>
               <span className="text-xs font-medium tracking-wider uppercase">Portfolio</span>
+            </div>
+            <div className="mb-6 relative w-24 h-24 flex items-center justify-center">
+              <Clock />
+              <img src="/cadre-horloge.png" alt="cadre-horloge" className="absolute inset-0 w-full h-full pointer-events-none select-none z-10" style={{ transform: 'scale(1.38)' }} draggable="false" />
             </div>
           </div>
 
