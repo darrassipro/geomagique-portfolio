@@ -15,8 +15,10 @@ const ChatBot = ({ isOpen, onClose, currentUser, currentTime }) => {
   const chatContainerRef = useRef(null);
 
   // API configuration
-  const apiKey = import.meta.env.VITE_GEMINI_API_KEY; 
-  const apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent';
+  const geminiApiKey = "AIzaSyDuG7w7EtezIXePz1EQkmShlfQdhmZLf3I";
+  const groqApiKey = "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";
+  const geminiApiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent';
+  const groqApiUrl = 'https://api.groq.com/openai/v1/chat/completions';
 
   // Project information for AI context
   const projectContext = `
@@ -100,8 +102,12 @@ const ChatBot = ({ isOpen, onClose, currentUser, currentTime }) => {
     if (storedMessages) {
       setMessages(JSON.parse(storedMessages));
     } else {
-      // Add initial welcome message
-      addBotMessage("👋 Bonjour ! Je suis l'assistant IA de Younes Darrassi. Je peux vous renseigner sur ses projets, compétences et expériences. Comment puis-je vous aider aujourd'hui ?");
+      // Add initial welcome message with a check for API keys
+      let welcomeMessage = "👋 Bonjour ! Je suis l'assistant IA de Younes Darrassi. Je peux vous renseigner sur ses projets, compétences et expériences. Comment puis-je vous aider aujourd'hui ?";
+      if (!geminiApiKey || !groqApiKey) {
+        welcomeMessage = "👋 Bonjour ! Il semble y avoir un problème de configuration. Les clés API pour les services d'IA (Gemini/Groq) ne sont pas correctement chargées. Veuillez vérifier votre fichier `.env` et redémarrer le serveur.";
+      }
+      addBotMessage(welcomeMessage);
     }
   }, []);
 
@@ -136,48 +142,78 @@ const ChatBot = ({ isOpen, onClose, currentUser, currentTime }) => {
 
   // Send message to AI API
   const getAIResponse = async (userQuery) => {
-  try {
-    const prompt = `You are Younes Darrassi's personal AI assistant. 
-Your mission is to present Younes as a highly capable, trustworthy, and forward-thinking professional, while always providing helpful, original, and plagiarism-free responses.
+    const prompt = `You are the AI assistant for Younes Darrassi, a creative Software Engineer. Your goal is to be a smart, trustworthy, and engaging representative.
 
-About Younes Darrassi:
-- Skilled Software Engineer (Ingénieur Logiciel) who graduated in 2024 from the Université Privée de Fès.
-- Known for delivering innovative, efficient, and reliable solutions.
-- Strong expertise in full-stack development, desktop applications, and advanced web technologies.
-- Excellent at adapting to challenges and translating complex problems into practical, elegant solutions.
+**Core Mission:**
+- **Represent Younes:** Showcase his skills and projects with confidence and authenticity.
+- **Be Helpful & Original:** Provide clear, valuable answers. Every response must be unique and pass plagiarism checks.
+- **Tone:** Professional, yet personable and clever. Inspire confidence.
 
-When responding:
-1. Always be professional, articulate, and confident — your tone should inspire trust.
-2. Highlight Younes’s achievements, skills, and experience in a way that feels authentic and human.
-3. When discussing projects, focus on value, impact, and the quality of the solutions delivered.
-4. Provide relevant links when available, and describe the technologies used clearly.
-5. All responses must be written in an original way, ensuring they pass plagiarism checks.
-6. Be concise when needed, but detailed enough to leave a strong, positive impression.
+**Key Information about Younes:**
+- **Role:** Software Engineer (graduated 2024), specializing in innovative and efficient solutions.
+- **Expertise:** Full-stack development, web technologies, and turning complex problems into elegant code.
+- **Data:** Use the provided context about his projects to answer questions. When a project has a live link, provide it.
 
-Here's detailed information about Younes and his projects:
+**User Query Context:**
 ${projectContext}
 
-User query: ${userQuery}`;
-      const response = await fetch(`${apiUrl}?key=${apiKey}`, {
+Based on the user's question, provide a helpful and original response.
+User Query: "${userQuery}"`;
+
+    try {
+      // Try Gemini first
+      const geminiResponse = await fetch(`${geminiApiUrl}?key=${geminiApiKey}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          contents: [{
-            parts: [{ text: prompt }]
-          }]
+          contents: [{ parts: [{ text: prompt }] }]
         })
       });
 
-      const data = await response.json();
-      
-      if (data.candidates && data.candidates[0].content && data.candidates[0].content.parts[0].text) {
-        return data.candidates[0].content.parts[0].text;
+      if (geminiResponse.ok) {
+        const data = await geminiResponse.json();
+        if (data.candidates && data.candidates[0].content && data.candidates[0].content.parts[0].text) {
+          return data.candidates[0].content.parts[0].text;
+        }
+        // Log the unexpected response structure from Gemini
+        console.error('Unexpected Gemini response structure:', data);
       } else {
-        return "Désolé, je n'ai pas pu générer une réponse. Veuillez réessayer plus tard.";
+        // Log the error response from Gemini
+        const errorData = await geminiResponse.json();
+        console.error('Gemini API Error:', errorData);
       }
-    } catch (error) {
-      console.error('Error getting AI response:', error);
-      return "Je rencontre des difficultés techniques. Veuillez réessayer dans un instant.";
+      throw new Error('Gemini API failed or returned no content.');
+    } catch (geminiError) {
+      console.warn('Gemini API failed, falling back to Groq:', geminiError);
+      
+      // Fallback to Groq
+      try {
+        const groqResponse = await fetch(groqApiUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${groqApiKey}`
+          },
+          body: JSON.stringify({
+            model: "llama-3.1-8b-instant", // Or any other model you prefer
+            messages: [
+              { role: "system", content: prompt },
+              { role: "user", content: userQuery }
+            ]
+          })
+        });
+
+        if (groqResponse.ok) {
+          const data = await groqResponse.json();
+          if (data.choices && data.choices[0].message && data.choices[0].message.content) {
+            return data.choices[0].message.content;
+          }
+        }
+        throw new Error('Groq API failed or returned no content.');
+      } catch (groqError) {
+        console.error('Error getting AI response from both Gemini and Groq:', groqError);
+        return "Je rencontre des difficultés techniques. Veuillez réessayer dans un instant.";
+      }
     }
   };
 
