@@ -17,7 +17,7 @@ const ChatBot = ({ isOpen, onClose, currentUser, currentTime }) => {
   // API configuration
   const geminiApiKey = "AIzaSyBb9d8TsjbW_vkvrRvVggCa2X5WdjeMeWY";
   const groqApiKey = "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";
-  const geminiApiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent';
+  const geminiApiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:streamGenerateContent';
   const groqApiUrl = 'https://api.groq.com/openai/v1/chat/completions';
 
   // Project information for AI context
