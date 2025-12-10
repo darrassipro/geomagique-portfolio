@@ -15,7 +15,7 @@ const ChatBot = ({ isOpen, onClose, currentUser, currentTime }) => {
   const chatContainerRef = useRef(null);
 
   // API configuration
-  const geminiApiKey = "AIzaSyDuG7w7EtezIXePz1EQkmShlfQdhmZLf3I";
+  const geminiApiKey = "AIzaSyBb9d8TsjbW_vkvrRvVggCa2X5WdjeMeWY";
   const groqApiKey = "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";
   const geminiApiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent';
   const groqApiUrl = 'https://api.groq.com/openai/v1/chat/completions';
